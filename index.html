@@ -4,53 +4,81 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Elecciones Perú 2026 · Resumen Ejecutivo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <header class="topbar">
-      <h1>Elecciones Perú 2026</h1>
-      <p>Resumen ejecutivo de plan de gobierno</p>
-    </header>
+    <nav class="topnav">
+      <div class="topnav-inner">
+        <div class="topnav-brand">
+          <span class="brand-dot"></span>
+          <span class="brand-title">Elecciones Perú 2026</span>
+        </div>
+        <span class="brand-subtitle">Resumen ejecutivo · Plan de gobierno</span>
+      </div>
+    </nav>
 
     <main class="layout">
-      <section class="panel form-panel">
-        <h2>Cargar candidato</h2>
-        <p class="muted">Sube foto y PDF, y agrega tu resumen ejecutivo.</p>
-
+      <!-- FORM PANEL -->
+      <aside class="panel form-panel">
+        <div class="panel-header">
+          <h2>Cargar candidato</h2>
+          <p class="muted">Sube foto, PDF y agrega el resumen ejecutivo.</p>
+        </div>
         <form id="candidate-form">
-          <label>
-            Nombre del candidato
+          <div class="field-group">
+            <label for="name">Nombre del candidato</label>
             <input id="name" type="text" required placeholder="Ej: Keiko Fujimori" />
-          </label>
-
-          <label>
-            Partido
+          </div>
+          <div class="field-group">
+            <label for="party">Partido</label>
             <input id="party" type="text" required placeholder="Ej: Fuerza Popular" />
-          </label>
-
-          <label>
-            Foto del candidato
-            <input id="photo" type="file" accept="image/*" required />
-          </label>
-
-          <label>
-            Plan de gobierno (PDF)
-            <input id="plan" type="file" accept="application/pdf" required />
-          </label>
-
-          <label>
-            Resumen ejecutivo
+          </div>
+          <div class="field-group">
+            <label for="photo">Foto del candidato</label>
+            <div class="file-input-wrapper">
+              <input id="photo" type="file" accept="image/*" required />
+              <div class="file-input-ui">
+                <span class="material-icons-round">add_photo_alternate</span>
+                <span class="file-label" id="photo-label">Seleccionar imagen</span>
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="plan">Plan de gobierno (PDF)</label>
+            <div class="file-input-wrapper">
+              <input id="plan" type="file" accept="application/pdf" required />
+              <div class="file-input-ui">
+                <span class="material-icons-round">picture_as_pdf</span>
+                <span class="file-label" id="plan-label">Seleccionar PDF</span>
+              </div>
+            </div>
+          </div>
+          <div class="field-group">
+            <label for="summary">Resumen ejecutivo</label>
             <textarea id="summary" rows="8" required placeholder="Resume en puntos clave el plan de gobierno..."></textarea>
-          </label>
-
-          <button type="submit">Generar resumen visual</button>
+          </div>
+          <button type="submit" class="btn-primary">
+            <span class="material-icons-round">auto_awesome</span>
+            Generar resumen visual
+          </button>
         </form>
-      </section>
+      </aside>
 
+      <!-- PREVIEW PANEL -->
       <section class="panel preview-panel">
-        <h2>Vista del candidato</h2>
+        <div class="panel-header">
+          <h2>Vista del candidato</h2>
+          <p class="muted">Así se verá el resumen ejecutivo.</p>
+        </div>
         <article id="candidate-card" class="candidate-card empty">
-          <p>Completa el formulario para ver el resumen.</p>
+          <div class="empty-state">
+            <span class="material-icons-round empty-icon">how_to_vote</span>
+            <p>Completa el formulario para ver el resumen.</p>
+          </div>
         </article>
       </section>
     </main>
