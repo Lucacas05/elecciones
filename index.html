@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Elecciones Perú 2026 · Resumen Ejecutivo</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <h1>Elecciones Perú 2026</h1>
+      <p>Resumen ejecutivo de plan de gobierno</p>
+    </header>
+
+    <main class="layout">
+      <section class="panel form-panel">
+        <h2>Cargar candidato</h2>
+        <p class="muted">Sube foto y PDF, y agrega tu resumen ejecutivo.</p>
+
+        <form id="candidate-form">
+          <label>
+            Nombre del candidato
+            <input id="name" type="text" required placeholder="Ej: Keiko Fujimori" />
+          </label>
+
+          <label>
+            Partido
+            <input id="party" type="text" required placeholder="Ej: Fuerza Popular" />
+          </label>
+
+          <label>
+            Foto del candidato
+            <input id="photo" type="file" accept="image/*" required />
+          </label>
+
+          <label>
+            Plan de gobierno (PDF)
+            <input id="plan" type="file" accept="application/pdf" required />
+          </label>
+
+          <label>
+            Resumen ejecutivo
+            <textarea id="summary" rows="8" required placeholder="Resume en puntos clave el plan de gobierno..."></textarea>
+          </label>
+
+          <button type="submit">Generar resumen visual</button>
+        </form>
+      </section>
+
+      <section class="panel preview-panel">
+        <h2>Vista del candidato</h2>
+        <article id="candidate-card" class="candidate-card empty">
+          <p>Completa el formulario para ver el resumen.</p>
+        </article>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
