@@ -459,6 +459,7 @@ let polymarketReconnectTimer = null;
 let polymarketPollTimer = null;
 let polymarketRenderTimer = null;
 let polymarketHeartbeatTimer = null;
+const POLYMARKET_MAX_MIDPOINT_SPREAD = 0.1;
 
 function escapeHtml(value) {
   return String(value ?? '')
@@ -608,23 +609,74 @@ function renderPolymarketBoard() {
   }
 }
 
-function computeLiveProbability(priceA, priceB) {
-  const first = Number(priceA ?? 0);
-  const second = Number(priceB ?? 0);
-
-  if (first > 0 && second > 0) return ((first + second) / 2) * 100;
-  if (first > 0) return first * 100;
-  if (second > 0) return second * 100;
-  return null;
+function parseMarketPrice(value) {
+  const parsed = Number(value ?? NaN);
+  if (!Number.isFinite(parsed)) return null;
+  if (parsed < 0 || parsed > 1) return null;
+  return parsed;
 }
 
-function updatePolymarketCandidate(assetId, nextProbability) {
+function getSpread(bestBid, bestAsk) {
+  const bid = parseMarketPrice(bestBid);
+  const ask = parseMarketPrice(bestAsk);
+  if (bid === null || ask === null || ask < bid) return null;
+  return ask - bid;
+}
+
+function resolveDisplayProbability({ bestBid, bestAsk, lastTradePrice, fallbackProbability = null } = {}) {
+  const bid = parseMarketPrice(bestBid);
+  const ask = parseMarketPrice(bestAsk);
+  const last = parseMarketPrice(lastTradePrice);
+  const spread = getSpread(bestBid, bestAsk);
+
+  if (bid !== null && ask !== null && spread !== null && spread <= POLYMARKET_MAX_MIDPOINT_SPREAD) {
+    return ((bid + ask) / 2) * 100;
+  }
+
+  if (last !== null) {
+    return last * 100;
+  }
+
+  return Number.isFinite(fallbackProbability) ? fallbackProbability : null;
+}
+
+function updatePolymarketCandidate(assetId, nextValues = {}) {
   if (!polymarketSnapshot) return;
 
   const candidate = polymarketSnapshot.candidates.find((item) => item.yesTokenId === assetId);
-  if (!candidate || !Number.isFinite(nextProbability)) return;
+  if (!candidate) return;
 
-  candidate.probability = Math.max(0, Math.min(100, nextProbability));
+  const nextProbability = Number(nextValues.probability);
+  const nextBestBid = parseMarketPrice(nextValues.bestBid);
+  const nextBestAsk = parseMarketPrice(nextValues.bestAsk);
+  const nextLastTradePrice = parseMarketPrice(nextValues.lastTradePrice);
+  let didChange = false;
+
+  if (Number.isFinite(nextProbability)) {
+    const boundedProbability = Math.max(0, Math.min(100, nextProbability));
+    if (candidate.probability !== boundedProbability) {
+      candidate.probability = boundedProbability;
+      didChange = true;
+    }
+  }
+
+  if (nextBestBid !== null && candidate.bestBid !== nextBestBid * 100) {
+    candidate.bestBid = nextBestBid * 100;
+    didChange = true;
+  }
+
+  if (nextBestAsk !== null && candidate.bestAsk !== nextBestAsk * 100) {
+    candidate.bestAsk = nextBestAsk * 100;
+    didChange = true;
+  }
+
+  if (nextLastTradePrice !== null && candidate.lastTradePrice !== nextLastTradePrice * 100) {
+    candidate.lastTradePrice = nextLastTradePrice * 100;
+    didChange = true;
+  }
+
+  if (!didChange) return;
+
   polymarketSnapshot.updatedAt = new Date().toISOString();
   schedulePolymarketRender();
 }
@@ -633,28 +685,64 @@ function handlePolymarketMessage(message) {
   if (!message || typeof message !== 'object') return;
 
   if (message.event_type === 'best_bid_ask') {
-    const nextProbability = computeLiveProbability(message.best_bid, message.best_ask);
-    if (nextProbability !== null) updatePolymarketCandidate(message.asset_id, nextProbability);
+    const spread = getSpread(message.best_bid, message.best_ask);
+    if (spread === null || spread > POLYMARKET_MAX_MIDPOINT_SPREAD) return;
+
+    const nextProbability = resolveDisplayProbability({
+      bestBid: message.best_bid,
+      bestAsk: message.best_ask,
+    });
+
+    if (nextProbability !== null) {
+      updatePolymarketCandidate(message.asset_id, {
+        probability: nextProbability,
+        bestBid: message.best_bid,
+        bestAsk: message.best_ask,
+      });
+    }
     return;
   }
 
   if (message.event_type === 'last_trade_price') {
-    updatePolymarketCandidate(message.asset_id, Number(message.price) * 100);
+    const nextLastTradePrice = parseMarketPrice(message.price);
+    if (nextLastTradePrice === null) return;
+
+    updatePolymarketCandidate(message.asset_id, {
+      probability: nextLastTradePrice * 100,
+      lastTradePrice: message.price,
+    });
     return;
   }
 
   if (message.event_type === 'book') {
     const bestBid = Array.isArray(message.bids) && message.bids.length ? message.bids[0]?.price : 0;
     const bestAsk = Array.isArray(message.asks) && message.asks.length ? message.asks[0]?.price : 0;
-    const nextProbability = computeLiveProbability(bestBid, bestAsk);
-    if (nextProbability !== null) updatePolymarketCandidate(message.asset_id, nextProbability);
+
+    updatePolymarketCandidate(message.asset_id, {
+      bestBid,
+      bestAsk,
+      lastTradePrice: message.last_trade_price,
+    });
+
     return;
   }
 
   if (message.event_type === 'price_change' && Array.isArray(message.price_changes)) {
     message.price_changes.forEach((change) => {
-      const nextProbability = computeLiveProbability(change.best_bid, change.best_ask) ?? Number(change.price) * 100;
-      updatePolymarketCandidate(change.asset_id, nextProbability);
+      const nextProbability = resolveDisplayProbability({
+        bestBid: change.best_bid,
+        bestAsk: change.best_ask,
+        lastTradePrice: change.price,
+      });
+
+      if (nextProbability === null) return;
+
+      updatePolymarketCandidate(change.asset_id, {
+        probability: nextProbability,
+        bestBid: change.best_bid,
+        bestAsk: change.best_ask,
+        lastTradePrice: change.price,
+      });
     });
   }
 }
