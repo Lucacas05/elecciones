@@ -3,77 +3,117 @@ const QUESTION_KEY = 'elecciones:questionnaireAnswers';
 const QUESTIONS = [
   {
     id: 'security',
-    title: 'Seguridad ciudadana',
-    prompt: '¿Qué enfoque debería priorizar el próximo gobierno frente a la inseguridad?',
-    leftLabel: 'Prevención y trabajo comunitario',
-    rightLabel: 'Control, sanción y presencia policial',
+    title: 'Seguridad',
+    prompt: '¿Cómo combatirías la inseguridad ciudadana?',
+    options: [
+      { value: 1, label: 'Mano dura: penas más severas, incluida la pena de muerte' },
+      { value: 2, label: 'Reformar la policía, fiscalía y el poder judicial' },
+      { value: 3, label: 'Más inversión en educación y prevención social' },
+    ],
   },
   {
     id: 'economy',
-    title: 'Economía familiar',
-    prompt: '¿Qué pesa más para ti en la reactivación económica?',
-    leftLabel: 'Protección social y alivio del costo de vida',
-    rightLabel: 'Inversión privada y crecimiento rápido',
+    title: 'Economía',
+    prompt: '¿Cómo debería manejarse la economía del país?',
+    options: [
+      { value: 1, label: 'Libre mercado: menos impuestos, menos regulación' },
+      { value: 2, label: 'El Estado debe intervenir más y controlar precios' },
+      { value: 3, label: 'Un equilibrio entre mercado libre y regulación estatal' },
+    ],
   },
   {
-    id: 'state',
-    title: 'Reforma del Estado',
-    prompt: '¿Cómo debería mejorar el Estado?',
-    leftLabel: 'Más servicios, acompañamiento y capacidades públicas',
-    rightLabel: 'Menos trabas, menos burocracia y gestión por resultados',
+    id: 'education',
+    title: 'Educación',
+    prompt: '¿Qué priorizarías en educación?',
+    options: [
+      { value: 1, label: 'Invertir fuerte en educación pública y gratuita' },
+      { value: 2, label: 'Dar incentivos para que crezca la educación privada' },
+      { value: 3, label: 'Mejorar ambas: pública de calidad y privada accesible' },
+    ],
   },
   {
-    id: 'regions',
-    title: 'Regiones y descentralización',
-    prompt: '¿Qué tipo de relación debería tener Lima con las regiones?',
-    leftLabel: 'Más autonomía y presupuesto regional',
-    rightLabel: 'Mayor coordinación y control desde el gobierno central',
+    id: 'health',
+    title: 'Salud',
+    prompt: '¿Cómo mejorarías el sistema de salud?',
+    options: [
+      { value: 1, label: 'Un sistema de salud universal gratuito para todos' },
+      { value: 2, label: 'Fortalecer el sector privado como complemento del público' },
+      { value: 3, label: 'Integrar SIS, EsSalud y clínicas en un solo sistema' },
+    ],
   },
   {
-    id: 'rights',
-    title: 'Agenda social',
-    prompt: 'En temas sociales, ¿qué postura te representa más?',
-    leftLabel: 'Mayor énfasis en derechos, inclusión y protección social',
-    rightLabel: 'Mayor énfasis en orden, valores tradicionales y gradualismo',
+    id: 'corruption',
+    title: 'Corrupción',
+    prompt: '¿Cómo combatirías la corrupción?',
+    options: [
+      { value: 1, label: 'Pena de muerte o cadena perpetua para corruptos' },
+      { value: 2, label: 'Cadena perpetua e inhabilitación de por vida' },
+      { value: 3, label: 'Reformar el sistema judicial y fortalecer la fiscalía' },
+    ],
   },
   {
-    id: 'integrity',
-    title: 'Corrupción y transparencia',
-    prompt: '¿Qué tipo de respuesta esperas frente a la corrupción?',
-    leftLabel: 'Control ciudadano y transparencia radical',
-    rightLabel: 'Sanciones severas y autoridades con más poder de intervención',
+    id: 'mining',
+    title: 'Minería',
+    prompt: '¿Qué posición debería tener el país sobre la minería?',
+    options: [
+      { value: 1, label: 'Promover la inversión minera, genera empleo y riqueza' },
+      { value: 2, label: 'Regularla fuertemente para proteger el medio ambiente' },
+      { value: 3, label: 'Solo con consulta previa a las comunidades afectadas' },
+    ],
+  },
+  {
+    id: 'decentralization',
+    title: 'Descentralización',
+    prompt: '¿Cómo debería gobernarse el interior del país?',
+    options: [
+      { value: 1, label: 'Dar más poder y presupuesto a los gobiernos regionales' },
+      { value: 2, label: 'Un gobierno central fuerte que dirija desde Lima' },
+      { value: 3, label: 'Descentralizar gradualmente con capacitación técnica' },
+    ],
+  },
+  {
+    id: 'social_policy',
+    title: 'Política Social',
+    prompt: '¿Cómo ayudarías a los que menos tienen?',
+    options: [
+      { value: 1, label: 'Bonos y transferencias directas de dinero' },
+      { value: 2, label: 'Crear programas de empleo temporal del Estado' },
+      { value: 3, label: 'Invertir en educación técnica y capacitación laboral' },
+    ],
   },
 ];
 
-// Añade aquí tus candidatos reales desde VS Code.
-// Los visitantes ya no pueden crear candidatos desde la web.
 const CANDIDATES = [
   {
     name: 'Candidatura Horizonte',
     party: 'Movimiento Horizonte',
-    summary: 'Perfil más orientado a reformas graduales, agenda social amplia y fortalecimiento de servicios públicos.',
+    summary: 'Perfil orientado a reformas graduales, agenda social amplia y fortalecimiento de servicios públicos.',
     highlights: ['Servicios públicos', 'Inclusión', 'Descentralización'],
     positions: {
-      security: 2,
+      security: 3,
       economy: 2,
-      state: 2,
-      regions: 1,
-      rights: 1,
-      integrity: 2,
+      education: 1,
+      health: 1,
+      corruption: 3,
+      mining: 2,
+      decentralization: 1,
+      social_policy: 3,
     },
   },
   {
     name: 'Candidatura Orden',
     party: 'Alianza Orden y Futuro',
-    summary: 'Perfil con énfasis en seguridad, autoridad estatal, inversión y control más centralizado.',
+    summary: 'Perfil con énfasis en seguridad, autoridad estatal, inversión privada y control centralizado.',
     highlights: ['Seguridad', 'Inversión', 'Gestión ejecutiva'],
     positions: {
-      security: 5,
-      economy: 5,
-      state: 4,
-      regions: 4,
-      rights: 5,
-      integrity: 4,
+      security: 1,
+      economy: 1,
+      education: 2,
+      health: 2,
+      corruption: 1,
+      mining: 1,
+      decentralization: 2,
+      social_policy: 1,
     },
   },
   {
@@ -82,26 +122,30 @@ const CANDIDATES = [
     summary: 'Perfil intermedio con foco en consensos, institucionalidad y balance entre crecimiento y protección social.',
     highlights: ['Institucionalidad', 'Consenso', 'Reactivación'],
     positions: {
-      security: 3,
+      security: 2,
       economy: 3,
-      state: 3,
-      regions: 3,
-      rights: 3,
-      integrity: 3,
+      education: 3,
+      health: 3,
+      corruption: 2,
+      mining: 3,
+      decentralization: 3,
+      social_policy: 2,
     },
   },
   {
     name: 'Candidatura Cambio',
     party: 'Frente Cambio País',
-    summary: 'Perfil que prioriza descentralización, vigilancia ciudadana y cambios más intensos en distribución del poder.',
+    summary: 'Perfil que prioriza descentralización, vigilancia ciudadana y cambios intensos en distribución del poder.',
     highlights: ['Regiones', 'Transparencia', 'Participación'],
     positions: {
-      security: 2,
-      economy: 1,
-      state: 2,
-      regions: 1,
-      rights: 2,
-      integrity: 1,
+      security: 3,
+      economy: 2,
+      education: 1,
+      health: 1,
+      corruption: 3,
+      mining: 3,
+      decentralization: 1,
+      social_policy: 3,
     },
   },
 ];
@@ -114,26 +158,25 @@ const answersCount = document.getElementById('answers-count');
 const resetButton = document.getElementById('reset-button');
 
 function getDefaultAnswers() {
-  return Object.fromEntries(QUESTIONS.map((question) => [question.id, null]));
+  return Object.fromEntries(QUESTIONS.map((q) => [q.id, null]));
 }
 
 function clampAnswer(value) {
   const parsed = Number(value);
-  if (Number.isNaN(parsed)) return 3;
-  return Math.max(1, Math.min(5, parsed));
+  if (Number.isNaN(parsed)) return 2;
+  return Math.max(1, Math.min(3, parsed));
 }
 
 function loadAnswers() {
   const defaults = getDefaultAnswers();
   const saved = localStorage.getItem(QUESTION_KEY);
-
   if (!saved) return defaults;
 
   try {
     const parsed = JSON.parse(saved);
-    return QUESTIONS.reduce((acc, question) => {
-      const val = parsed[question.id];
-      acc[question.id] = val != null ? clampAnswer(val) : null;
+    return QUESTIONS.reduce((acc, q) => {
+      const val = parsed[q.id];
+      acc[q.id] = val != null ? clampAnswer(val) : null;
       return acc;
     }, {});
   } catch (_) {
@@ -147,57 +190,42 @@ function persistAnswers() {
   localStorage.setItem(QUESTION_KEY, JSON.stringify(currentAnswers));
 }
 
-function answerTone(value) {
-  if (value === null) return 'Sin responder';
-  if (value <= 2) return 'Más cerca del primer enfoque';
-  if (value === 3) return 'Punto medio';
-  return 'Más cerca del segundo enfoque';
-}
-
 function answerLabel(question, value) {
   if (value === null) return 'Sin responder';
-  if (value === 1) return question.leftLabel;
-  if (value === 2) return `Más cerca de: ${question.leftLabel}`;
-  if (value === 3) return 'Punto medio';
-  if (value === 4) return `Más cerca de: ${question.rightLabel}`;
-  return question.rightLabel;
+  const option = question.options.find((o) => o.value === value);
+  return option ? option.label : 'Sin responder';
 }
 
-function buildQuestionMarkup(question, value) {
-  const options = [1, 2, 3, 4, 5]
+function buildQuestionMarkup(question, value, index) {
+  const optionsHtml = question.options
     .map(
       (option) => `
-        <label class="option-pill ${value !== null && value === option ? 'is-selected' : ''}">
+        <label class="quiz-option ${value === option.value ? 'is-selected' : ''}">
           <input
             class="sr-only"
             type="radio"
             name="${question.id}"
-            value="${option}"
-            ${value !== null && value === option ? 'checked' : ''}
+            value="${option.value}"
+            ${value === option.value ? 'checked' : ''}
           />
-          <span class="text-sm font-semibold">${option}</span>
+          <span class="quiz-radio" aria-hidden="true"></span>
+          <span class="quiz-option-label">${option.label}</span>
         </label>
       `,
     )
     .join('');
 
   return `
-    <fieldset class="question-card bg-surface-container-low rounded-2xl p-5 border border-outline-variant/10">
-      <div class="flex items-start justify-between gap-4 mb-4">
-        <div>
-          <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-1">${question.title}</p>
-          <p class="text-sm text-on-surface leading-6">${question.prompt}</p>
+    <fieldset class="quiz-card">
+      <div class="quiz-card-header">
+        <span class="quiz-card-number">${index + 1}</span>
+        <div class="quiz-card-meta">
+          <p class="quiz-card-title">${question.title}</p>
+          <p class="quiz-card-prompt">${question.prompt}</p>
         </div>
-        <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-white px-3 py-2 rounded-full whitespace-nowrap">${answerTone(value)}</span>
+        ${value !== null ? '<span class="quiz-card-check"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13.3 4.3a1 1 0 0 1 0 1.4l-6 6a1 1 0 0 1-1.4 0l-3-3a1 1 0 1 1 1.4-1.4L6.6 9.6l5.3-5.3a1 1 0 0 1 1.4 0Z" fill="currentColor"/></svg></span>' : ''}
       </div>
-
-      <div class="grid grid-cols-[1fr_auto_1fr] items-center gap-3 text-[11px] text-on-surface-variant font-semibold mb-3">
-        <span>${question.leftLabel}</span>
-        <span class="text-primary/50">↔</span>
-        <span class="text-right">${question.rightLabel}</span>
-      </div>
-
-      <div class="grid grid-cols-5 gap-2">${options}</div>
+      <div class="quiz-options-list">${optionsHtml}</div>
     </fieldset>
   `;
 }
@@ -207,23 +235,18 @@ function countAnswered() {
 }
 
 function renderQuestions() {
-  form.innerHTML = QUESTIONS.map((question) => buildQuestionMarkup(question, currentAnswers[question.id])).join('');
+  form.innerHTML = QUESTIONS.map((q, i) => buildQuestionMarkup(q, currentAnswers[q.id], i)).join('');
   answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
 }
 
 function calculateCandidateScore(candidate) {
   const issueScores = QUESTIONS.map((question) => {
-    const userValue = currentAnswers[question.id] ?? 3;
+    const userValue = currentAnswers[question.id] ?? 2;
     const candidateValue = clampAnswer(candidate.positions[question.id]);
     const distance = Math.abs(userValue - candidateValue);
-    const affinity = Math.round((1 - distance / 4) * 100);
+    const affinity = Math.round((1 - distance / 2) * 100);
 
-    return {
-      question,
-      userValue,
-      candidateValue,
-      affinity,
-    };
+    return { question, userValue, candidateValue, affinity };
   });
 
   const score = Math.round(
@@ -257,7 +280,6 @@ function renderTopMatch(ranking) {
           </div>
           <p class="text-sm md:text-base leading-7 text-white/82 max-w-2xl">${best.summary}</p>
         </div>
-
         <div class="score-orb shrink-0">
           <span class="score-orb__value">${best.score}%</span>
           <span class="score-orb__label">afinidad</span>
@@ -277,7 +299,7 @@ function renderTopMatch(ranking) {
           <div class="flex flex-wrap gap-2">
             ${best.highlights
               .map(
-                (highlight) => `<span class="px-3 py-1.5 rounded-full bg-primary-fixed/20 text-xs font-bold uppercase tracking-[0.18em] text-white">${highlight}</span>`,
+                (h) => `<span class="px-3 py-1.5 rounded-full bg-primary-fixed/20 text-xs font-bold uppercase tracking-[0.18em] text-white">${h}</span>`,
               )
               .join('')}
           </div>
@@ -287,7 +309,7 @@ function renderTopMatch(ranking) {
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-2">Lectura rápida</p>
           <p class="font-headline text-xl font-extrabold mb-2">${gap > 0 ? `${gap} puntos por encima del segundo lugar` : 'Empate técnico entre primeros puestos'}</p>
           <p class="text-sm text-on-surface-variant leading-6">
-            Tu perfil actual se acerca más a esta candidatura según los seis ejes analizados. Conviene revisar también el segundo y tercer lugar antes de cerrar una conclusión.
+            Tu perfil actual se acerca más a esta candidatura según los ocho ejes analizados. Conviene revisar también el segundo y tercer lugar antes de cerrar una conclusión.
           </p>
         </div>
       </div>
@@ -313,7 +335,7 @@ function renderResultsList(ranking) {
               <div class="flex flex-wrap gap-2">
                 ${candidate.highlights
                   .map(
-                    (highlight) => `<span class="px-3 py-1.5 rounded-full bg-white text-primary text-[11px] font-bold uppercase tracking-[0.18em]">${highlight}</span>`,
+                    (h) => `<span class="px-3 py-1.5 rounded-full bg-white text-primary text-[11px] font-bold uppercase tracking-[0.18em]">${h}</span>`,
                   )
                   .join('')}
               </div>
@@ -343,7 +365,7 @@ function renderIssueBreakdown(ranking) {
     const answer = currentAnswers[question.id];
     const comparisons = topThree
       .map((candidate) => {
-        const issue = candidate.issueScores.find((entry) => entry.question.id === question.id);
+        const issue = candidate.issueScores.find((e) => e.question.id === question.id);
         return `
           <div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/10">
             <div class="flex items-center justify-between gap-3 mb-2">
@@ -366,7 +388,7 @@ function renderIssueBreakdown(ranking) {
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-1">${question.title}</p>
             <p class="text-sm text-on-surface-variant">Tu respuesta: ${answerLabel(question, answer)}</p>
           </div>
-          <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-surface-container-low px-3 py-2 rounded-full">${answerTone(answer)}</span>
+          <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-surface-container-low px-3 py-2 rounded-full">${answer !== null ? '✓ Respondida' : 'Sin responder'}</span>
         </div>
         <div class="grid gap-3 md:grid-cols-3">${comparisons}</div>
       </section>
@@ -380,7 +402,7 @@ const resultsSections = document.querySelectorAll('[data-results-section]');
 function showResultsSections() {
   if (resultsRevealed) return;
   resultsRevealed = true;
-  resultsSections.forEach((section) => section.classList.remove('hidden'));
+  resultsSections.forEach((s) => s.classList.remove('hidden'));
 }
 
 function updateResults() {
