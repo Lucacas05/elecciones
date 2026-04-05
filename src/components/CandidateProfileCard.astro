@@ -1,6 +1,7 @@
 ---
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
+import { getPlanPdfHref } from '../lib/planLinks';
 
 interface CandidateData {
   nombre: string;
@@ -27,6 +28,7 @@ const { candidate, index } = Astro.props;
 const projectRoot = process.cwd();
 const hasPhoto = existsSync(join(projectRoot, 'public', candidate.foto.replace(/^\//, '')));
 const hasLogo = existsSync(join(projectRoot, 'public', candidate.logo_partido.replace(/^\//, '')));
+const planHref = getPlanPdfHref(candidate.partido);
 const initials = candidate.nombre
   .split(' ')
   .map((word) => word[0])
@@ -248,9 +250,9 @@ const topicEntries = topicDefinitions.map((topic) => ({
 
       <div class="mt-6 flex flex-wrap gap-3">
         <a
-          href={candidate.plan_gobierno_url}
+          href={planHref}
           target="_blank"
-          rel="noopener"
+          rel="noopener noreferrer"
           class="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-on-primary transition-all hover:bg-primary-container"
         >
           <span class="material-symbols-outlined text-lg">description</span>
