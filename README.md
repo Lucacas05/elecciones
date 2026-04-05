@@ -22,7 +22,7 @@ Aplicación web hecha con Astro para explorar candidaturas presidenciales peruan
 - **@astrojs/vercel**
 - Contenido estructurado con **`astro:content`**
 
-La app está configurada como **salida server** (`output: 'server'`) con el adapter oficial de **Vercel Serverless** para servir páginas SSR y rutas `/api/*` en Vercel.
+La app está configurada con el adapter oficial de **Vercel** para generar **páginas estáticas por defecto** y dejar solamente `/api/polymarket/peru-election.json` como ruta on-demand.
 
 ## Rutas principales
 
@@ -90,9 +90,8 @@ npm run build
 
 Preview local del build:
 
-```bash
-npm run preview
-```
+> `astro preview` no está soportado por `@astrojs/vercel` en este proyecto.
+> Para validar el deploy conviene usar `npm run build` y revisar `.vercel/output/`.
 
 ## Deploy en Vercel
 
@@ -102,7 +101,7 @@ Configuración recomendada en el panel de Vercel:
 - **Build Command:** `npm run build` (o automático)
 - **Output Directory:** dejar vacío / automático
 
-No fuerces `dist` ni `dist/client` como carpeta de salida cuando Astro usa el adapter de Vercel, porque el adaptador genera la estructura que Vercel necesita para SSR y funciones.
+No fuerces `dist` ni `dist/client` como carpeta de salida cuando Astro usa el adapter de Vercel, porque el adaptador genera la estructura que Vercel necesita para archivos estáticos y funciones.
 
 ## Cómo se edita el contenido
 
@@ -178,6 +177,7 @@ src/lib/planLinks.ts
 ```
 
 Si no existe una coincidencia directa, la UI deriva a `/planes-de-gobierno?partido=...`.
+La página de planes está pensada para ser estable en deploy, así que lista todos los PDFs sin depender de resaltado dinámico por query string.
 
 ## Cómo funciona el test
 
@@ -212,18 +212,18 @@ La integración se reparte así:
 
 ### Importante
 
-La página de predicciones **requiere runtime SSR en Vercel**.
+La página `/predicciones` es estática, pero **depende del endpoint server-side** `/api/polymarket/peru-election.json`.
 
-Si abres el proyecto como sitio estático puro, la ruta `/api/polymarket/...` no existirá y esa sección fallará. Para probarla correctamente, usa:
+Para probar la integración correctamente en local, usa:
 
 ```bash
 npm run dev
 ```
 
-o:
+Para verificar la salida de producción, usa:
 
 ```bash
-npm run preview
+npm run build
 ```
 
 ## Archivos legacy

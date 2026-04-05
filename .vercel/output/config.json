@@ -22,26 +22,6 @@
 		{
 			"src": "^/api/polymarket/peru-election\\.json/?$",
 			"dest": "_render"
-		},
-		{
-			"src": "^/candidatos/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/cuestionario/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/planes-de-gobierno/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/predicciones/?$",
-			"dest": "_render"
-		},
-		{
-			"src": "^/$",
-			"dest": "_render"
 		}
 	]
 }

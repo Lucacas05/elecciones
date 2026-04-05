@@ -1,6 +1,4 @@
 ---
-import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 import { getPlanPdfHref } from '../lib/planLinks';
 
 interface CandidateData {
@@ -25,23 +23,48 @@ interface Props {
 }
 
 const { candidate, index } = Astro.props;
-const projectRoot = process.cwd();
-const hasPhoto = existsSync(join(projectRoot, 'public', candidate.foto.replace(/^\//, '')));
+const logoPathOverrides: Record<string, string | null> = {
+  '/img/partidos/accion-popular.webp': '/img/partidos/accion-popular.png',
+  '/img/partidos/ahora-nacion.webp': '/img/partidos/ahora-nacion.jpg',
+  '/img/partidos/app.webp': '/img/partidos/app.png',
+  '/img/partidos/avanza-pais.webp': '/img/partidos/avanza-pais.jpg',
+  '/img/partidos/cooperacion-popular.webp': '/img/partidos/cooperacion-popular.png',
+  '/img/partidos/fe-en-el-peru.webp': '/img/partidos/fe-en-el-peru.png',
+  '/img/partidos/frente-de-la-esperanza.webp': '/img/partidos/frente-de-la-esperanza.png',
+  '/img/partidos/fuerza-popular.webp': '/img/partidos/fuerza-popular.png',
+  '/img/partidos/integridad-democratica.webp': '/img/partidos/integridad-democratica.jpg',
+  '/img/partidos/juntos-por-el-peru.webp': '/img/partidos/juntos-por-el-peru.png',
+  '/img/partidos/libertad-popular.webp': '/img/partidos/libertad-popular.jpg',
+  '/img/partidos/obras.webp': '/img/partidos/obras.png',
+  '/img/partidos/pais-para-todos.webp': '/img/partidos/pais-para-todos.jpg',
+  '/img/partidos/partido-democrata-unido-peru.webp': '/img/partidos/partido-democrata-unido-peru.jpg',
+  '/img/partidos/partido-democratico-federal.webp': '/img/partidos/partido-democratico-federal.jpg',
+  '/img/partidos/partido-morado.webp': '/img/partidos/partido-morado.png',
+  '/img/partidos/partido-patriotico-del-peru.webp': '/img/partidos/partido-patriotico-del-peru.png',
+  '/img/partidos/pbg.webp': '/img/partidos/pbg.jpg',
+  '/img/partidos/peru-libre.webp': '/img/partidos/peru-libre.png',
+  '/img/partidos/peru-primero.webp': '/img/partidos/peru-primero.jpg',
+  '/img/partidos/podemos-peru.webp': '/img/partidos/podemos-peru.png',
+  '/img/partidos/prin.webp': '/img/partidos/prin.png',
+  '/img/partidos/progresemos.webp': '/img/partidos/progresemos.jpg',
+  '/img/partidos/pte.webp': '/img/partidos/pte.jpg',
+  '/img/partidos/renovacion-popular.webp': '/img/partidos/renovacion-popular.png',
+  '/img/partidos/salvemos-al-peru.webp': '/img/partidos/salvemos-al-peru.jpg',
+  '/img/partidos/somos-peru.webp': '/img/partidos/somos-peru.png',
+  '/img/partidos/venceremos.webp': '/img/partidos/venceremos.png',
+  '/img/partidos/fuerza-y-libertad.webp': null,
+  '/img/partidos/peru-accion.webp': null,
+  '/img/partidos/peru-moderno.webp': null,
+  '/img/partidos/primero-la-gente.webp': null,
+  '/img/partidos/si-creo.webp': null,
+  '/img/partidos/un-camino-diferente.webp': null,
+  '/img/partidos/unidad-nacional.webp': null,
+};
 
-const logoBase = candidate.logo_partido.replace(/\.\w+$/, '');
-const logoExtensions = ['.webp', '.png', '.jpg', '.jpeg'];
-let logoPath = candidate.logo_partido;
-let hasLogo = existsSync(join(projectRoot, 'public', candidate.logo_partido.replace(/^\//, '')));
-if (!hasLogo) {
-  for (const ext of logoExtensions) {
-    const tryPath = logoBase + ext;
-    if (existsSync(join(projectRoot, 'public', tryPath.replace(/^\//, '')))) {
-      logoPath = tryPath;
-      hasLogo = true;
-      break;
-    }
-  }
-}
+const photoPath = candidate.foto?.trim() || '';
+const logoPath = logoPathOverrides[candidate.logo_partido] ?? candidate.logo_partido;
+const hasPhoto = Boolean(photoPath);
+const hasLogo = Boolean(logoPath);
 
 const planHref = getPlanPdfHref(candidate.partido);
 const initials = candidate.nombre
@@ -203,7 +226,7 @@ const topicEntries = topicDefinitions.map((topic) => ({
           <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/14 bg-white/10">
             {hasPhoto ? (
               <img
-                src={candidate.foto}
+                src={photoPath}
                 alt={candidate.nombre}
                 class="h-full w-full object-cover"
                 loading="lazy"

@@ -1,9 +1,3 @@
-import { existsSync, readdirSync } from 'node:fs';
-import { join } from 'node:path';
-
-const projectRoot = process.cwd();
-const plansDir = join(projectRoot, 'public', 'planes-gobierno');
-
 export function normalizeKey(value: string) {
   return value
     .toLowerCase()
@@ -47,9 +41,43 @@ const aliases: Record<string, string[]> = {
   'venceremos': ['venceremos'],
 };
 
-const pdfFiles = existsSync(plansDir)
-  ? readdirSync(plansDir).filter((file) => file.toLowerCase().endsWith('.pdf'))
-  : [];
+const pdfFiles = [
+  'APP.pdf',
+  'APRA.pdf',
+  'Ahora Nacion.pdf',
+  'Avanza Pais.pdf',
+  'Cooperacion Popular.pdf',
+  'Democrata Verde.pdf',
+  'Fe en el Peru.pdf',
+  'Frente de la Esperanza.pdf',
+  'Fuerza Popular.pdf',
+  'Fuerza y Libertad.pdf',
+  'Integridad Democratica.pdf',
+  'JP.pdf',
+  'Libertad Popular.pdf',
+  'PBG.pdf',
+  'PPP.pdf',
+  'PRIN.pdf',
+  'PTE.pdf',
+  'Pais para Todos.pdf',
+  'Partido Civico.pdf',
+  'Partido Democrata Unido.pdf',
+  'Partido Morado.pdf',
+  'Peru Accion.pdf',
+  'Peru Libre.pdf',
+  'Peru Moderno.pdf',
+  'Peru Primero.pdf',
+  'Podemos Peru.pdf',
+  'Progresamos.pdf',
+  'Renovacion Popular.pdf',
+  'Salvemos al Peru.pdf',
+  'SiCreo.pdf',
+  'Somos Peru.pdf',
+  'Un Camino Diferente.pdf',
+  'Unidad Nacional.pdf',
+  'Unido Peru.pdf',
+  'Venceremos.pdf',
+] as const;
 
 const pdfIndex = new Map(pdfFiles.map((file) => [normalizeKey(file.replace(/\.pdf$/i, '')), file]));
 
