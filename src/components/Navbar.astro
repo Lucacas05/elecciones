@@ -5,6 +5,9 @@ interface Props {
 
 const { currentPage = 'home' } = Astro.props;
 const homePrefix = currentPage === 'home' ? '' : '/';
+const shareUrl = homePrefix || '/';
+const shareTitle = 'Decide Perú · Cuestionario electoral';
+const shareText = 'Comparte este test de Decide Perú para ver qué candidatura se alinea más contigo.';
 
 const navLinks = [
   { href: `${homePrefix}#inicio`, label: 'Inicio', icon: 'home', section: 'inicio' },
@@ -40,31 +43,66 @@ const navLinks = [
   </div>
 
   <div class="flex items-center gap-3">
-    <a
+    <button
       class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors font-semibold text-sm"
-      href={currentPage === 'home' ? '#resultados' : '/#cuestionario'}
-      id="nav-results-btn"
+      type="button"
+      id="nav-share-btn"
+      data-share-url={shareUrl}
+      data-share-title={shareTitle}
+      data-share-text={shareText}
+      data-home-page={currentPage === 'home' ? 'true' : 'false'}
+      aria-label="Compartir Decide Perú"
     >
-      <span class="material-symbols-outlined text-xl">
-        {currentPage === 'home' ? 'monitoring' : 'quiz'}
-      </span>
-      <span class="hidden sm:inline">
-        {currentPage === 'home' ? 'Mercado en vivo' : 'Hacer el test'}
-      </span>
-    </a>
+      <span class="material-symbols-outlined text-xl">share</span>
+      <span class="hidden sm:inline">Compartir</span>
+    </button>
   </div>
 </nav>
 
-{currentPage === 'home' && (
-  <script>
-    const navResultsBtn = document.getElementById('nav-results-btn');
-    navResultsBtn?.addEventListener('click', (event) => {
-      const href = navResultsBtn.getAttribute('href');
-      if (href !== '#resultados') return;
-      event.preventDefault();
-      document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth' });
-    });
+<script>
+  const navShareBtn = document.getElementById('nav-share-btn');
 
+  async function handleShare() {
+    if (!navShareBtn) return;
+
+    const shareUrl = navShareBtn.getAttribute('data-share-url') || '/';
+    const shareTitle = navShareBtn.getAttribute('data-share-title') || document.title;
+    const shareText = navShareBtn.getAttribute('data-share-text') || '';
+    const absoluteUrl = new URL(shareUrl, window.location.origin).toString();
+    const sharePayload = {
+      title: shareTitle,
+      text: shareText,
+      url: absoluteUrl,
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(sharePayload);
+        return;
+      }
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(absoluteUrl);
+        window.alert('Enlace copiado para compartir el test.');
+        return;
+      }
+
+      window.prompt('Copia este enlace para compartir el test:', absoluteUrl);
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'AbortError') {
+        return;
+      }
+
+      console.error('No se pudo compartir el enlace del test.', error);
+      window.prompt('Copia este enlace para compartir el test:', absoluteUrl);
+    }
+  }
+
+  navShareBtn?.addEventListener('click', handleShare);
+
+  const isHomePage = navShareBtn?.getAttribute('data-home-page') === 'true';
+
+  if (isHomePage) {
     const navLinks = document.querySelectorAll('.nav-link');
     const sections = document.querySelectorAll('section[id], header[id]');
 
@@ -94,5 +132,5 @@ const navLinks = [
 
     window.addEventListener('scroll', updateActiveNav, { passive: true });
     updateActiveNav();
-  </script>
-)}
+  }
+</script>
