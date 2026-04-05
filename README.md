@@ -1,24 +1,16 @@
-# elecciones
+# Decide Perú
 
-MVP de la página **Resumen Ejecutivo** para elecciones presidenciales del Perú.
+Interfaz estática para orientar a votantes peruanos con un cuestionario de afinidad electoral.
 
-## Qué incluye
-- Formulario para cargar candidato
-- Subida de foto
-- Subida de plan de gobierno (PDF)
-- Campo de resumen ejecutivo
-- Render dinámico de tarjeta visual
-- Botón para descargar el PDF cargado
-- Persistencia local del último candidato (localStorage)
+## Qué hace ahora
 
-## Ejecutar
-Como es estático, basta abrir `index.html` en el navegador.
+- Cuestionario ciudadano con 6 ejes temáticos
+- Ranking de afinidad entre respuestas y perfiles de candidatura
+- Comparativa por tema para revisar coincidencias
+- Persistencia local de respuestas en `localStorage`
 
-Opcional con servidor local:
-```bash
-python3 -m http.server 8080
-```
-Luego visita: `http://localhost:8080`
+## Cómo editar candidatos
 
-## Git
-Repositorio local inicializado sin GitHub.
+Los candidatos ya no se cargan desde la web.
+
+Si quieres agregar o ajustar perfiles, edita manualmente el arreglo `CANDIDATES` dentro de `script.js` desde VS Code.
