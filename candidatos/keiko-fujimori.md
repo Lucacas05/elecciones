@@ -1,0 +1,26 @@
+---
+nombre: "Keiko Fujimori"
+partido: "Fuerza Popular"
+logo_partido: "/img/partidos/fuerza-popular.webp"
+foto: "/img/candidatos/keiko-fujimori.webp"
+edad: 50
+profesion: "Administradora de Empresas"
+experiencia_politica: "Congresista (2006-2011), tres veces candidata presidencial"
+propuestas:
+  - "Estado de emergencia nacional contra la inseguridad ciudadana"
+  - "Shock desregulatorio para impulsar la inversión privada"
+  - "Sistema de salud integrado uniendo SIS, EsSalud y clínicas"
+dato_clave: "Fue procesada por lavado de activos del caso Odebrecht. Absolta en primera instancia en 2024."
+partido_ideologia: "Derecha liberal"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "mano_dura"
+  economia: "libre_mercado"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "cadena_perpetua"
+  mineria: "pro_mineria"
+  descentralizacion: "gradual"
+  politica_social: "programas_empleo"
+---

@@ -1,0 +1,26 @@
+---
+nombre: "Alfredo Barnechea"
+partido: "Acción Popular"
+logo_partido: "/img/partidos/accion-popular.webp"
+foto: "/img/candidatos/alfredo-barnechea.webp"
+edad: 73
+profesion: "Abogado y escritor"
+experiencia_politica: "Excandidato presidencial y dirigente de Acción Popular"
+propuestas:
+  - "Reforma del Estado para mejorar servicios públicos y competitividad"
+  - "Impulso productivo regional con infraestructura y formalizacion"
+  - "Fortalecer justicia y control para reducir corrupción"
+dato_clave: "Cuenta con trayectoria política nacional y enfoque institucional."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "pro_mineria"
+  descentralizacion: "gradual"
+  politica_social: "educacion_tecnica"
+---

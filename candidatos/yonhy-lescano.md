@@ -1,0 +1,26 @@
+---
+nombre: "Yonhy Lescano"
+partido: "Cooperación Popular"
+logo_partido: "/img/partidos/cooperacion-popular.webp"
+foto: "/img/candidatos/yonhy-lescano.webp"
+edad: 66
+profesion: "Abogado"
+experiencia_politica: "Congresista por varios periodos y excandidato presidencial"
+propuestas:
+  - "Reforma del sistema de justicia y fortalecimiento de control interno policial"
+  - "Mayor rol del Estado en servicios basicos y proteccion al consumidor"
+  - "Política de descentralizacion con transferencia de funciones y presupuesto"
+dato_clave: "Político con trayectoria legislativa y discurso enfocado en regulación y servicios públicos."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "intervencion_estatal"
+  educacion: "publica_prioridad"
+  salud: "sistema_universal"
+  corrupcion: "reforma_judicial"
+  mineria: "consulta_previa"
+  descentralizacion: "mas_poder_regiones"
+  politica_social: "bonos_directos"
+---

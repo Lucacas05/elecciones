@@ -83,72 +83,336 @@ const QUESTIONS = [
   },
 ];
 
-const CANDIDATES = [
-  {
-    name: 'Candidatura Horizonte',
-    party: 'Movimiento Horizonte',
-    summary: 'Perfil orientado a reformas graduales, agenda social amplia y fortalecimiento de servicios públicos.',
-    highlights: ['Servicios públicos', 'Inclusión', 'Descentralización'],
-    positions: {
-      security: 3,
-      economy: 2,
-      education: 1,
-      health: 1,
-      corruption: 3,
-      mining: 2,
-      decentralization: 1,
-      social_policy: 3,
-    },
+// ── Data Mapping ──────────────────────────────────────────────────────────────
+
+const FIELD_MAP = {
+  security: 'seguridad',
+  economy: 'economia',
+  education: 'educacion',
+  health: 'salud',
+  corruption: 'corrupcion',
+  mining: 'mineria',
+  decentralization: 'descentralizacion',
+  social_policy: 'politica_social',
+};
+
+const POSITION_MAP = {
+  security: { mano_dura: 1, reforma_institucional: 2, prevencion: 3 },
+  economy: { libre_mercado: 1, intervencion_estatal: 2, mixta: 3 },
+  education: { publica_prioridad: 1, privada_incentivo: 2, mixta: 3 },
+  health: { sistema_universal: 1, privado_complementario: 2, mixto: 3 },
+  corruption: { pena_muerte: 1, cadena_perpetua: 2, reforma_judicial: 3 },
+  mining: { pro_mineria: 1, regulacion_estricta: 2, consulta_previa: 3 },
+  decentralization: { mas_poder_regiones: 1, gobierno_central: 2, gradual: 3 },
+  social_policy: { bonos_directos: 1, programas_empleo: 2, educacion_tecnica: 3 },
+};
+
+// ── NLP Keyword Dictionaries ──────────────────────────────────────────────────
+// Cada dimensión tiene 3 posiciones; cada posición tiene palabras clave con peso.
+// Se usan para analizar el texto de propuestas como proxy del plan de gobierno.
+
+const NLP_KEYWORDS = {
+  security: {
+    mano_dura: [
+      { keyword: 'mano dura', weight: 3.0 },
+      { keyword: 'mano de hierro', weight: 3.0 },
+      { keyword: 'orden interno', weight: 2.0 },
+      { keyword: 'extorsion', weight: 1.8 },
+      { keyword: 'pena de muerte', weight: 2.5 },
+      { keyword: 'tolerancia cero', weight: 2.2 },
+      { keyword: 'estado de emergencia', weight: 2.0 },
+      { keyword: 'castigo severo', weight: 1.8 },
+      { keyword: 'sicarios', weight: 1.8 },
+    ],
+    reforma_institucional: [
+      { keyword: 'reforma institucional', weight: 2.4 },
+      { keyword: 'fortalecimiento institucional', weight: 2.2 },
+      { keyword: 'estado de derecho', weight: 1.8 },
+      { keyword: 'reforma policial', weight: 2.3 },
+      { keyword: 'reforma judicial', weight: 2.0 },
+      { keyword: 'coordinacion policial', weight: 2.0 },
+      { keyword: 'fiscalia', weight: 1.8 },
+      { keyword: 'serenazgo', weight: 1.6 },
+    ],
+    prevencion: [
+      { keyword: 'prevencion de violencia', weight: 2.3 },
+      { keyword: 'prevencion social', weight: 2.3 },
+      { keyword: 'enfoque comunitario', weight: 2.2 },
+      { keyword: 'derechos humanos', weight: 1.8 },
+      { keyword: 'reinsercion', weight: 2.0 },
+      { keyword: 'educacion y prevencion', weight: 2.2 },
+      { keyword: 'politicas preventivas', weight: 2.0 },
+    ],
   },
-  {
-    name: 'Candidatura Orden',
-    party: 'Alianza Orden y Futuro',
-    summary: 'Perfil con énfasis en seguridad, autoridad estatal, inversión privada y control centralizado.',
-    highlights: ['Seguridad', 'Inversión', 'Gestión ejecutiva'],
-    positions: {
-      security: 1,
-      economy: 1,
-      education: 2,
-      health: 2,
-      corruption: 1,
-      mining: 1,
-      decentralization: 2,
-      social_policy: 1,
-    },
+  economy: {
+    libre_mercado: [
+      { keyword: 'libre mercado', weight: 3.0 },
+      { keyword: 'inversion privada', weight: 2.5 },
+      { keyword: 'reduccion de impuestos', weight: 2.3 },
+      { keyword: 'desregulacion', weight: 2.2 },
+      { keyword: 'competitividad', weight: 1.8 },
+      { keyword: 'menos regulacion', weight: 2.0 },
+      { keyword: 'apertura comercial', weight: 1.8 },
+      { keyword: 'emprendimiento', weight: 1.5 },
+      { keyword: 'igv', weight: 1.5 },
+    ],
+    intervencion_estatal: [
+      { keyword: 'intervencion estatal', weight: 3.0 },
+      { keyword: 'control de precios', weight: 2.5 },
+      { keyword: 'nacionalizacion', weight: 2.5 },
+      { keyword: 'empresa publica', weight: 2.3 },
+      { keyword: 'rol del estado', weight: 2.2 },
+      { keyword: 'planificacion economica', weight: 2.0 },
+      { keyword: 'sectores estrategicos', weight: 2.0 },
+      { keyword: 'mayor rol del estado', weight: 2.5 },
+    ],
+    mixta: [
+      { keyword: 'economia social de mercado', weight: 2.5 },
+      { keyword: 'equilibrio', weight: 2.0 },
+      { keyword: 'regulacion inteligente', weight: 2.2 },
+      { keyword: 'alianzas publico-privadas', weight: 2.2 },
+      { keyword: 'inversion publica', weight: 1.8 },
+      { keyword: 'reactivacion', weight: 1.8 },
+      { keyword: 'formalizacion', weight: 1.6 },
+    ],
   },
-  {
-    name: 'Candidatura Equilibrio',
-    party: 'Acuerdo Nacional Ciudadano',
-    summary: 'Perfil intermedio con foco en consensos, institucionalidad y balance entre crecimiento y protección social.',
-    highlights: ['Institucionalidad', 'Consenso', 'Reactivación'],
-    positions: {
-      security: 2,
-      economy: 3,
-      education: 3,
-      health: 3,
-      corruption: 2,
-      mining: 3,
-      decentralization: 3,
-      social_policy: 2,
-    },
+  education: {
+    publica_prioridad: [
+      { keyword: 'educacion publica', weight: 3.0 },
+      { keyword: 'gratuidad', weight: 2.5 },
+      { keyword: 'presupuesto educativo', weight: 2.3 },
+      { keyword: 'universidades publicas', weight: 2.0 },
+      { keyword: 'inversion en educacion', weight: 2.0 },
+      { keyword: 'infraestructura educativa', weight: 1.8 },
+    ],
+    privada_incentivo: [
+      { keyword: 'educacion privada', weight: 3.0 },
+      { keyword: 'vouchers educativos', weight: 2.5 },
+      { keyword: 'libertad de ensenanza', weight: 2.2 },
+      { keyword: 'becas privadas', weight: 2.0 },
+      { keyword: 'competencia educativa', weight: 1.8 },
+    ],
+    mixta: [
+      { keyword: 'calidad educativa', weight: 2.5 },
+      { keyword: 'mejora educativa', weight: 2.2 },
+      { keyword: 'modernizacion educativa', weight: 2.0 },
+      { keyword: 'evaluacion docente', weight: 2.0 },
+      { keyword: 'acreditacion', weight: 1.8 },
+      { keyword: 'ciencia y tecnologia', weight: 1.8 },
+      { keyword: 'mantenimiento escolar', weight: 1.6 },
+    ],
   },
-  {
-    name: 'Candidatura Cambio',
-    party: 'Frente Cambio País',
-    summary: 'Perfil que prioriza descentralización, vigilancia ciudadana y cambios intensos en distribución del poder.',
-    highlights: ['Regiones', 'Transparencia', 'Participación'],
-    positions: {
-      security: 3,
-      economy: 2,
-      education: 1,
-      health: 1,
-      corruption: 3,
-      mining: 3,
-      decentralization: 1,
-      social_policy: 3,
-    },
+  health: {
+    sistema_universal: [
+      { keyword: 'salud universal', weight: 3.0 },
+      { keyword: 'cobertura universal', weight: 2.8 },
+      { keyword: 'sistema unico de salud', weight: 2.5 },
+      { keyword: 'salud gratuita', weight: 2.3 },
+      { keyword: 'derecho a la salud', weight: 2.0 },
+      { keyword: 'servicios publicos universales', weight: 2.2 },
+    ],
+    privado_complementario: [
+      { keyword: 'salud privada', weight: 3.0 },
+      { keyword: 'clinicas', weight: 2.0 },
+      { keyword: 'seguro privado', weight: 2.5 },
+      { keyword: 'sector privado', weight: 1.8 },
+      { keyword: 'eficiencia sanitaria', weight: 1.8 },
+    ],
+    mixto: [
+      { keyword: 'sistema integrado', weight: 2.5 },
+      { keyword: 'sis', weight: 2.0 },
+      { keyword: 'essalud', weight: 2.0 },
+      { keyword: 'integracion de salud', weight: 2.3 },
+      { keyword: 'articulacion sanitaria', weight: 2.2 },
+      { keyword: 'sistema de salud integrado', weight: 2.8 },
+    ],
   },
-];
+  corruption: {
+    pena_muerte: [
+      { keyword: 'pena de muerte', weight: 3.0 },
+      { keyword: 'maxima sancion', weight: 2.5 },
+      { keyword: 'castigo ejemplar', weight: 2.0 },
+      { keyword: 'fusilamiento', weight: 2.5 },
+    ],
+    cadena_perpetua: [
+      { keyword: 'cadena perpetua', weight: 3.0 },
+      { keyword: 'inhabilitacion', weight: 2.5 },
+      { keyword: 'carcel', weight: 2.0 },
+      { keyword: 'sancion severa', weight: 2.2 },
+      { keyword: 'prision', weight: 1.8 },
+      { keyword: 'inhabilitacion de por vida', weight: 2.5 },
+    ],
+    reforma_judicial: [
+      { keyword: 'reforma judicial', weight: 3.0 },
+      { keyword: 'fiscalia', weight: 2.5 },
+      { keyword: 'fortalecimiento institucional', weight: 2.3 },
+      { keyword: 'transparencia', weight: 2.2 },
+      { keyword: 'control ciudadano', weight: 2.0 },
+      { keyword: 'rendicion de cuentas', weight: 1.8 },
+      { keyword: 'anticorrupcion', weight: 2.5 },
+      { keyword: 'lucha anticorrupcion', weight: 2.8 },
+      { keyword: 'fiscalias especializadas', weight: 2.5 },
+    ],
+  },
+  mining: {
+    pro_mineria: [
+      { keyword: 'inversion minera', weight: 3.0 },
+      { keyword: 'empleo minero', weight: 2.5 },
+      { keyword: 'exportaciones mineras', weight: 2.3 },
+      { keyword: 'desarrollo minero', weight: 2.2 },
+      { keyword: 'riqueza mineral', weight: 2.0 },
+      { keyword: 'promover la mineria', weight: 2.5 },
+    ],
+    regulacion_estricta: [
+      { keyword: 'regulacion ambiental', weight: 3.0 },
+      { keyword: 'medio ambiente', weight: 2.5 },
+      { keyword: 'impacto ambiental', weight: 2.3 },
+      { keyword: 'proteccion ambiental', weight: 2.2 },
+      { keyword: 'sostenibilidad', weight: 2.0 },
+      { keyword: 'regulacion estricta', weight: 2.5 },
+    ],
+    consulta_previa: [
+      { keyword: 'consulta previa', weight: 3.0 },
+      { keyword: 'comunidades', weight: 2.0 },
+      { keyword: 'pueblos indigenas', weight: 2.3 },
+      { keyword: 'participacion comunal', weight: 2.2 },
+      { keyword: 'licencia social', weight: 2.5 },
+    ],
+  },
+  decentralization: {
+    mas_poder_regiones: [
+      { keyword: 'poder regional', weight: 3.0 },
+      { keyword: 'gobiernos regionales', weight: 2.5 },
+      { keyword: 'autonomia regional', weight: 2.3 },
+      { keyword: 'presupuesto regional', weight: 2.2 },
+      { keyword: 'transferencias regionales', weight: 2.5 },
+      { keyword: 'mas poder', weight: 2.0 },
+    ],
+    gobierno_central: [
+      { keyword: 'gobierno central', weight: 3.0 },
+      { keyword: 'centralizacion', weight: 2.5 },
+      { keyword: 'direccion nacional', weight: 2.0 },
+      { keyword: 'eficiencia centralizada', weight: 2.2 },
+      { keyword: 'desde lima', weight: 1.8 },
+    ],
+    gradual: [
+      { keyword: 'descentralizacion gradual', weight: 3.0 },
+      { keyword: 'capacitacion tecnica', weight: 2.5 },
+      { keyword: 'fortalecimiento de capacidades', weight: 2.3 },
+      { keyword: 'gobernanza', weight: 2.0 },
+      { keyword: 'transferencia progresiva', weight: 2.2 },
+      { keyword: 'desarrollo territorial', weight: 2.0 },
+    ],
+  },
+  social_policy: {
+    bonos_directos: [
+      { keyword: 'bonos', weight: 3.0 },
+      { keyword: 'transferencias directas', weight: 2.8 },
+      { keyword: 'subsidios', weight: 2.5 },
+      { keyword: 'apoyo economico directo', weight: 2.3 },
+      { keyword: 'programa social', weight: 2.0 },
+      { keyword: 'viviendas sociales', weight: 1.8 },
+    ],
+    programas_empleo: [
+      { keyword: 'empleo temporal', weight: 3.0 },
+      { keyword: 'programas de empleo', weight: 2.8 },
+      { keyword: 'trabajo garantizado', weight: 2.5 },
+      { keyword: 'obras publicas', weight: 2.2 },
+      { keyword: 'empleo estatal', weight: 2.0 },
+      { keyword: 'simplificacion de tramites', weight: 1.8 },
+    ],
+    educacion_tecnica: [
+      { keyword: 'educacion tecnica', weight: 3.0 },
+      { keyword: 'capacitacion laboral', weight: 2.8 },
+      { keyword: 'formacion profesional', weight: 2.5 },
+      { keyword: 'habilidades laborales', weight: 2.3 },
+      { keyword: 'emprendimiento', weight: 2.0 },
+      { keyword: 'formalizacion laboral', weight: 2.0 },
+    ],
+  },
+};
+
+// ── Text Normalization ────────────────────────────────────────────────────────
+
+function normalizeText(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
+}
+
+// ── NLP Party Context Analysis ────────────────────────────────────────────────
+// Analiza el texto de propuestas buscando coincidencias con palabras clave.
+// Retorna la posición dominante y su nivel de confianza, o null si no hay data.
+
+function analyzePartyContext(text, questionId) {
+  const keywords = NLP_KEYWORDS[questionId];
+  if (!keywords || !text) return null;
+
+  const normalized = normalizeText(text);
+  const scores = {};
+  let totalScore = 0;
+
+  for (const [position, words] of Object.entries(keywords)) {
+    let posScore = 0;
+    for (const { keyword, weight } of words) {
+      if (normalized.includes(normalizeText(keyword))) {
+        posScore += weight;
+      }
+    }
+    scores[position] = posScore;
+    totalScore += posScore;
+  }
+
+  if (totalScore === 0) return null;
+
+  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+  const [dominantPosition, dominantScore] = sorted[0];
+
+  if (dominantScore === 0) return null;
+
+  return {
+    position: dominantPosition,
+    numericValue: POSITION_MAP[questionId][dominantPosition],
+    confidence: dominantScore / totalScore,
+  };
+}
+
+// ── Build Candidates from Injected Data ───────────────────────────────────────
+
+function buildCandidates(rawData) {
+  return rawData.map((c) => {
+    const positions = {};
+    for (const q of QUESTIONS) {
+      const yamlKey = FIELD_MAP[q.id];
+      const stringValue = c.quiz_posiciones[yamlKey];
+      positions[q.id] = POSITION_MAP[q.id][stringValue] ?? 2;
+    }
+
+    const proposalText = [...c.propuestas, c.dato_clave].join(' ');
+
+    return {
+      name: c.nombre,
+      party: c.partido,
+      logo: c.logo_partido,
+      photo: c.foto,
+      age: c.edad,
+      profession: c.profesion,
+      experience: c.experiencia_politica,
+      proposals: c.propuestas,
+      keyFact: c.dato_clave,
+      ideology: c.partido_ideologia,
+      planUrl: c.plan_gobierno_url,
+      cvUrl: c.hoja_vida_url,
+      positions,
+      proposalText,
+    };
+  });
+}
+
+const CANDIDATES = buildCandidates(window.__CANDIDATOS_DATA__ || []);
+
+// ── DOM References ────────────────────────────────────────────────────────────
 
 const form = document.getElementById('questionnaire-form');
 const topMatch = document.getElementById('top-match');
@@ -156,6 +420,8 @@ const resultsList = document.getElementById('results-list');
 const issueBreakdown = document.getElementById('issue-breakdown');
 const answersCount = document.getElementById('answers-count');
 const resetButton = document.getElementById('reset-button');
+
+// ── Answer State ──────────────────────────────────────────────────────────────
 
 function getDefaultAnswers() {
   return Object.fromEntries(QUESTIONS.map((q) => [q.id, null]));
@@ -195,6 +461,8 @@ function answerLabel(question, value) {
   const option = question.options.find((o) => o.value === value);
   return option ? option.label : 'Sin responder';
 }
+
+// ── Quiz Rendering ────────────────────────────────────────────────────────────
 
 function buildQuestionMarkup(question, value, index) {
   const optionsHtml = question.options
@@ -239,12 +507,33 @@ function renderQuestions() {
   answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
 }
 
+// ── Core Affinity Algorithm ───────────────────────────────────────────────────
+
+function calculateSimilarity(userValue, candidateValue) {
+  const distance = Math.abs(userValue - candidateValue);
+  return 1 - distance / 2;
+}
+
 function calculateCandidateScore(candidate) {
   const issueScores = QUESTIONS.map((question) => {
     const userValue = currentAnswers[question.id] ?? 2;
     const candidateValue = clampAnswer(candidate.positions[question.id]);
-    const distance = Math.abs(userValue - candidateValue);
-    const affinity = Math.round((1 - distance / 2) * 100);
+
+    const baseSimilarity = calculateSimilarity(userValue, candidateValue);
+
+    const partyContext = analyzePartyContext(candidate.proposalText, question.id);
+
+    let finalSimilarity;
+    if (partyContext) {
+      const partySimilarity = calculateSimilarity(userValue, partyContext.numericValue);
+      const partyWeight = 0.28 * partyContext.confidence;
+      finalSimilarity =
+        (baseSimilarity * 0.72 + partySimilarity * partyWeight) / (0.72 + partyWeight);
+    } else {
+      finalSimilarity = baseSimilarity;
+    }
+
+    const affinity = Math.round(finalSimilarity * 100);
 
     return { question, userValue, candidateValue, affinity };
   });
@@ -253,9 +542,12 @@ function calculateCandidateScore(candidate) {
     issueScores.reduce((sum, issue) => sum + issue.affinity, 0) / issueScores.length,
   );
 
+  const exactMatches = issueScores.filter((issue) => issue.affinity === 100).length;
+
   return {
     ...candidate,
     score,
+    exactMatches,
     issueScores,
     strongestMatches: issueScores
       .slice()
@@ -263,6 +555,8 @@ function calculateCandidateScore(candidate) {
       .slice(0, 3),
   };
 }
+
+// ── Results Rendering ─────────────────────────────────────────────────────────
 
 function renderTopMatch(ranking) {
   const best = ranking[0];
@@ -274,11 +568,19 @@ function renderTopMatch(ranking) {
       <div class="flex flex-col md:flex-row md:items-start md:justify-between gap-6">
         <div class="space-y-3">
           <p class="text-xs font-bold uppercase tracking-[0.24em] text-white/70">Resultado principal</p>
-          <div>
-            <h2 class="font-headline text-3xl md:text-4xl font-extrabold tracking-tight">${best.name}</h2>
-            <p class="text-white/80 text-sm mt-2">${best.party}</p>
+          <div class="flex items-center gap-4">
+            <img
+              src="${best.photo}"
+              alt="${best.name}"
+              class="w-16 h-16 rounded-full object-cover border-2 border-white/30 bg-white/10"
+              onerror="this.style.display='none'"
+            />
+            <div>
+              <h2 class="font-headline text-3xl md:text-4xl font-extrabold tracking-tight">${best.name}</h2>
+              <p class="text-white/80 text-sm mt-1">${best.party} · ${best.ideology}</p>
+            </div>
           </div>
-          <p class="text-sm md:text-base leading-7 text-white/82 max-w-2xl">${best.summary}</p>
+          <p class="text-sm md:text-base leading-7 text-white/82 max-w-2xl">${best.profession} · ${best.experience}</p>
         </div>
         <div class="score-orb shrink-0">
           <span class="score-orb__value">${best.score}%</span>
@@ -292,25 +594,29 @@ function renderTopMatch(ranking) {
           <div class="flex flex-wrap gap-2 mb-4">
             ${best.strongestMatches
               .map(
-                (issue) => `<span class="px-3 py-2 rounded-full bg-white/12 text-sm font-semibold">${issue.question.title} · ${issue.affinity}%</span>`,
+                (issue) =>
+                  `<span class="px-3 py-2 rounded-full bg-white/12 text-sm font-semibold">${issue.question.title} · ${issue.affinity}%</span>`,
               )
               .join('')}
           </div>
-          <div class="flex flex-wrap gap-2">
-            ${best.highlights
+          <p class="text-xs font-bold uppercase tracking-[0.2em] text-white/70 mb-2 mt-4">Propuestas clave</p>
+          <ul class="space-y-1.5">
+            ${best.proposals
               .map(
-                (h) => `<span class="px-3 py-1.5 rounded-full bg-primary-fixed/20 text-xs font-bold uppercase tracking-[0.18em] text-white">${h}</span>`,
+                (p) =>
+                  `<li class="text-sm text-white/80 leading-6 flex gap-2"><span class="text-white/40 shrink-0">→</span>${p}</li>`,
               )
               .join('')}
-          </div>
+          </ul>
         </div>
 
         <div class="bg-white text-primary rounded-2xl p-5">
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-2">Lectura rápida</p>
           <p class="font-headline text-xl font-extrabold mb-2">${gap > 0 ? `${gap} puntos por encima del segundo lugar` : 'Empate técnico entre primeros puestos'}</p>
           <p class="text-sm text-on-surface-variant leading-6">
-            Tu perfil actual se acerca más a esta candidatura según los ocho ejes analizados. Conviene revisar también el segundo y tercer lugar antes de cerrar una conclusión.
+            Tu perfil actual se acerca más a esta candidatura según los ocho ejes analizados.
           </p>
+          <p class="text-xs text-on-surface-variant mt-3">${best.keyFact}</p>
         </div>
       </div>
     </div>
@@ -318,44 +624,91 @@ function renderTopMatch(ranking) {
 }
 
 function renderResultsList(ranking) {
-  resultsList.innerHTML = ranking
-    .map(
-      (candidate, index) => `
-        <article class="result-card rounded-2xl border border-outline-variant/10 bg-surface-container-low p-5">
-          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-            <div class="space-y-3">
-              <div class="flex items-center flex-wrap gap-3">
-                <span class="inline-flex items-center justify-center min-w-9 h-9 px-3 rounded-full bg-white text-primary font-headline font-extrabold">${index + 1}</span>
-                <div>
-                  <h3 class="font-headline text-xl font-extrabold text-primary">${candidate.name}</h3>
-                  <p class="text-sm text-on-surface-variant">${candidate.party}</p>
+  const INITIAL_VISIBLE = 10;
+  const hasMore = ranking.length > INITIAL_VISIBLE;
+
+  const cardHtml = ranking
+    .map((candidate, index) => {
+      const isTop3 = index < 3;
+      const isHidden = index >= INITIAL_VISIBLE;
+
+      if (isTop3) {
+        return `
+          <article class="result-card rounded-2xl border border-outline-variant/10 bg-surface-container-low p-5 ${isHidden ? 'hidden ranking-extra' : ''}">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
+              <div class="space-y-3">
+                <div class="flex items-center flex-wrap gap-3">
+                  <span class="inline-flex items-center justify-center min-w-9 h-9 px-3 rounded-full bg-white text-primary font-headline font-extrabold">${index + 1}</span>
+                  <img
+                    src="${candidate.photo}"
+                    alt="${candidate.name}"
+                    class="w-10 h-10 rounded-full object-cover border border-outline-variant/20 bg-surface-container"
+                    onerror="this.style.display='none'"
+                  />
+                  <div>
+                    <h3 class="font-headline text-xl font-extrabold text-primary">${candidate.name}</h3>
+                    <p class="text-sm text-on-surface-variant">${candidate.party} · ${candidate.ideology}</p>
+                  </div>
+                </div>
+                <p class="text-sm text-on-surface-variant leading-6 max-w-2xl">${candidate.profession} · ${candidate.experience}</p>
+                <div class="flex flex-wrap gap-2">
+                  ${candidate.strongestMatches
+                    .map(
+                      (m) =>
+                        `<span class="px-3 py-1.5 rounded-full bg-white text-primary text-[11px] font-bold uppercase tracking-[0.18em]">${m.question.title} ${m.affinity}%</span>`,
+                    )
+                    .join('')}
                 </div>
               </div>
-              <p class="text-sm text-on-surface-variant leading-6 max-w-2xl">${candidate.summary}</p>
-              <div class="flex flex-wrap gap-2">
-                ${candidate.highlights
-                  .map(
-                    (h) => `<span class="px-3 py-1.5 rounded-full bg-white text-primary text-[11px] font-bold uppercase tracking-[0.18em]">${h}</span>`,
-                  )
-                  .join('')}
-              </div>
-            </div>
 
-            <div class="md:w-56 shrink-0 space-y-3">
-              <div class="flex items-center justify-between text-sm font-semibold text-primary">
-                <span>Afinidad</span>
-                <span>${candidate.score}%</span>
+              <div class="md:w-56 shrink-0 space-y-3">
+                <div class="flex items-center justify-between text-sm font-semibold text-primary">
+                  <span>Afinidad</span>
+                  <span>${candidate.score}%</span>
+                </div>
+                <div class="progress-track">
+                  <div class="progress-track__fill" style="width:${candidate.score}%"></div>
+                </div>
+                <p class="text-xs text-on-surface-variant">${candidate.exactMatches} coincidencia${candidate.exactMatches !== 1 ? 's' : ''} exacta${candidate.exactMatches !== 1 ? 's' : ''}</p>
               </div>
-              <div class="progress-track">
-                <div class="progress-track__fill" style="width:${candidate.score}%"></div>
-              </div>
-              <p class="text-xs text-on-surface-variant">Mejores coincidencias: ${candidate.strongestMatches.map((issue) => issue.question.title).join(' · ')}</p>
             </div>
+          </article>
+        `;
+      }
+
+      return `
+        <div class="flex items-center gap-4 py-3 border-b border-outline-variant/8 ${isHidden ? 'hidden ranking-extra' : ''}" data-ranking-row>
+          <span class="w-8 text-center font-bold text-sm text-on-surface-variant shrink-0">${index + 1}</span>
+          <img
+            src="${candidate.photo}"
+            alt="${candidate.name}"
+            class="w-8 h-8 rounded-full object-cover border border-outline-variant/20 bg-surface-container shrink-0"
+            onerror="this.style.display='none'"
+          />
+          <div class="flex-1 min-w-0">
+            <h4 class="font-bold text-primary text-sm truncate">${candidate.name}</h4>
+            <p class="text-xs text-on-surface-variant truncate">${candidate.party}</p>
           </div>
-        </article>
-      `,
-    )
+          <div class="w-36 flex items-center gap-2 shrink-0">
+            <div class="progress-track progress-track--compact flex-1">
+              <div class="progress-track__fill" style="width:${candidate.score}%"></div>
+            </div>
+            <span class="text-sm font-bold text-primary w-10 text-right">${candidate.score}%</span>
+          </div>
+        </div>
+      `;
+    })
     .join('');
+
+  const toggleBtn = hasMore
+    ? `<button
+        id="toggle-ranking"
+        class="mt-4 w-full text-center py-3 text-sm font-bold text-primary hover:text-primary/80 transition-colors"
+        onclick="document.querySelectorAll('.ranking-extra').forEach(el=>el.classList.toggle('hidden'));this.textContent=this.textContent.includes('Ver')? 'Ocultar candidatos':'Ver todos los candidatos (${ranking.length})';"
+      >Ver todos los candidatos (${ranking.length})</button>`
+    : '';
+
+  resultsList.innerHTML = cardHtml + toggleBtn;
 }
 
 function renderIssueBreakdown(ranking) {
@@ -369,13 +722,13 @@ function renderIssueBreakdown(ranking) {
         return `
           <div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/10">
             <div class="flex items-center justify-between gap-3 mb-2">
-              <span class="font-headline font-bold text-primary">${candidate.name}</span>
+              <span class="font-headline font-bold text-primary text-sm">${candidate.name}</span>
               <span class="text-sm font-bold text-primary">${issue.affinity}%</span>
             </div>
             <div class="progress-track progress-track--compact mb-2">
               <div class="progress-track__fill" style="width:${issue.affinity}%"></div>
             </div>
-            <p class="text-xs text-on-surface-variant">Posición del perfil: ${answerLabel(question, issue.candidateValue)}</p>
+            <p class="text-xs text-on-surface-variant">Posición: ${answerLabel(question, issue.candidateValue)}</p>
           </div>
         `;
       })
@@ -396,6 +749,8 @@ function renderIssueBreakdown(ranking) {
   }).join('');
 }
 
+// ── Results Visibility ────────────────────────────────────────────────────────
+
 let resultsRevealed = false;
 const resultsSections = document.querySelectorAll('[data-results-section]');
 
@@ -405,12 +760,21 @@ function showResultsSections() {
   resultsSections.forEach((s) => s.classList.remove('hidden'));
 }
 
+// ── Update & Sort with Tiebreaking ────────────────────────────────────────────
+
 function updateResults() {
-  const ranking = CANDIDATES.map(calculateCandidateScore).sort((a, b) => b.score - a.score);
+  const ranking = CANDIDATES.map((c) => calculateCandidateScore(c)).sort((a, b) => {
+    if (b.score !== a.score) return b.score - a.score;
+    if (b.exactMatches !== a.exactMatches) return b.exactMatches - a.exactMatches;
+    return a.name.localeCompare(b.name);
+  });
+
   renderTopMatch(ranking);
   renderResultsList(ranking);
   renderIssueBreakdown(ranking);
 }
+
+// ── Event Handlers ────────────────────────────────────────────────────────────
 
 form.addEventListener('change', (event) => {
   if (!(event.target instanceof HTMLInputElement)) return;
@@ -435,6 +799,8 @@ resetButton.addEventListener('click', () => {
   showResultsSections();
   updateResults();
 });
+
+// ── Init ──────────────────────────────────────────────────────────────────────
 
 const hasSavedAnswers = localStorage.getItem(QUESTION_KEY) !== null;
 

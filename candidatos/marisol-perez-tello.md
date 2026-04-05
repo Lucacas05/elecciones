@@ -1,0 +1,26 @@
+---
+nombre: "Marisol Pérez Tello"
+partido: "Primero la Gente"
+logo_partido: "/img/partidos/primero-la-gente.webp"
+foto: "/img/candidatos/marisol-perez-tello.webp"
+edad: 53
+profesion: "Abogada"
+experiencia_politica: "Exministra de Justicia y excongresista"
+propuestas:
+  - "Fortalecer justicia y reforma del sistema penitenciario"
+  - "Promover empleo formal con apoyo a emprendimientos"
+  - "Ampliar acceso a servicios de salud y educación de calidad"
+dato_clave: "Tiene experiencia en gestión pública en el sector justicia."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "publica_prioridad"
+  salud: "sistema_universal"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "gradual"
+  politica_social: "programas_empleo"
+---

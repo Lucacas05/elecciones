@@ -1,0 +1,293 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]: Decide Perú
+    - generic [ref=e4]:
+      - link "home Inicio" [ref=e5] [cursor=pointer]:
+        - /url: "#inicio"
+        - generic [ref=e6]: home
+        - text: Inicio
+      - link "quiz Cuestionario" [ref=e7] [cursor=pointer]:
+        - /url: "#cuestionario"
+        - generic [ref=e8]: quiz
+        - text: Cuestionario
+      - link "compare_arrows Comparativa" [ref=e9] [cursor=pointer]:
+        - /url: "#comparativa"
+        - generic [ref=e10]: compare_arrows
+        - text: Comparativa
+      - link "analytics Resultados" [ref=e11] [cursor=pointer]:
+        - /url: "#resultados"
+        - generic [ref=e12]: analytics
+        - text: Resultados
+      - link "library_books Metodología" [ref=e13] [cursor=pointer]:
+        - /url: "#metodologia"
+        - generic [ref=e14]: library_books
+        - text: Metodología
+    - button "analytics Ver resultados" [ref=e16] [cursor=pointer]:
+      - generic [ref=e17]: analytics
+      - generic [ref=e18]: Ver resultados
+  - main [ref=e19]:
+    - generic [ref=e21]:
+      - generic [ref=e22]: TEST DE AFINIDAD ELECTORAL
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading "Descubre con qué candidatura coincides más" [level=1] [ref=e28]:
+            - text: Descubre con qué candidatura
+            - generic [ref=e29]: coincides más
+          - paragraph [ref=e31]: Responde tus prioridades en seis temas clave, compara perfiles programáticos y revisa tus resultados de forma clara antes de decidir.
+          - generic [ref=e32]:
+            - link "Comenzar el Test" [ref=e33] [cursor=pointer]:
+              - /url: "#cuestionario"
+            - link "Explorar Metodología" [ref=e34] [cursor=pointer]:
+              - /url: "#metodologia"
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e38]: how_to_vote
+            - generic [ref=e39]:
+              - heading "Cómo leer tu resultado" [level=2] [ref=e40]
+              - paragraph [ref=e41]: El porcentaje indica cercanía entre tus respuestas y el perfil programático de cada candidatura cargada en el código.
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e45]: shield_person
+              - generic [ref=e46]: Algoritmo neutral basado en datos
+            - generic [ref=e47]:
+              - generic [ref=e49]: visibility_lock
+              - generic [ref=e50]: Tus datos no se guardan en servidor
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - heading "Cómo funciona" [level=2] [ref=e54]
+        - paragraph [ref=e55]: Tres pasos simples para descubrir tu afinidad electoral.
+      - generic [ref=e56]:
+        - article [ref=e57]:
+          - generic [ref=e59]: edit_note
+          - generic [ref=e60]:
+            - paragraph [ref=e61]: Paso 1
+            - heading "Responde" [level=3] [ref=e62]
+            - paragraph [ref=e63]: Marca tu postura en seis temas clave del debate público peruano.
+        - article [ref=e64]:
+          - generic [ref=e66]: compare_arrows
+          - generic [ref=e67]:
+            - paragraph [ref=e68]: Paso 2
+            - heading "Compara" [level=3] [ref=e69]
+            - paragraph [ref=e70]: Revisa el ranking de afinidad y en qué ejes coincide más cada candidatura contigo.
+        - article [ref=e71]:
+          - generic [ref=e73]: search
+          - generic [ref=e74]:
+            - paragraph [ref=e75]: Paso 3
+            - heading "Profundiza" [level=3] [ref=e76]
+            - paragraph [ref=e77]: Usa el resultado como punto de partida y luego contrástalo con fuentes oficiales.
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - paragraph [ref=e81]: Tus prioridades
+        - heading "Cuestionario ciudadano" [level=2] [ref=e82]
+        - paragraph [ref=e83]: Elige la opción que mejor represente tu postura en cada tema. Al terminar, verás qué candidatura se alinea más contigo.
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e88]: quiz
+            - generic [ref=e89]: 8 temas clave
+          - generic [ref=e90]:
+            - paragraph [ref=e91]: Respuestas
+            - paragraph [ref=e92]: 0/8
+        - generic [ref=e93]:
+          - group [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e96]: "1"
+              - generic [ref=e97]:
+                - paragraph [ref=e98]: Seguridad
+                - paragraph [ref=e99]: ¿Cómo combatirías la inseguridad ciudadana?
+            - generic [ref=e100]:
+              - generic [ref=e101] [cursor=pointer]:
+                - 'radio "🔴 Mano dura: penas más severas, incluida la pena de muerte" [ref=e102]'
+                - generic [ref=e104]:
+                  - generic [ref=e105]: 🔴
+                  - generic [ref=e106]: "Mano dura: penas más severas, incluida la pena de muerte"
+              - generic [ref=e107] [cursor=pointer]:
+                - radio "🟡 Reformar la policía, fiscalía y el poder judicial" [ref=e108]
+                - generic [ref=e110]:
+                  - generic [ref=e111]: 🟡
+                  - generic [ref=e112]: Reformar la policía, fiscalía y el poder judicial
+              - generic [ref=e113] [cursor=pointer]:
+                - radio "🟢 Más inversión en educación y prevención social" [ref=e114]
+                - generic [ref=e116]:
+                  - generic [ref=e117]: 🟢
+                  - generic [ref=e118]: Más inversión en educación y prevención social
+          - group [ref=e119]:
+            - generic [ref=e120]:
+              - generic [ref=e121]: "2"
+              - generic [ref=e122]:
+                - paragraph [ref=e123]: Economía
+                - paragraph [ref=e124]: ¿Cómo debería manejarse la economía del país?
+            - generic [ref=e125]:
+              - generic [ref=e126] [cursor=pointer]:
+                - 'radio "🔴 Libre mercado: menos impuestos, menos regulación" [ref=e127]'
+                - generic [ref=e129]:
+                  - generic [ref=e130]: 🔴
+                  - generic [ref=e131]: "Libre mercado: menos impuestos, menos regulación"
+              - generic [ref=e132] [cursor=pointer]:
+                - radio "🟡 El Estado debe intervenir más y controlar precios" [ref=e133]
+                - generic [ref=e135]:
+                  - generic [ref=e136]: 🟡
+                  - generic [ref=e137]: El Estado debe intervenir más y controlar precios
+              - generic [ref=e138] [cursor=pointer]:
+                - radio "🟢 Un equilibrio entre mercado libre y regulación estatal" [ref=e139]
+                - generic [ref=e141]:
+                  - generic [ref=e142]: 🟢
+                  - generic [ref=e143]: Un equilibrio entre mercado libre y regulación estatal
+          - group [ref=e144]:
+            - generic [ref=e145]:
+              - generic [ref=e146]: "3"
+              - generic [ref=e147]:
+                - paragraph [ref=e148]: Educación
+                - paragraph [ref=e149]: ¿Qué priorizarías en educación?
+            - generic [ref=e150]:
+              - generic [ref=e151] [cursor=pointer]:
+                - radio "🔴 Invertir fuerte en educación pública y gratuita" [ref=e152]
+                - generic [ref=e154]:
+                  - generic [ref=e155]: 🔴
+                  - generic [ref=e156]: Invertir fuerte en educación pública y gratuita
+              - generic [ref=e157] [cursor=pointer]:
+                - radio "🟡 Dar incentivos para que crezca la educación privada" [ref=e158]
+                - generic [ref=e160]:
+                  - generic [ref=e161]: 🟡
+                  - generic [ref=e162]: Dar incentivos para que crezca la educación privada
+              - generic [ref=e163] [cursor=pointer]:
+                - 'radio "🟢 Mejorar ambas: pública de calidad y privada accesible" [ref=e164]'
+                - generic [ref=e166]:
+                  - generic [ref=e167]: 🟢
+                  - generic [ref=e168]: "Mejorar ambas: pública de calidad y privada accesible"
+          - group [ref=e169]:
+            - generic [ref=e170]:
+              - generic [ref=e171]: "4"
+              - generic [ref=e172]:
+                - paragraph [ref=e173]: Salud
+                - paragraph [ref=e174]: ¿Cómo mejorarías el sistema de salud?
+            - generic [ref=e175]:
+              - generic [ref=e176] [cursor=pointer]:
+                - radio "🔴 Un sistema de salud universal gratuito para todos" [ref=e177]
+                - generic [ref=e179]:
+                  - generic [ref=e180]: 🔴
+                  - generic [ref=e181]: Un sistema de salud universal gratuito para todos
+              - generic [ref=e182] [cursor=pointer]:
+                - radio "🟡 Fortalecer el sector privado como complemento del público" [ref=e183]
+                - generic [ref=e185]:
+                  - generic [ref=e186]: 🟡
+                  - generic [ref=e187]: Fortalecer el sector privado como complemento del público
+              - generic [ref=e188] [cursor=pointer]:
+                - radio "🟢 Integrar SIS, EsSalud y clínicas en un solo sistema" [ref=e189]
+                - generic [ref=e191]:
+                  - generic [ref=e192]: 🟢
+                  - generic [ref=e193]: Integrar SIS, EsSalud y clínicas en un solo sistema
+          - group [ref=e194]:
+            - generic [ref=e195]:
+              - generic [ref=e196]: "5"
+              - generic [ref=e197]:
+                - paragraph [ref=e198]: Corrupción
+                - paragraph [ref=e199]: ¿Cómo combatirías la corrupción?
+            - generic [ref=e200]:
+              - generic [ref=e201] [cursor=pointer]:
+                - radio "🔴 Pena de muerte o cadena perpetua para corruptos" [ref=e202]
+                - generic [ref=e204]:
+                  - generic [ref=e205]: 🔴
+                  - generic [ref=e206]: Pena de muerte o cadena perpetua para corruptos
+              - generic [ref=e207] [cursor=pointer]:
+                - radio "🟡 Cadena perpetua e inhabilitación de por vida" [ref=e208]
+                - generic [ref=e210]:
+                  - generic [ref=e211]: 🟡
+                  - generic [ref=e212]: Cadena perpetua e inhabilitación de por vida
+              - generic [ref=e213] [cursor=pointer]:
+                - radio "🟢 Reformar el sistema judicial y fortalecer la fiscalía" [ref=e214]
+                - generic [ref=e216]:
+                  - generic [ref=e217]: 🟢
+                  - generic [ref=e218]: Reformar el sistema judicial y fortalecer la fiscalía
+          - group [ref=e219]:
+            - generic [ref=e220]:
+              - generic [ref=e221]: "6"
+              - generic [ref=e222]:
+                - paragraph [ref=e223]: Minería
+                - paragraph [ref=e224]: ¿Qué posición debería tener el país sobre la minería?
+            - generic [ref=e225]:
+              - generic [ref=e226] [cursor=pointer]:
+                - radio "🔴 Promover la inversión minera, genera empleo y riqueza" [ref=e227]
+                - generic [ref=e229]:
+                  - generic [ref=e230]: 🔴
+                  - generic [ref=e231]: Promover la inversión minera, genera empleo y riqueza
+              - generic [ref=e232] [cursor=pointer]:
+                - radio "🟡 Regularla fuertemente para proteger el medio ambiente" [ref=e233]
+                - generic [ref=e235]:
+                  - generic [ref=e236]: 🟡
+                  - generic [ref=e237]: Regularla fuertemente para proteger el medio ambiente
+              - generic [ref=e238] [cursor=pointer]:
+                - radio "🟢 Solo con consulta previa a las comunidades afectadas" [ref=e239]
+                - generic [ref=e241]:
+                  - generic [ref=e242]: 🟢
+                  - generic [ref=e243]: Solo con consulta previa a las comunidades afectadas
+          - group [ref=e244]:
+            - generic [ref=e245]:
+              - generic [ref=e246]: "7"
+              - generic [ref=e247]:
+                - paragraph [ref=e248]: Descentralización
+                - paragraph [ref=e249]: ¿Cómo debería gobernarse el interior del país?
+            - generic [ref=e250]:
+              - generic [ref=e251] [cursor=pointer]:
+                - radio "🔴 Dar más poder y presupuesto a los gobiernos regionales" [ref=e252]
+                - generic [ref=e254]:
+                  - generic [ref=e255]: 🔴
+                  - generic [ref=e256]: Dar más poder y presupuesto a los gobiernos regionales
+              - generic [ref=e257] [cursor=pointer]:
+                - radio "🟡 Un gobierno central fuerte que dirija desde Lima" [ref=e258]
+                - generic [ref=e260]:
+                  - generic [ref=e261]: 🟡
+                  - generic [ref=e262]: Un gobierno central fuerte que dirija desde Lima
+              - generic [ref=e263] [cursor=pointer]:
+                - radio "🟢 Descentralizar gradualmente con capacitación técnica" [ref=e264]
+                - generic [ref=e266]:
+                  - generic [ref=e267]: 🟢
+                  - generic [ref=e268]: Descentralizar gradualmente con capacitación técnica
+          - group [ref=e269]:
+            - generic [ref=e270]:
+              - generic [ref=e271]: "8"
+              - generic [ref=e272]:
+                - paragraph [ref=e273]: Política Social
+                - paragraph [ref=e274]: ¿Cómo ayudarías a los que menos tienen?
+            - generic [ref=e275]:
+              - generic [ref=e276] [cursor=pointer]:
+                - radio "🔴 Bonos y transferencias directas de dinero" [ref=e277]
+                - generic [ref=e279]:
+                  - generic [ref=e280]: 🔴
+                  - generic [ref=e281]: Bonos y transferencias directas de dinero
+              - generic [ref=e282] [cursor=pointer]:
+                - radio "🟡 Crear programas de empleo temporal del Estado" [ref=e283]
+                - generic [ref=e285]:
+                  - generic [ref=e286]: 🟡
+                  - generic [ref=e287]: Crear programas de empleo temporal del Estado
+              - generic [ref=e288] [cursor=pointer]:
+                - radio "🟢 Invertir en educación técnica y capacitación laboral" [ref=e289]
+                - generic [ref=e291]:
+                  - generic [ref=e292]: 🟢
+                  - generic [ref=e293]: Invertir en educación técnica y capacitación laboral
+        - generic [ref=e294]:
+          - button "analytics Ver resultados" [ref=e295] [cursor=pointer]:
+            - generic [ref=e296]: analytics
+            - text: Ver resultados
+          - button "Reiniciar" [ref=e297] [cursor=pointer]
+    - generic [ref=e300]:
+      - generic [ref=e301]:
+        - generic [ref=e303]: lightbulb
+        - generic [ref=e304]:
+          - heading "Metodología sugerida" [level=2] [ref=e305]
+          - paragraph [ref=e306]: Usa este test para orientarte, pero confirma siempre con planes de gobierno, entrevistas y documentos oficiales antes de tomar una decisión. Los perfiles están basados en posiciones programáticas cargadas en el código fuente.
+      - link "Ir al portal JNE →" [ref=e307] [cursor=pointer]:
+        - /url: https://portal.jne.gob.pe
+  - generic [ref=e310]:
+    - button "Menu" [ref=e311]:
+      - img [ref=e313]
+      - generic: Menu
+    - button "Inspect" [ref=e317]:
+      - img [ref=e319]
+      - generic: Inspect
+    - button "Audit" [ref=e321]:
+      - img [ref=e323]
+      - generic: Audit
+    - button "Settings" [ref=e326]:
+      - img [ref=e328]
+      - generic: Settings

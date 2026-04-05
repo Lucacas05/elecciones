@@ -1,0 +1,26 @@
+---
+nombre: "Roberto Sánchez"
+partido: "Juntos por el Perú"
+logo_partido: "/img/partidos/juntos-por-el-peru.webp"
+foto: "/img/candidatos/roberto-sanchez.webp"
+edad: 58
+profesion: "Abogado"
+experiencia_politica: "Exministro y líder político"
+propuestas:
+  - "Prevención del delito con enfoque comunitario"
+  - "Economía con mayor participacion estatal en sectores estrategicos"
+  - "Cobertura de salud y educación pública con enfoque territorial"
+dato_clave: "Promueve una agenda de inclusion social y reforma institucional."
+partido_ideologia: "Izquierda"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "prevencion"
+  economia: "intervencion_estatal"
+  educacion: "publica_prioridad"
+  salud: "sistema_universal"
+  corrupcion: "reforma_judicial"
+  mineria: "consulta_previa"
+  descentralizacion: "mas_poder_regiones"
+  politica_social: "bonos_directos"
+---

@@ -1,0 +1,26 @@
+---
+nombre: "Wolfgang Grozo"
+partido: "Integridad Democrática"
+logo_partido: "/img/partidos/integridad-democratica.webp"
+foto: "/img/candidatos/wolfgang-grozo.webp"
+edad: 52
+profesion: "Economista"
+experiencia_politica: "Candidato presidencial por Integridad Democrática"
+propuestas:
+  - "Reforma del sistema de seguridad con enfoque territorial"
+  - "Simplificar regulación para atraer inversión y empleo"
+  - "Impulsar formacion técnica en regiones"
+dato_clave: "Postula con enfoque en gestión económica y modernización estatal."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "pro_mineria"
+  descentralizacion: "gradual"
+  politica_social: "educacion_tecnica"
+---

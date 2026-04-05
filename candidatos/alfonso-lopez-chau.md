@@ -1,0 +1,26 @@
+---
+nombre: "Alfonso López Chau"
+partido: "Ahora Nación"
+logo_partido: "/img/partidos/ahora-nacion.webp"
+foto: "/img/candidatos/alfonso-lopez-chau.webp"
+edad: 68
+profesion: "Economista"
+experiencia_politica: "Exrector universitario y candidato presidencial"
+propuestas:
+  - "Reactivacion económica con inversión pública y privada en infraestructura regional"
+  - "Incremento de presupuesto educativo con enfoque en ciencia y tecnología"
+  - "Sistema de lucha anticorrupcion con fiscalías especializadas y control ciudadano"
+dato_clave: "Voz academica con enfoque técnico en gestión pública y desarrollo territorial."
+partido_ideologia: "Centro-izquierda"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "intervencion_estatal"
+  educacion: "publica_prioridad"
+  salud: "sistema_universal"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "mas_poder_regiones"
+  politica_social: "educacion_tecnica"
+---

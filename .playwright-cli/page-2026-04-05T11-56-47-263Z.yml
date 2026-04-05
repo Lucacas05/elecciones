@@ -1,0 +1,538 @@
+- generic [active] [ref=e1]:
+  - navigation [ref=e2]:
+    - generic [ref=e3]: Decide Perú
+    - generic [ref=e4]:
+      - link "home Inicio" [ref=e5] [cursor=pointer]:
+        - /url: "#inicio"
+        - generic [ref=e6]: home
+        - text: Inicio
+      - link "quiz Cuestionario" [ref=e7] [cursor=pointer]:
+        - /url: "#cuestionario"
+        - generic [ref=e8]: quiz
+        - text: Cuestionario
+      - link "compare_arrows Comparativa" [ref=e9] [cursor=pointer]:
+        - /url: "#comparativa"
+        - generic [ref=e10]: compare_arrows
+        - text: Comparativa
+      - link "analytics Resultados" [ref=e11] [cursor=pointer]:
+        - /url: "#resultados"
+        - generic [ref=e12]: analytics
+        - text: Resultados
+      - link "library_books Metodología" [ref=e13] [cursor=pointer]:
+        - /url: "#metodologia"
+        - generic [ref=e14]: library_books
+        - text: Metodología
+    - button "analytics Ver resultados" [ref=e16] [cursor=pointer]:
+      - generic [ref=e17]: analytics
+      - generic [ref=e18]: Ver resultados
+  - main [ref=e19]:
+    - generic [ref=e21]:
+      - generic [ref=e22]: TEST DE AFINIDAD ELECTORAL
+      - generic [ref=e26]:
+        - generic [ref=e27]:
+          - heading "Descubre con qué candidatura coincides más" [level=1] [ref=e28]:
+            - text: Descubre con qué candidatura
+            - generic [ref=e29]: coincides más
+          - paragraph [ref=e31]: Responde tus prioridades en ocho temas clave, compara perfiles programáticos y revisa tus resultados de forma clara antes de decidir.
+          - generic [ref=e32]:
+            - link "Comenzar el Test" [ref=e33] [cursor=pointer]:
+              - /url: "#cuestionario"
+            - link "Explorar Metodología" [ref=e34] [cursor=pointer]:
+              - /url: "#metodologia"
+        - generic [ref=e35]:
+          - generic [ref=e36]:
+            - generic [ref=e38]: how_to_vote
+            - generic [ref=e39]:
+              - heading "Cómo leer tu resultado" [level=2] [ref=e40]
+              - paragraph [ref=e41]: El porcentaje indica cercanía entre tus respuestas y el perfil programático de cada candidatura cargada en el código.
+          - generic [ref=e42]:
+            - generic [ref=e43]:
+              - generic [ref=e45]: shield_person
+              - generic [ref=e46]: Algoritmo neutral basado en datos
+            - generic [ref=e47]:
+              - generic [ref=e49]: visibility_lock
+              - generic [ref=e50]: Tus datos no se guardan en servidor
+    - generic [ref=e52]:
+      - generic [ref=e53]:
+        - heading "Cómo funciona" [level=2] [ref=e54]
+        - paragraph [ref=e55]: Tres pasos simples para descubrir tu afinidad electoral.
+      - generic [ref=e56]:
+        - article [ref=e57]:
+          - generic [ref=e59]: edit_note
+          - generic [ref=e60]:
+            - paragraph [ref=e61]: Paso 1
+            - heading "Responde" [level=3] [ref=e62]
+            - paragraph [ref=e63]: Marca tu postura en ocho temas clave del debate público peruano.
+        - article [ref=e64]:
+          - generic [ref=e66]: compare_arrows
+          - generic [ref=e67]:
+            - paragraph [ref=e68]: Paso 2
+            - heading "Compara" [level=3] [ref=e69]
+            - paragraph [ref=e70]: Revisa el ranking de afinidad y en qué ejes coincide más cada candidatura contigo.
+        - article [ref=e71]:
+          - generic [ref=e73]: search
+          - generic [ref=e74]:
+            - paragraph [ref=e75]: Paso 3
+            - heading "Profundiza" [level=3] [ref=e76]
+            - paragraph [ref=e77]: Usa el resultado como punto de partida y luego contrástalo con fuentes oficiales.
+    - generic [ref=e79]:
+      - generic [ref=e80]:
+        - paragraph [ref=e81]: Tus prioridades
+        - heading "Cuestionario ciudadano" [level=2] [ref=e82]
+        - paragraph [ref=e83]: Elige la opción que mejor represente tu postura en cada tema. Al terminar, verás qué candidatura se alinea más contigo.
+      - generic [ref=e84]:
+        - generic [ref=e85]:
+          - generic [ref=e86]:
+            - generic [ref=e88]: quiz
+            - generic [ref=e89]: 8 temas clave
+          - generic [ref=e90]:
+            - paragraph [ref=e91]: Respuestas
+            - paragraph [ref=e92]: 1/8
+        - generic [ref=e93]:
+          - group [ref=e94]:
+            - generic [ref=e95]:
+              - generic [ref=e96]: "1"
+              - generic [ref=e97]:
+                - paragraph [ref=e98]: Seguridad
+                - paragraph [ref=e99]: ¿Cómo combatirías la inseguridad ciudadana?
+              - img [ref=e101]
+            - generic [ref=e103]:
+              - generic [ref=e104] [cursor=pointer]:
+                - 'radio "Mano dura: penas más severas, incluida la pena de muerte" [ref=e105]'
+                - generic [ref=e107]: "Mano dura: penas más severas, incluida la pena de muerte"
+              - generic [ref=e108] [cursor=pointer]:
+                - radio "Reformar la policía, fiscalía y el poder judicial" [ref=e109]
+                - generic [ref=e111]: Reformar la policía, fiscalía y el poder judicial
+              - generic [ref=e112] [cursor=pointer]:
+                - radio "Más inversión en educación y prevención social" [checked] [ref=e113]
+                - generic [ref=e115]: Más inversión en educación y prevención social
+          - group [ref=e116]:
+            - generic [ref=e117]:
+              - generic [ref=e118]: "2"
+              - generic [ref=e119]:
+                - paragraph [ref=e120]: Economía
+                - paragraph [ref=e121]: ¿Cómo debería manejarse la economía del país?
+            - generic [ref=e122]:
+              - generic [ref=e123] [cursor=pointer]:
+                - 'radio "Libre mercado: menos impuestos, menos regulación" [ref=e124]'
+                - generic [ref=e126]: "Libre mercado: menos impuestos, menos regulación"
+              - generic [ref=e127] [cursor=pointer]:
+                - radio "El Estado debe intervenir más y controlar precios" [ref=e128]
+                - generic [ref=e130]: El Estado debe intervenir más y controlar precios
+              - generic [ref=e131] [cursor=pointer]:
+                - radio "Un equilibrio entre mercado libre y regulación estatal" [ref=e132]
+                - generic [ref=e134]: Un equilibrio entre mercado libre y regulación estatal
+          - group [ref=e135]:
+            - generic [ref=e136]:
+              - generic [ref=e137]: "3"
+              - generic [ref=e138]:
+                - paragraph [ref=e139]: Educación
+                - paragraph [ref=e140]: ¿Qué priorizarías en educación?
+            - generic [ref=e141]:
+              - generic [ref=e142] [cursor=pointer]:
+                - radio "Invertir fuerte en educación pública y gratuita" [ref=e143]
+                - generic [ref=e145]: Invertir fuerte en educación pública y gratuita
+              - generic [ref=e146] [cursor=pointer]:
+                - radio "Dar incentivos para que crezca la educación privada" [ref=e147]
+                - generic [ref=e149]: Dar incentivos para que crezca la educación privada
+              - generic [ref=e150] [cursor=pointer]:
+                - 'radio "Mejorar ambas: pública de calidad y privada accesible" [ref=e151]'
+                - generic [ref=e153]: "Mejorar ambas: pública de calidad y privada accesible"
+          - group [ref=e154]:
+            - generic [ref=e155]:
+              - generic [ref=e156]: "4"
+              - generic [ref=e157]:
+                - paragraph [ref=e158]: Salud
+                - paragraph [ref=e159]: ¿Cómo mejorarías el sistema de salud?
+            - generic [ref=e160]:
+              - generic [ref=e161] [cursor=pointer]:
+                - radio "Un sistema de salud universal gratuito para todos" [ref=e162]
+                - generic [ref=e164]: Un sistema de salud universal gratuito para todos
+              - generic [ref=e165] [cursor=pointer]:
+                - radio "Fortalecer el sector privado como complemento del público" [ref=e166]
+                - generic [ref=e168]: Fortalecer el sector privado como complemento del público
+              - generic [ref=e169] [cursor=pointer]:
+                - radio "Integrar SIS, EsSalud y clínicas en un solo sistema" [ref=e170]
+                - generic [ref=e172]: Integrar SIS, EsSalud y clínicas en un solo sistema
+          - group [ref=e173]:
+            - generic [ref=e174]:
+              - generic [ref=e175]: "5"
+              - generic [ref=e176]:
+                - paragraph [ref=e177]: Corrupción
+                - paragraph [ref=e178]: ¿Cómo combatirías la corrupción?
+            - generic [ref=e179]:
+              - generic [ref=e180] [cursor=pointer]:
+                - radio "Pena de muerte o cadena perpetua para corruptos" [ref=e181]
+                - generic [ref=e183]: Pena de muerte o cadena perpetua para corruptos
+              - generic [ref=e184] [cursor=pointer]:
+                - radio "Cadena perpetua e inhabilitación de por vida" [ref=e185]
+                - generic [ref=e187]: Cadena perpetua e inhabilitación de por vida
+              - generic [ref=e188] [cursor=pointer]:
+                - radio "Reformar el sistema judicial y fortalecer la fiscalía" [ref=e189]
+                - generic [ref=e191]: Reformar el sistema judicial y fortalecer la fiscalía
+          - group [ref=e192]:
+            - generic [ref=e193]:
+              - generic [ref=e194]: "6"
+              - generic [ref=e195]:
+                - paragraph [ref=e196]: Minería
+                - paragraph [ref=e197]: ¿Qué posición debería tener el país sobre la minería?
+            - generic [ref=e198]:
+              - generic [ref=e199] [cursor=pointer]:
+                - radio "Promover la inversión minera, genera empleo y riqueza" [ref=e200]
+                - generic [ref=e202]: Promover la inversión minera, genera empleo y riqueza
+              - generic [ref=e203] [cursor=pointer]:
+                - radio "Regularla fuertemente para proteger el medio ambiente" [ref=e204]
+                - generic [ref=e206]: Regularla fuertemente para proteger el medio ambiente
+              - generic [ref=e207] [cursor=pointer]:
+                - radio "Solo con consulta previa a las comunidades afectadas" [ref=e208]
+                - generic [ref=e210]: Solo con consulta previa a las comunidades afectadas
+          - group [ref=e211]:
+            - generic [ref=e212]:
+              - generic [ref=e213]: "7"
+              - generic [ref=e214]:
+                - paragraph [ref=e215]: Descentralización
+                - paragraph [ref=e216]: ¿Cómo debería gobernarse el interior del país?
+            - generic [ref=e217]:
+              - generic [ref=e218] [cursor=pointer]:
+                - radio "Dar más poder y presupuesto a los gobiernos regionales" [ref=e219]
+                - generic [ref=e221]: Dar más poder y presupuesto a los gobiernos regionales
+              - generic [ref=e222] [cursor=pointer]:
+                - radio "Un gobierno central fuerte que dirija desde Lima" [ref=e223]
+                - generic [ref=e225]: Un gobierno central fuerte que dirija desde Lima
+              - generic [ref=e226] [cursor=pointer]:
+                - radio "Descentralizar gradualmente con capacitación técnica" [ref=e227]
+                - generic [ref=e229]: Descentralizar gradualmente con capacitación técnica
+          - group [ref=e230]:
+            - generic [ref=e231]:
+              - generic [ref=e232]: "8"
+              - generic [ref=e233]:
+                - paragraph [ref=e234]: Política Social
+                - paragraph [ref=e235]: ¿Cómo ayudarías a los que menos tienen?
+            - generic [ref=e236]:
+              - generic [ref=e237] [cursor=pointer]:
+                - radio "Bonos y transferencias directas de dinero" [ref=e238]
+                - generic [ref=e240]: Bonos y transferencias directas de dinero
+              - generic [ref=e241] [cursor=pointer]:
+                - radio "Crear programas de empleo temporal del Estado" [ref=e242]
+                - generic [ref=e244]: Crear programas de empleo temporal del Estado
+              - generic [ref=e245] [cursor=pointer]:
+                - radio "Invertir en educación técnica y capacitación laboral" [ref=e246]
+                - generic [ref=e248]: Invertir en educación técnica y capacitación laboral
+        - generic [ref=e249]:
+          - button "analytics Ver resultados" [ref=e250] [cursor=pointer]:
+            - generic [ref=e251]: analytics
+            - text: Ver resultados
+          - button "Reiniciar" [ref=e252] [cursor=pointer]
+    - generic [ref=e254]:
+      - generic [ref=e255]:
+        - paragraph [ref=e256]: Tu perfil
+        - heading "Resultado principal" [level=2] [ref=e257]
+        - paragraph [ref=e258]: Basado en tus respuestas, esta es la candidatura con mayor afinidad.
+      - article [ref=e259]:
+        - generic [ref=e260]:
+          - generic [ref=e261]:
+            - generic [ref=e262]:
+              - paragraph [ref=e263]: Resultado principal
+              - generic [ref=e264]:
+                - heading "Candidatura Horizonte" [level=2] [ref=e265]
+                - paragraph [ref=e266]: Movimiento Horizonte
+              - paragraph [ref=e267]: Perfil orientado a reformas graduales, agenda social amplia y fortalecimiento de servicios públicos.
+            - generic [ref=e268]:
+              - generic [ref=e269]: 69%
+              - generic [ref=e270]: afinidad
+          - generic [ref=e271]:
+            - generic [ref=e272]:
+              - paragraph [ref=e273]: Coincidencias más fuertes
+              - generic [ref=e274]:
+                - generic [ref=e275]: Seguridad · 100%
+                - generic [ref=e276]: Economía · 100%
+                - generic [ref=e277]: Minería · 100%
+              - generic [ref=e278]:
+                - generic [ref=e279]: Servicios públicos
+                - generic [ref=e280]: Inclusión
+                - generic [ref=e281]: Descentralización
+            - generic [ref=e282]:
+              - paragraph [ref=e283]: Lectura rápida
+              - paragraph [ref=e284]: 6 puntos por encima del segundo lugar
+              - paragraph [ref=e285]: Tu perfil actual se acerca más a esta candidatura según los ocho ejes analizados. Conviene revisar también el segundo y tercer lugar antes de cerrar una conclusión.
+    - generic [ref=e287]:
+      - generic [ref=e288]:
+        - paragraph [ref=e289]: Comparativa
+        - heading "Ranking de afinidad" [level=2] [ref=e290]
+        - paragraph [ref=e291]: Se actualiza en tiempo real con cada cambio en tus respuestas.
+      - generic [ref=e293]:
+        - article [ref=e294]:
+          - generic [ref=e295]:
+            - generic [ref=e296]:
+              - generic [ref=e297]:
+                - generic [ref=e298]: "1"
+                - generic [ref=e299]:
+                  - heading "Candidatura Horizonte" [level=3] [ref=e300]
+                  - paragraph [ref=e301]: Movimiento Horizonte
+              - paragraph [ref=e302]: Perfil orientado a reformas graduales, agenda social amplia y fortalecimiento de servicios públicos.
+              - generic [ref=e303]:
+                - generic [ref=e304]: Servicios públicos
+                - generic [ref=e305]: Inclusión
+                - generic [ref=e306]: Descentralización
+            - generic [ref=e307]:
+              - generic [ref=e308]:
+                - generic [ref=e309]: Afinidad
+                - generic [ref=e310]: 69%
+              - paragraph [ref=e313]: "Mejores coincidencias: Seguridad · Economía · Minería"
+        - article [ref=e314]:
+          - generic [ref=e315]:
+            - generic [ref=e316]:
+              - generic [ref=e317]:
+                - generic [ref=e318]: "2"
+                - generic [ref=e319]:
+                  - heading "Candidatura Orden" [level=3] [ref=e320]
+                  - paragraph [ref=e321]: Alianza Orden y Futuro
+              - paragraph [ref=e322]: Perfil con énfasis en seguridad, autoridad estatal, inversión privada y control centralizado.
+              - generic [ref=e323]:
+                - generic [ref=e324]: Seguridad
+                - generic [ref=e325]: Inversión
+                - generic [ref=e326]: Gestión ejecutiva
+            - generic [ref=e327]:
+              - generic [ref=e328]:
+                - generic [ref=e329]: Afinidad
+                - generic [ref=e330]: 63%
+              - paragraph [ref=e333]: "Mejores coincidencias: Educación · Salud · Descentralización"
+        - article [ref=e334]:
+          - generic [ref=e335]:
+            - generic [ref=e336]:
+              - generic [ref=e337]:
+                - generic [ref=e338]: "3"
+                - generic [ref=e339]:
+                  - heading "Candidatura Equilibrio" [level=3] [ref=e340]
+                  - paragraph [ref=e341]: Acuerdo Nacional Ciudadano
+              - paragraph [ref=e342]: Perfil intermedio con foco en consensos, institucionalidad y balance entre crecimiento y protección social.
+              - generic [ref=e343]:
+                - generic [ref=e344]: Institucionalidad
+                - generic [ref=e345]: Consenso
+                - generic [ref=e346]: Reactivación
+            - generic [ref=e347]:
+              - generic [ref=e348]:
+                - generic [ref=e349]: Afinidad
+                - generic [ref=e350]: 63%
+              - paragraph [ref=e353]: "Mejores coincidencias: Corrupción · Política Social · Seguridad"
+        - article [ref=e354]:
+          - generic [ref=e355]:
+            - generic [ref=e356]:
+              - generic [ref=e357]:
+                - generic [ref=e358]: "4"
+                - generic [ref=e359]:
+                  - heading "Candidatura Cambio" [level=3] [ref=e360]
+                  - paragraph [ref=e361]: Frente Cambio País
+              - paragraph [ref=e362]: Perfil que prioriza descentralización, vigilancia ciudadana y cambios intensos en distribución del poder.
+              - generic [ref=e363]:
+                - generic [ref=e364]: Regiones
+                - generic [ref=e365]: Transparencia
+                - generic [ref=e366]: Participación
+            - generic [ref=e367]:
+              - generic [ref=e368]:
+                - generic [ref=e369]: Afinidad
+                - generic [ref=e370]: 63%
+              - paragraph [ref=e373]: "Mejores coincidencias: Seguridad · Economía · Educación"
+    - generic [ref=e375]:
+      - generic [ref=e376]:
+        - paragraph [ref=e377]: Lectura por tema
+        - heading "Dónde coincides más" [level=2] [ref=e378]
+        - paragraph [ref=e379]: Análisis detallado de tu coincidencia en cada uno de los ocho ejes temáticos.
+      - generic [ref=e380]:
+        - generic [ref=e381]:
+          - generic [ref=e382]:
+            - generic [ref=e383]:
+              - paragraph [ref=e384]: Seguridad
+              - paragraph [ref=e385]: "Tu respuesta: Más inversión en educación y prevención social"
+            - generic [ref=e386]: ✓ Respondida
+          - generic [ref=e387]:
+            - generic [ref=e388]:
+              - generic [ref=e389]:
+                - generic [ref=e390]: Candidatura Horizonte
+                - generic [ref=e391]: 100%
+              - paragraph [ref=e394]: "Posición del perfil: Más inversión en educación y prevención social"
+            - generic [ref=e395]:
+              - generic [ref=e396]:
+                - generic [ref=e397]: Candidatura Orden
+                - generic [ref=e398]: 0%
+              - paragraph [ref=e400]: "Posición del perfil: Mano dura: penas más severas, incluida la pena de muerte"
+            - generic [ref=e401]:
+              - generic [ref=e402]:
+                - generic [ref=e403]: Candidatura Equilibrio
+                - generic [ref=e404]: 50%
+              - paragraph [ref=e407]: "Posición del perfil: Reformar la policía, fiscalía y el poder judicial"
+        - generic [ref=e408]:
+          - generic [ref=e409]:
+            - generic [ref=e410]:
+              - paragraph [ref=e411]: Economía
+              - paragraph [ref=e412]: "Tu respuesta: Sin responder"
+            - generic [ref=e413]: Sin responder
+          - generic [ref=e414]:
+            - generic [ref=e415]:
+              - generic [ref=e416]:
+                - generic [ref=e417]: Candidatura Horizonte
+                - generic [ref=e418]: 100%
+              - paragraph [ref=e421]: "Posición del perfil: El Estado debe intervenir más y controlar precios"
+            - generic [ref=e422]:
+              - generic [ref=e423]:
+                - generic [ref=e424]: Candidatura Orden
+                - generic [ref=e425]: 50%
+              - paragraph [ref=e428]: "Posición del perfil: Libre mercado: menos impuestos, menos regulación"
+            - generic [ref=e429]:
+              - generic [ref=e430]:
+                - generic [ref=e431]: Candidatura Equilibrio
+                - generic [ref=e432]: 50%
+              - paragraph [ref=e435]: "Posición del perfil: Un equilibrio entre mercado libre y regulación estatal"
+        - generic [ref=e436]:
+          - generic [ref=e437]:
+            - generic [ref=e438]:
+              - paragraph [ref=e439]: Educación
+              - paragraph [ref=e440]: "Tu respuesta: Sin responder"
+            - generic [ref=e441]: Sin responder
+          - generic [ref=e442]:
+            - generic [ref=e443]:
+              - generic [ref=e444]:
+                - generic [ref=e445]: Candidatura Horizonte
+                - generic [ref=e446]: 50%
+              - paragraph [ref=e449]: "Posición del perfil: Invertir fuerte en educación pública y gratuita"
+            - generic [ref=e450]:
+              - generic [ref=e451]:
+                - generic [ref=e452]: Candidatura Orden
+                - generic [ref=e453]: 100%
+              - paragraph [ref=e456]: "Posición del perfil: Dar incentivos para que crezca la educación privada"
+            - generic [ref=e457]:
+              - generic [ref=e458]:
+                - generic [ref=e459]: Candidatura Equilibrio
+                - generic [ref=e460]: 50%
+              - paragraph [ref=e463]: "Posición del perfil: Mejorar ambas: pública de calidad y privada accesible"
+        - generic [ref=e464]:
+          - generic [ref=e465]:
+            - generic [ref=e466]:
+              - paragraph [ref=e467]: Salud
+              - paragraph [ref=e468]: "Tu respuesta: Sin responder"
+            - generic [ref=e469]: Sin responder
+          - generic [ref=e470]:
+            - generic [ref=e471]:
+              - generic [ref=e472]:
+                - generic [ref=e473]: Candidatura Horizonte
+                - generic [ref=e474]: 50%
+              - paragraph [ref=e477]: "Posición del perfil: Un sistema de salud universal gratuito para todos"
+            - generic [ref=e478]:
+              - generic [ref=e479]:
+                - generic [ref=e480]: Candidatura Orden
+                - generic [ref=e481]: 100%
+              - paragraph [ref=e484]: "Posición del perfil: Fortalecer el sector privado como complemento del público"
+            - generic [ref=e485]:
+              - generic [ref=e486]:
+                - generic [ref=e487]: Candidatura Equilibrio
+                - generic [ref=e488]: 50%
+              - paragraph [ref=e491]: "Posición del perfil: Integrar SIS, EsSalud y clínicas en un solo sistema"
+        - generic [ref=e492]:
+          - generic [ref=e493]:
+            - generic [ref=e494]:
+              - paragraph [ref=e495]: Corrupción
+              - paragraph [ref=e496]: "Tu respuesta: Sin responder"
+            - generic [ref=e497]: Sin responder
+          - generic [ref=e498]:
+            - generic [ref=e499]:
+              - generic [ref=e500]:
+                - generic [ref=e501]: Candidatura Horizonte
+                - generic [ref=e502]: 50%
+              - paragraph [ref=e505]: "Posición del perfil: Reformar el sistema judicial y fortalecer la fiscalía"
+            - generic [ref=e506]:
+              - generic [ref=e507]:
+                - generic [ref=e508]: Candidatura Orden
+                - generic [ref=e509]: 50%
+              - paragraph [ref=e512]: "Posición del perfil: Pena de muerte o cadena perpetua para corruptos"
+            - generic [ref=e513]:
+              - generic [ref=e514]:
+                - generic [ref=e515]: Candidatura Equilibrio
+                - generic [ref=e516]: 100%
+              - paragraph [ref=e519]: "Posición del perfil: Cadena perpetua e inhabilitación de por vida"
+        - generic [ref=e520]:
+          - generic [ref=e521]:
+            - generic [ref=e522]:
+              - paragraph [ref=e523]: Minería
+              - paragraph [ref=e524]: "Tu respuesta: Sin responder"
+            - generic [ref=e525]: Sin responder
+          - generic [ref=e526]:
+            - generic [ref=e527]:
+              - generic [ref=e528]:
+                - generic [ref=e529]: Candidatura Horizonte
+                - generic [ref=e530]: 100%
+              - paragraph [ref=e533]: "Posición del perfil: Regularla fuertemente para proteger el medio ambiente"
+            - generic [ref=e534]:
+              - generic [ref=e535]:
+                - generic [ref=e536]: Candidatura Orden
+                - generic [ref=e537]: 50%
+              - paragraph [ref=e540]: "Posición del perfil: Promover la inversión minera, genera empleo y riqueza"
+            - generic [ref=e541]:
+              - generic [ref=e542]:
+                - generic [ref=e543]: Candidatura Equilibrio
+                - generic [ref=e544]: 50%
+              - paragraph [ref=e547]: "Posición del perfil: Solo con consulta previa a las comunidades afectadas"
+        - generic [ref=e548]:
+          - generic [ref=e549]:
+            - generic [ref=e550]:
+              - paragraph [ref=e551]: Descentralización
+              - paragraph [ref=e552]: "Tu respuesta: Sin responder"
+            - generic [ref=e553]: Sin responder
+          - generic [ref=e554]:
+            - generic [ref=e555]:
+              - generic [ref=e556]:
+                - generic [ref=e557]: Candidatura Horizonte
+                - generic [ref=e558]: 50%
+              - paragraph [ref=e561]: "Posición del perfil: Dar más poder y presupuesto a los gobiernos regionales"
+            - generic [ref=e562]:
+              - generic [ref=e563]:
+                - generic [ref=e564]: Candidatura Orden
+                - generic [ref=e565]: 100%
+              - paragraph [ref=e568]: "Posición del perfil: Un gobierno central fuerte que dirija desde Lima"
+            - generic [ref=e569]:
+              - generic [ref=e570]:
+                - generic [ref=e571]: Candidatura Equilibrio
+                - generic [ref=e572]: 50%
+              - paragraph [ref=e575]: "Posición del perfil: Descentralizar gradualmente con capacitación técnica"
+        - generic [ref=e576]:
+          - generic [ref=e577]:
+            - generic [ref=e578]:
+              - paragraph [ref=e579]: Política Social
+              - paragraph [ref=e580]: "Tu respuesta: Sin responder"
+            - generic [ref=e581]: Sin responder
+          - generic [ref=e582]:
+            - generic [ref=e583]:
+              - generic [ref=e584]:
+                - generic [ref=e585]: Candidatura Horizonte
+                - generic [ref=e586]: 50%
+              - paragraph [ref=e589]: "Posición del perfil: Invertir en educación técnica y capacitación laboral"
+            - generic [ref=e590]:
+              - generic [ref=e591]:
+                - generic [ref=e592]: Candidatura Orden
+                - generic [ref=e593]: 50%
+              - paragraph [ref=e596]: "Posición del perfil: Bonos y transferencias directas de dinero"
+            - generic [ref=e597]:
+              - generic [ref=e598]:
+                - generic [ref=e599]: Candidatura Equilibrio
+                - generic [ref=e600]: 100%
+              - paragraph [ref=e603]: "Posición del perfil: Crear programas de empleo temporal del Estado"
+    - generic [ref=e606]:
+      - generic [ref=e607]:
+        - generic [ref=e609]: lightbulb
+        - generic [ref=e610]:
+          - heading "Metodología sugerida" [level=2] [ref=e611]
+          - paragraph [ref=e612]: Usa este test para orientarte, pero confirma siempre con planes de gobierno, entrevistas y documentos oficiales antes de tomar una decisión. Los perfiles están basados en posiciones programáticas cargadas en el código fuente.
+      - link "Ir al portal JNE →" [ref=e613] [cursor=pointer]:
+        - /url: https://portal.jne.gob.pe
+  - generic [ref=e616]:
+    - button "Menu" [ref=e617]:
+      - img [ref=e619]
+      - generic: Menu
+    - button "Inspect" [ref=e623]:
+      - img [ref=e625]
+      - generic: Inspect
+    - button "Audit" [ref=e627]:
+      - img [ref=e629]
+      - generic: Audit
+    - button "Settings" [ref=e632]:
+      - img [ref=e634]
+      - generic: Settings

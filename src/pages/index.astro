@@ -9,6 +9,10 @@ import ResultsSection from '../components/ResultsSection.astro';
 import RankingSection from '../components/RankingSection.astro';
 import BreakdownSection from '../components/BreakdownSection.astro';
 import MethodologySection from '../components/MethodologySection.astro';
+import { getCollection } from 'astro:content';
+
+const allCandidatos = await getCollection('candidatos');
+const candidatosData = allCandidatos.map((c) => c.data);
 ---
 
 <Layout>
@@ -26,5 +30,8 @@ import MethodologySection from '../components/MethodologySection.astro';
 
   <MobileNav />
 
+  <script define:vars={{ candidatosData }}>
+    window.__CANDIDATOS_DATA__ = candidatosData;
+  </script>
   <script src="/script.js" is:inline></script>
 </Layout>

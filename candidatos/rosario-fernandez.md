@@ -1,0 +1,26 @@
+---
+nombre: "Rosario Fernández"
+partido: "Un Camino Diferente"
+logo_partido: "/img/partidos/un-camino-diferente.webp"
+foto: "/img/candidatos/rosario-fernandez.webp"
+edad: 67
+profesion: "Abogada"
+experiencia_politica: "Exministra y expresidenta del Consejo de Ministros"
+propuestas:
+  - "Reforma judicial para acelerar procesos y sancionar corrupción"
+  - "Fortalecer servicios públicos esenciales con enfoque de calidad"
+  - "Impulsar descentralizacion con capacidad técnica regional"
+dato_clave: "Tiene experiencia en el Ejecutivo y en gestión de crisis institucionales."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "gradual"
+  politica_social: "programas_empleo"
+---

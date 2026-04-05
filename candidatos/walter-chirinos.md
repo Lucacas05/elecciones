@@ -1,0 +1,26 @@
+---
+nombre: "Walter Chirinos"
+partido: "PRIN"
+logo_partido: "/img/partidos/prin.webp"
+foto: "/img/candidatos/walter-chirinos.webp"
+edad: 59
+profesion: "Empresario"
+experiencia_politica: "Candidato presidencial por PRIN"
+propuestas:
+  - "Fortalecer seguridad con tecnología y patrullaje urbano"
+  - "Promover formalizacion de pequenos negocios"
+  - "Descentralizar programas sociales y de empleo"
+dato_clave: "Postula con agenda de orden público y empleo local."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "mano_dura"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "cadena_perpetua"
+  mineria: "pro_mineria"
+  descentralizacion: "gradual"
+  politica_social: "programas_empleo"
+---

@@ -1,0 +1,26 @@
+---
+nombre: "Francisco Diez Canseco"
+partido: "Perú Acción"
+logo_partido: "/img/partidos/peru-accion.webp"
+foto: "/img/candidatos/francisco-diez-canseco.webp"
+edad: 72
+profesion: "Político y consultor"
+experiencia_politica: "Excongresista"
+propuestas:
+  - "Seguridad ciudadana con coordinación entre policía y municipios"
+  - "Reformas economicas para crecimiento con inclusion"
+  - "Transparencia y rendicion de cuentas en entidades públicas"
+dato_clave: "Figura política con trayectoria parlamentaria."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "gradual"
+  politica_social: "programas_empleo"
+---

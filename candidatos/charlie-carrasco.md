@@ -1,0 +1,26 @@
+---
+nombre: "Charlie Carrasco"
+partido: "Partido Demócrata Unido Perú"
+logo_partido: "/img/partidos/partido-democrata-unido-peru.webp"
+foto: "/img/candidatos/charlie-carrasco.webp"
+edad: 47
+profesion: "Economista"
+experiencia_politica: "Dirigente nacional del Partido Demócrata Unido Perú"
+propuestas:
+  - "Prevención del delito y fortalecimiento comunitario"
+  - "Emprendimiento y formalizacion con menos tramites"
+  - "Programas de insercion laboral juvenil"
+dato_clave: "Candidatura nueva con foco en empleo y gestión local."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "prevencion"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "mas_poder_regiones"
+  politica_social: "programas_empleo"
+---

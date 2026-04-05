@@ -1,0 +1,26 @@
+---
+nombre: "Fernando Olivera"
+partido: "Frente de la Esperanza"
+logo_partido: "/img/partidos/frente-de-la-esperanza.webp"
+foto: "/img/candidatos/fernando-olivera.webp"
+edad: 67
+profesion: "Abogado"
+experiencia_politica: "Excongresista y exministro"
+propuestas:
+  - "Reforma anticorrupcion con mayor control fiscal"
+  - "Promocion de competitividad con simplificacion normativa"
+  - "Programas de prevención social del delito"
+dato_clave: "Ha enfocado su trayectoria en denuncias y control de la corrupción."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "reforma_institucional"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "gradual"
+  politica_social: "educacion_tecnica"
+---

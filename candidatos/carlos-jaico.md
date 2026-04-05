@@ -1,0 +1,26 @@
+---
+nombre: "Carlos Jaico"
+partido: "Perú Moderno"
+logo_partido: "/img/partidos/peru-moderno.webp"
+foto: "/img/candidatos/carlos-jaico.webp"
+edad: 42
+profesion: "Abogado"
+experiencia_politica: "Exfuncionario público y candidato presidencial"
+propuestas:
+  - "Reforma de seguridad con enfoque preventivo y tecnología"
+  - "Incentivos para emprendimiento y formalizacion"
+  - "Capacitación técnica para empleo juvenil"
+dato_clave: "Candidatura orientada a renovación de gestión pública."
+partido_ideologia: "Centro"
+plan_gobierno_url: "https://plataformaelectoral.jne.gob.pe/"
+hoja_vida_url: "https://votoinformado.jne.gob.pe/"
+quiz_posiciones:
+  seguridad: "prevencion"
+  economia: "mixta"
+  educacion: "mixta"
+  salud: "mixto"
+  corrupcion: "reforma_judicial"
+  mineria: "regulacion_estricta"
+  descentralizacion: "gradual"
+  politica_social: "educacion_tecnica"
+---
