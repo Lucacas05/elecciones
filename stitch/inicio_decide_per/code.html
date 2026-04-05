@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Decide Perú</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#e6f3fb",
+                    "on-secondary-fixed-variant": "#2e4b57",
+                    "tertiary-container": "#6b0008",
+                    "surface-tint": "#3c5d9c",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#4a6774",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d7e4ec",
+                    "outline-variant": "#c4c6d2",
+                    "on-surface": "#111d23",
+                    "on-background": "#111d23",
+                    "surface-bright": "#f4faff",
+                    "primary-fixed": "#d8e2ff",
+                    "secondary": "#466270",
+                    "surface-dim": "#cfdce4",
+                    "primary-fixed-dim": "#aec6ff",
+                    "on-primary-fixed-variant": "#224583",
+                    "surface-container-high": "#ddeaf2",
+                    "inverse-primary": "#aec6ff",
+                    "on-tertiary-fixed": "#410003",
+                    "secondary-fixed-dim": "#adcbda",
+                    "on-tertiary-fixed-variant": "#930010",
+                    "inverse-surface": "#263238",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#434750",
+                    "on-primary-fixed": "#001a42",
+                    "surface": "#f4faff",
+                    "secondary-fixed": "#c9e7f7",
+                    "on-secondary": "#ffffff",
+                    "primary": "#001b44",
+                    "on-primary-container": "#7999dc",
+                    "tertiary-fixed": "#ffdad6",
+                    "surface-container-low": "#e9f6fd",
+                    "surface-variant": "#d7e4ec",
+                    "on-secondary-fixed": "#001f2a",
+                    "tertiary": "#430003",
+                    "primary-container": "#002f6c",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "background": "#f4faff",
+                    "secondary-container": "#c6e4f4",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ff6960",
+                    "surface-container": "#e3f0f8",
+                    "outline": "#747781",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb3ac"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .institutional-gradient {
+            background: linear-gradient(135deg, #001b44 0%, #002f6c 100%);
+        }
+    </style>
+</head>
+<body class="bg-background font-body text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopNavBar -->
+<nav class="flex justify-between items-center w-full px-8 py-4 max-w-full bg-[#f4faff] dark:bg-[#001b44] border-b border-[#e9f6fd]/50 dark:border-[#002f6c]/50 fixed top-0 z-[60] font-['Manrope'] tracking-tight">
+<div class="text-xl font-bold text-[#001b44] dark:text-[#f4faff] uppercase tracking-wider">Decide Perú</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="text-[#001b44] dark:text-[#f4faff] font-bold border-b-2 border-[#002f6c] transition-colors" href="#">Instrucciones</a>
+<a class="text-[#111d23]/60 dark:text-[#f4faff]/60 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-colors" href="#">Candidatos</a>
+<a class="text-[#111d23]/60 dark:text-[#f4faff]/60 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-colors" href="#">Metodología</a>
+</div>
+<div class="flex items-center gap-4"><button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 dark:bg-f4faff/5 text-primary dark:text-[#f4faff] hover:bg-primary/10 transition-colors font-semibold">
+<span class="material-symbols-outlined text-xl" data-icon="share">share</span>
+<span class="text-sm">Compartir</span>
+</button></div>
+</nav>
+<!-- SideNavBar (Mobile/Desktop Hidden Pivot) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 p-6 w-64 bg-[#e9f6fd] dark:bg-[#001b44] border-r border-[#e9f6fd] z-50 font-['Manrope'] font-medium pt-24">
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-white dark:bg-[#002f6c] text-[#001b44] dark:text-white rounded-lg font-bold shadow-sm translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+                Inicio
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+                Cuestionario
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+                Comparativa
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                Resultados
+            </a>
+</nav>
+</aside>
+<main class="lg:pl-64 pt-20 min-h-screen">
+<div class="max-w-7xl mx-auto px-6 lg:px-12 py-12 flex flex-col lg:flex-row items-center gap-16">
+<!-- Hero Content -->
+<div class="flex-1 space-y-8 text-center lg:text-left">
+<div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary-container text-on-secondary-container font-label text-sm font-semibold tracking-wide">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-on-tertiary-container opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-on-tertiary-container"></span>
+</span>
+                    ELECCIONES GENERALES 2024
+                </div>
+<h1 class="font-headline text-5xl lg:text-7xl font-extrabold text-primary leading-[1.1] tracking-tight">¿Con qué candidato presidencial haces <span class="text-primary-container relative">match?<span class="absolute bottom-0 left-0 w-full h-2 bg-primary-container/10 -z-10"></span></span></h1>
+<p class="font-body text-xl text-on-surface-variant leading-relaxed max-w-2xl">
+                    Responde 15 preguntas clave sobre economía, seguridad y sociedad para descubrir qué plan de gobierno se alinea con tus prioridades.
+                </p>
+<div class="pt-4 flex flex-col sm:flex-row items-center gap-4 justify-center lg:justify-start">
+<button class="px-8 py-5 bg-primary text-on-primary rounded-xl font-headline font-bold text-lg hover:bg-primary-container transition-all active:scale-95 shadow-xl shadow-primary/10">
+                        Comenzar el Test
+                    </button>
+<button class="px-8 py-5 bg-surface-container-low text-primary rounded-xl font-headline font-bold text-lg hover:bg-surface-container-high transition-all">
+                        Explorar Metodología
+                    </button>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-12">
+<div class="p-6 rounded-xl bg-surface-container-low/50 backdrop-blur-sm border border-outline-variant/10">
+<div class="text-primary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="shield_person">shield_person</span>
+</div>
+<p class="font-headline font-bold text-primary">Neutralidad</p>
+<p class="text-sm text-on-surface-variant mt-1">Algoritmo basado en datos oficiales.</p>
+</div>
+<div class="p-6 rounded-xl bg-surface-container-low/50 backdrop-blur-sm border border-outline-variant/10">
+<div class="text-primary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="verified">verified</span>
+</div>
+<p class="font-headline font-bold text-primary">Verificado</p>
+<p class="text-sm text-on-surface-variant mt-1">Planes de gobierno 2024.</p>
+</div>
+<div class="p-6 rounded-xl bg-surface-container-low/50 backdrop-blur-sm border border-outline-variant/10">
+<div class="text-primary mb-3">
+<span class="material-symbols-outlined text-3xl" data-icon="visibility_lock">visibility_lock</span>
+</div>
+<p class="font-headline font-bold text-primary">Anónimo</p>
+<p class="text-sm text-on-surface-variant mt-1">Tus datos no se guardan.</p>
+</div>
+</div>
+</div>
+<!-- Illustration Side (Asymmetric Card Layout) -->
+<div class="flex-1 relative w-full max-w-xl lg:max-w-none">
+<div class="relative z-10 aspect-square rounded-[2rem] overflow-hidden institutional-gradient shadow-2xl shadow-primary/20 transform rotate-3">
+<img alt="Palacio de Gobierno" class="w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="Modern high-angle shot of a majestic neoclassical government palace with stone pillars and national flag under dramatic twilight sky" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO80xgzohfiM4R8VgyL0XxMPNr1aQRYy35Web5BMGWWHg8T498ZXPme6M5w2Q4ui6rloy5pVXXHOC8uvPyJQa8jZOnEpvQVP9SmZTtS3L6PB39zr1k7xmy-sZJ18K_fgmalE_m0CGrc4DKsPBgfSr5P7vaXb7gBhTYmKDCwRT1wgls6jyGYOSO89-TcDYancT1H-O72w2KTMHIOTaqqqQ_oTs33wgIvoO9L5mGQP6ZFX9KgAIVwlTii4kFWKtbbqrQJsq3qGdQbVE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-transparent to-transparent"></div>
+<!-- Floating Data Pill -->
+<div class="absolute bottom-8 left-8 right-8 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="account_balance">account_balance</span>
+</div>
+<div>
+<p class="text-white/60 text-xs font-bold uppercase tracking-widest">Estado del Archivo</p>
+<p class="text-white font-headline font-bold text-lg">Actualizado: Mayo 2024</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Elements -->
+<div class="absolute -top-6 -right-6 w-32 h-32 bg-secondary-container rounded-full -z-10 blur-2xl opacity-50"></div>
+<div class="absolute -bottom-10 -left-10 w-64 h-64 bg-primary-container rounded-full -z-10 blur-3xl opacity-20"></div>
+<!-- Floating Info Badge -->
+<div class="absolute -top-10 left-10 lg:-left-12 bg-white p-4 rounded-xl shadow-xl flex items-center gap-3 z-20">
+<div class="w-10 h-10 rounded-lg bg-on-tertiary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="trending_up">trending_up</span>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant font-bold uppercase">Participación</p>
+<p class="font-headline font-extrabold text-primary">+1.2M Usuarios</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Section: Topics Grid (Institutional Style) -->
+<section class="bg-surface-container-low py-24 mt-12">
+<div class="max-w-7xl mx-auto px-6 lg:px-12">
+<div class="text-center mb-16 space-y-4">
+<h2 class="font-headline text-3xl font-bold text-primary">Los 3 Pilares del Análisis</h2>
+<p class="text-on-surface-variant font-body">Cruzamos tu visión con los planes de gobierno técnicos presentados ante el tribunal.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Bento Card 1 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col gap-6">
+<div class="w-14 h-14 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="payments">payments</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-extrabold text-primary mb-3">Economía y Desarrollo</h3>
+<p class="text-on-surface-variant leading-relaxed">Impuestos, gasto público, política monetaria y modelos de inversión para el próximo cuatrienio.</p>
+</div>
+</div>
+<!-- Bento Card 2 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col gap-6">
+<div class="w-14 h-14 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="admin_panel_settings">admin_panel_settings</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-extrabold text-primary mb-3">Seguridad Nacional</h3>
+<p class="text-on-surface-variant leading-relaxed">Estrategias contra el crimen organizado, reforma policial y control fronterizo institucional.</p>
+</div>
+</div>
+<!-- Bento Card 3 -->
+<div class="bg-surface-container-lowest p-8 rounded-2xl shadow-sm border border-outline-variant/10 flex flex-col gap-6">
+<div class="w-14 h-14 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="groups">groups</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-extrabold text-primary mb-3">Sociedad y Derechos</h3>
+<p class="text-on-surface-variant leading-relaxed">Salud pública, educación técnica y políticas de inclusión social desde el marco legal.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white/80 dark:bg-[#001b44]/80 backdrop-blur-xl border-t border-[#e9f6fd]/20 shadow-[0_-4px_40px_rgba(0,27,68,0.04)] font-['Manrope'] text-[10px] font-bold uppercase tracking-widest">
+<div class="flex flex-col items-center justify-center text-[#001b44]/40 dark:text-[#f4faff]/40">
+<span class="material-symbols-outlined" data-icon="arrow_back">arrow_back</span>
+            Anterior
+        </div>
+<div class="flex flex-col items-center justify-center bg-[#001b44] text-white rounded-lg px-6 py-2 scale-98">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+            Progreso
+        </div>
+<div class="flex flex-col items-center justify-center text-[#001b44]/40 dark:text-[#f4faff]/40">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+            Siguiente
+        </div>
+</nav>
+</body></html>

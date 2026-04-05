@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cuestionario | Match Presidencial 2024</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-on-surface": "#e6f3fb",
+                    "on-secondary-fixed-variant": "#2e4b57",
+                    "tertiary-container": "#6b0008",
+                    "surface-tint": "#3c5d9c",
+                    "on-error-container": "#93000a",
+                    "on-secondary-container": "#4a6774",
+                    "error": "#ba1a1a",
+                    "surface-container-highest": "#d7e4ec",
+                    "outline-variant": "#c4c6d2",
+                    "on-surface": "#111d23",
+                    "on-background": "#111d23",
+                    "surface-bright": "#f4faff",
+                    "primary-fixed": "#d8e2ff",
+                    "secondary": "#466270",
+                    "surface-dim": "#cfdce4",
+                    "primary-fixed-dim": "#aec6ff",
+                    "on-primary-fixed-variant": "#224583",
+                    "surface-container-high": "#ddeaf2",
+                    "inverse-primary": "#aec6ff",
+                    "on-tertiary-fixed": "#410003",
+                    "secondary-fixed-dim": "#adcbda",
+                    "on-tertiary-fixed-variant": "#930010",
+                    "inverse-surface": "#263238",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#434750",
+                    "on-primary-fixed": "#001a42",
+                    "surface": "#f4faff",
+                    "secondary-fixed": "#c9e7f7",
+                    "on-secondary": "#ffffff",
+                    "primary": "#001b44",
+                    "on-primary-container": "#7999dc",
+                    "tertiary-fixed": "#ffdad6",
+                    "surface-container-low": "#e9f6fd",
+                    "surface-variant": "#d7e4ec",
+                    "on-secondary-fixed": "#001f2a",
+                    "tertiary": "#430003",
+                    "primary-container": "#002f6c",
+                    "on-primary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "background": "#f4faff",
+                    "secondary-container": "#c6e4f4",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-container": "#ff6960",
+                    "surface-container": "#e3f0f8",
+                    "outline": "#747781",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb3ac"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, .font-headline { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-[#f4faff] dark:bg-[#001b44] border-b border-[#e9f6fd]/50 dark:border-[#002f6c]/50 flex justify-between items-center w-full px-8 py-4 max-w-full fixed top-0 z-50 font-['Manrope'] tracking-tight">
+<div class="text-xl font-bold text-[#001b44] dark:text-[#f4faff] uppercase tracking-wider">Decide Perú</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-[#111d23]/60 dark:text-[#f4faff]/60 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-colors" href="#">Instrucciones</a>
+<a class="text-[#001b44] dark:text-[#f4faff] font-bold border-b-2 border-[#002f6c]" href="#">Cuestionario</a>
+<a class="text-[#111d23]/60 dark:text-[#f4faff]/60 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-colors" href="#">Candidatos</a>
+<a class="text-[#111d23]/60 dark:text-[#f4faff]/60 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-colors" href="#">Metodología</a>
+</nav>
+<div class="flex items-center gap-4"><button class="flex items-center gap-2 px-4 py-2 text-sm font-bold text-[#001b44] dark:text-[#f4faff] hover:bg-primary/5 rounded-lg transition-colors">
+<span class="material-symbols-outlined text-xl">share</span>
+<span class="hidden sm:inline">Compartir</span>
+</button></div>
+</header>
+<!-- SideNavBar (Hidden on Mobile) -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 p-6 bg-[#e9f6fd] dark:bg-[#001b44] text-[#001b44] dark:text-[#f4faff] font-['Manrope'] font-medium w-64 pt-24 border-r border-[#e9f6fd]">
+<nav class="space-y-2">
+<a class="flex items-center gap-3 p-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">home</span> Inicio
+            </a>
+<a class="flex items-center gap-3 p-3 bg-white dark:bg-[#002f6c] text-[#001b44] dark:text-white rounded-lg font-bold shadow-sm translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">quiz</span> Cuestionario
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">compare_arrows</span> Comparativa
+            </a>
+<a class="flex items-center gap-3 p-3 text-[#111d23]/70 dark:text-[#f4faff]/70 hover:bg-white/80 dark:hover:bg-[#002f6c]/40 transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">analytics</span> Resultados
+            </a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-grow pt-28 pb-32 lg:pl-64 flex flex-col items-center justify-center px-4">
+<div class="max-w-3xl w-full">
+<!-- Progress Indicator Section -->
+<div class="mb-12 text-center">
+<div class="flex justify-between items-end mb-4">
+<span class="text-primary font-headline font-bold text-sm tracking-widest uppercase">Módulo: Economía</span>
+<span class="text-on-surface-variant font-label text-sm font-medium">Pregunta 4 de 15</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-primary-container w-[26.6%] rounded-full"></div>
+</div>
+</div>
+<!-- Question Card -->
+<div class="bg-surface-container-lowest rounded-xl p-8 md:p-12 shadow-[0_4px_40px_rgba(0,27,68,0.04)] border border-outline-variant/10">
+<div class="mb-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary-container text-on-secondary-container rounded-full text-xs font-bold uppercase tracking-tighter mb-6">
+<span class="material-symbols-outlined text-sm">payments</span>
+                        Política Fiscal
+                    </div>
+<h1 class="text-3xl md:text-4xl font-headline font-extrabold text-on-surface leading-tight tracking-tight">
+                        Sobre Economía: ¿Está de acuerdo con la eliminación progresiva del IGV para las pequeñas empresas?
+                    </h1>
+</div>
+<!-- Context Box -->
+<div class="bg-surface-container-low rounded-lg p-6 mb-10 border-l-4 border-primary">
+<h3 class="text-primary font-headline font-bold text-sm uppercase tracking-wide mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-base">info</span> Por qué es importante
+                    </h3>
+<p class="text-on-surface-variant text-sm leading-relaxed font-body">
+                        El Impuesto General a las Ventas (IGV) representa una de las mayores cargas administrativas y financieras para los emprendedores. Su eliminación progresiva busca fomentar la formalización y el crecimiento de las MYPES, aunque detractores advierten sobre una posible caída significativa en la recaudación fiscal nacional.
+                    </p>
+</div>
+<!-- Answer Options (Bento-style layout) -->
+<div class="grid grid-cols-1 md:grid-cols-5 gap-3">
+<button class="group flex flex-col items-center justify-center p-6 rounded-xl border border-transparent bg-surface-container hover:bg-primary hover:text-white transition-all duration-300 scale-100 hover:scale-[1.02]">
+<span class="material-symbols-outlined text-3xl mb-3 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">sentiment_very_satisfied</span>
+<span class="text-xs font-bold uppercase tracking-widest text-center">Totalmente de acuerdo</span>
+</button>
+<button class="group flex flex-col items-center justify-center p-6 rounded-xl border border-transparent bg-surface-container hover:bg-primary-container hover:text-white transition-all duration-300 scale-100 hover:scale-[1.02]">
+<span class="material-symbols-outlined text-3xl mb-3 group-hover:scale-110 transition-transform">sentiment_satisfied</span>
+<span class="text-xs font-bold uppercase tracking-widest text-center">De acuerdo</span>
+</button>
+<button class="group flex flex-col items-center justify-center p-6 rounded-xl border border-transparent bg-surface-container hover:bg-secondary hover:text-white transition-all duration-300 scale-100 hover:scale-[1.02]">
+<span class="material-symbols-outlined text-3xl mb-3 group-hover:scale-110 transition-transform">sentiment_neutral</span>
+<span class="text-xs font-bold uppercase tracking-widest text-center">Neutral</span>
+</button>
+<button class="group flex flex-col items-center justify-center p-6 rounded-xl border border-transparent bg-surface-container hover:bg-on-tertiary-container hover:text-white transition-all duration-300 scale-100 hover:scale-[1.02]">
+<span class="material-symbols-outlined text-3xl mb-3 group-hover:scale-110 transition-transform">sentiment_dissatisfied</span>
+<span class="text-xs font-bold uppercase tracking-widest text-center">En desacuerdo</span>
+</button>
+<button class="group flex flex-col items-center justify-center p-6 rounded-xl border border-transparent bg-surface-container hover:bg-tertiary-container hover:text-white transition-all duration-300 scale-100 hover:scale-[1.02]">
+<span class="material-symbols-outlined text-3xl mb-3 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">sentiment_very_dissatisfied</span>
+<span class="text-xs font-bold uppercase tracking-widest text-center">Totalmente en desacuerdo</span>
+</button>
+</div>
+</div>
+<!-- Footer Navigation (Instructional Only) -->
+<div class="mt-12 flex items-center justify-center gap-4 text-on-surface-variant/40">
+<span class="material-symbols-outlined">keyboard_command_key</span>
+<span class="text-xs font-medium uppercase tracking-widest">Usa las flechas para navegar entre opciones</span>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 border-t border-[#e9f6fd]/20 bg-white/80 dark:bg-[#001b44]/80 backdrop-blur-xl md:hidden font-['Manrope'] text-[10px] font-bold uppercase tracking-widest">
+<button class="flex flex-col items-center justify-center text-[#001b44]/40 dark:text-[#f4faff]/40 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-all">
+<span class="material-symbols-outlined mb-1">arrow_back</span>
+            Anterior
+        </button>
+<button class="flex flex-col items-center justify-center bg-[#001b44] text-white rounded-lg px-6 py-2 scale-98 transition-all">
+<span class="material-symbols-outlined mb-1">query_stats</span>
+            Progreso
+        </button>
+<button class="flex flex-col items-center justify-center text-[#001b44]/40 dark:text-[#f4faff]/40 hover:text-[#002f6c] dark:hover:text-[#ff6960] transition-all">
+<span class="material-symbols-outlined mb-1">arrow_forward</span>
+            Siguiente
+        </button>
+</nav>
+<!-- Visual Anchor: Floating Stats -->
+<div class="hidden xl:block fixed right-8 top-32 w-64">
+<div class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10 shadow-sm">
+<h4 class="text-primary font-headline font-extrabold text-xs uppercase tracking-widest mb-4">Estado del Test</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="text-xs text-on-surface-variant">Tiempo est.</span>
+<span class="text-sm font-headline font-bold text-primary">08:45 min</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-xs text-on-surface-variant">Completado</span>
+<span class="text-sm font-headline font-bold text-primary">27%</span>
+</div>
+<div class="pt-4 border-t border-outline-variant/20">
+<div class="flex items-center gap-2 text-[10px] text-on-tertiary-container font-bold uppercase">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                        Sesión Registrada
+                    </div>
+</div>
+</div>
+</div>
+</div>
+</body></html>
