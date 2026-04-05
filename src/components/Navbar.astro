@@ -1,10 +1,16 @@
 ---
+interface Props {
+  currentPage?: 'home' | 'candidatos';
+}
+
+const { currentPage = 'home' } = Astro.props;
+const homePrefix = currentPage === 'home' ? '' : '/';
+
 const navLinks = [
-  { href: '#inicio', label: 'Inicio', icon: 'home' },
-  { href: '#cuestionario', label: 'Cuestionario', icon: 'quiz' },
-  { href: '#comparativa', label: 'Comparativa', icon: 'compare_arrows' },
-  { href: '#resultados', label: 'Resultados', icon: 'analytics' },
-  { href: '#metodologia', label: 'Metodología', icon: 'library_books' },
+  { href: `${homePrefix}#inicio`, label: 'Inicio', icon: 'home', section: 'inicio' },
+  { href: `${homePrefix}#cuestionario`, label: 'Cuestionario', icon: 'quiz', section: 'cuestionario' },
+  { href: `${homePrefix}#resultados`, label: 'Resultados', icon: 'analytics', section: 'resultados' },
+  { href: '/candidatos', label: 'Candidatos', icon: 'groups', section: 'candidatos' },
 ];
 ---
 
@@ -18,9 +24,14 @@ const navLinks = [
   <div class="hidden md:flex items-center gap-1">
     {navLinks.map((link) => (
       <a
-        class="nav-link flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-primary hover:bg-primary/5 rounded-lg transition-all text-sm font-semibold"
+        class:list={[
+          'nav-link flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-sm font-semibold',
+          currentPage === 'candidatos' && link.section === 'candidatos'
+            ? 'text-primary bg-primary/5 font-bold'
+            : 'text-on-surface-variant hover:text-primary hover:bg-primary/5',
+        ]}
         href={link.href}
-        data-section={link.href.replace('#', '')}
+        data-section={link.section}
       >
         <span class="material-symbols-outlined text-lg">{link.icon}</span>
         {link.label}
@@ -29,49 +40,59 @@ const navLinks = [
   </div>
 
   <div class="flex items-center gap-3">
-    <button
+    <a
       class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors font-semibold text-sm"
-      type="button"
+      href={currentPage === 'home' ? '#resultados' : '/#cuestionario'}
       id="nav-results-btn"
     >
-      <span class="material-symbols-outlined text-xl">analytics</span>
-      <span class="hidden sm:inline">Ver resultados</span>
-    </button>
+      <span class="material-symbols-outlined text-xl">
+        {currentPage === 'home' ? 'analytics' : 'quiz'}
+      </span>
+      <span class="hidden sm:inline">
+        {currentPage === 'home' ? 'Ver resultados' : 'Hacer el test'}
+      </span>
+    </a>
   </div>
 </nav>
 
-<script>
-  const navResultsBtn = document.getElementById('nav-results-btn');
-  navResultsBtn?.addEventListener('click', () => {
-    document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth' });
-  });
-
-  const navLinks = document.querySelectorAll('.nav-link');
-  const sections = document.querySelectorAll('section[id], header[id]');
-
-  function updateActiveNav() {
-    let current = '';
-    sections.forEach((section) => {
-      if (section.offsetParent === null && !section.closest('body')) return;
-      if (section.classList.contains('hidden')) return;
-      const rect = section.getBoundingClientRect();
-      if (rect.top <= 120) {
-        current = section.id;
-      }
+{currentPage === 'home' && (
+  <script>
+    const navResultsBtn = document.getElementById('nav-results-btn');
+    navResultsBtn?.addEventListener('click', (event) => {
+      const href = navResultsBtn.getAttribute('href');
+      if (href !== '#resultados') return;
+      event.preventDefault();
+      document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth' });
     });
 
-    navLinks.forEach((link) => {
-      const section = link.getAttribute('data-section');
-      if (section === current) {
-        link.classList.add('text-primary', 'bg-primary/5', 'font-bold');
-        link.classList.remove('text-on-surface-variant');
-      } else {
-        link.classList.remove('text-primary', 'bg-primary/5', 'font-bold');
-        link.classList.add('text-on-surface-variant');
-      }
-    });
-  }
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('section[id], header[id]');
 
-  window.addEventListener('scroll', updateActiveNav, { passive: true });
-  updateActiveNav();
-</script>
+    function updateActiveNav() {
+      let current = '';
+      sections.forEach((section) => {
+        if (section.offsetParent === null && !section.closest('body')) return;
+        if (section.classList.contains('hidden')) return;
+        const rect = section.getBoundingClientRect();
+        if (rect.top <= 120) {
+          current = section.id;
+        }
+      });
+
+      navLinks.forEach((link) => {
+        const section = link.getAttribute('data-section');
+        if (section === 'candidatos') return;
+        if (section === current) {
+          link.classList.add('text-primary', 'bg-primary/5', 'font-bold');
+          link.classList.remove('text-on-surface-variant');
+        } else {
+          link.classList.remove('text-primary', 'bg-primary/5', 'font-bold');
+          link.classList.add('text-on-surface-variant');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', updateActiveNav, { passive: true });
+    updateActiveNav();
+  </script>
+)}

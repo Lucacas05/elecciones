@@ -1,29 +1,51 @@
+---
+interface Props {
+  currentPage?: 'home' | 'candidatos';
+}
+
+const { currentPage = 'home' } = Astro.props;
+const homePrefix = currentPage === 'home' ? '' : '/';
+---
+
 <nav
   class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white/80 backdrop-blur-xl border-t border-surface-container-low/20 shadow-[0_-4px_40px_rgba(0,27,68,0.04)] font-headline text-[10px] font-bold uppercase tracking-widest"
 >
   <a
-    href="#inicio"
-    class="flex flex-col items-center justify-center text-primary/40 hover:text-primary transition-colors"
+    href={`${homePrefix}#inicio`}
+    class:list={[
+      'flex flex-col items-center justify-center transition-colors',
+      currentPage === 'home' ? 'text-primary' : 'text-primary/40 hover:text-primary',
+    ]}
   >
     <span class="material-symbols-outlined mb-0.5">home</span>
     Inicio
   </a>
   <a
-    href="#cuestionario"
-    class="flex flex-col items-center justify-center bg-primary text-white rounded-lg px-5 py-2"
+    href={`${homePrefix}#cuestionario`}
+    class:list={[
+      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      currentPage === 'home'
+        ? 'bg-primary text-white'
+        : 'text-primary/40 hover:text-primary',
+    ]}
   >
     <span class="material-symbols-outlined mb-0.5">quiz</span>
     Test
   </a>
   <a
-    href="#comparativa"
-    class="flex flex-col items-center justify-center text-primary/40 hover:text-primary transition-colors"
+    href="/candidatos"
+    class:list={[
+      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      currentPage === 'candidatos'
+        ? 'bg-primary text-white'
+        : 'text-primary/40 hover:text-primary',
+    ]}
   >
-    <span class="material-symbols-outlined mb-0.5">compare_arrows</span>
-    Comparar
+    <span class="material-symbols-outlined mb-0.5">groups</span>
+    Candidatos
   </a>
   <a
-    href="#resultados"
+    href={`${homePrefix}#resultados`}
     class="flex flex-col items-center justify-center text-primary/40 hover:text-primary transition-colors"
   >
     <span class="material-symbols-outlined mb-0.5">analytics</span>

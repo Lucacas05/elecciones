@@ -8,7 +8,6 @@ import QuestionnaireSection from '../components/QuestionnaireSection.astro';
 import ResultsSection from '../components/ResultsSection.astro';
 import RankingSection from '../components/RankingSection.astro';
 import BreakdownSection from '../components/BreakdownSection.astro';
-import MethodologySection from '../components/MethodologySection.astro';
 import { getCollection } from 'astro:content';
 
 const allCandidatos = await getCollection('candidatos');
@@ -16,7 +15,7 @@ const candidatosData = allCandidatos.map((c) => c.data);
 ---
 
 <Layout>
-  <Navbar />
+  <Navbar currentPage="home" />
 
   <main class="min-h-screen pb-24 md:pb-0">
     <HeroSection />
@@ -25,10 +24,9 @@ const candidatosData = allCandidatos.map((c) => c.data);
     <ResultsSection />
     <RankingSection />
     <BreakdownSection />
-    <MethodologySection />
   </main>
 
-  <MobileNav />
+  <MobileNav currentPage="home" />
 
   <script define:vars={{ candidatosData }}>
     window.__CANDIDATOS_DATA__ = candidatosData;
