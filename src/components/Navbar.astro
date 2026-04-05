@@ -1,19 +1,39 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'candidatos';
+  currentPage?: 'home' | 'cuestionario' | 'predicciones' | 'candidatos';
 }
 
 const { currentPage = 'home' } = Astro.props;
-const homePrefix = currentPage === 'home' ? '' : '/';
-const shareUrl = homePrefix || '/';
-const shareTitle = 'Decide Perú · Cuestionario electoral';
-const shareText = 'Comparte este test de Decide Perú para ver qué candidatura se alinea más contigo.';
+const pageMeta = {
+  home: {
+    shareUrl: '/',
+    shareTitle: 'Decide Perú · Inicio',
+    shareText: 'Explora Decide Perú, haz el test electoral y revisa a los candidatos.',
+  },
+  cuestionario: {
+    shareUrl: '/cuestionario',
+    shareTitle: 'Decide Perú · Cuestionario',
+    shareText: 'Haz el test de Decide Perú y descubre qué candidatura se alinea más contigo.',
+  },
+  predicciones: {
+    shareUrl: '/predicciones',
+    shareTitle: 'Decide Perú · Predicciones',
+    shareText: 'Revisa las predicciones en vivo de Decide Perú con datos de Polymarket.',
+  },
+  candidatos: {
+    shareUrl: '/candidatos',
+    shareTitle: 'Decide Perú · Candidatos',
+    shareText: 'Explora los perfiles y propuestas de cada candidatura en Decide Perú.',
+  },
+} satisfies Record<string, { shareUrl: string; shareTitle: string; shareText: string }>;
+
+const { shareUrl, shareTitle, shareText } = pageMeta[currentPage];
 
 const navLinks = [
-  { href: `${homePrefix}#inicio`, label: 'Inicio', icon: 'home', section: 'inicio' },
-  { href: `${homePrefix}#cuestionario`, label: 'Cuestionario', icon: 'quiz', section: 'cuestionario' },
-  { href: `${homePrefix}#resultados`, label: 'Resultados', icon: 'analytics', section: 'resultados' },
-  { href: '/candidatos', label: 'Candidatos', icon: 'groups', section: 'candidatos' },
+  { href: '/', label: 'Inicio', icon: 'home', page: 'home' },
+  { href: '/cuestionario', label: 'Cuestionario', icon: 'quiz', page: 'cuestionario' },
+  { href: '/predicciones', label: 'Predicciones', icon: 'analytics', page: 'predicciones' },
+  { href: '/candidatos', label: 'Candidatos', icon: 'groups', page: 'candidatos' },
 ];
 ---
 
@@ -29,12 +49,11 @@ const navLinks = [
       <a
         class:list={[
           'nav-link flex items-center gap-2 px-4 py-2 rounded-lg transition-all text-sm font-semibold',
-          currentPage === 'candidatos' && link.section === 'candidatos'
+          currentPage === link.page
             ? 'text-primary bg-primary/5 font-bold'
             : 'text-on-surface-variant hover:text-primary hover:bg-primary/5',
         ]}
         href={link.href}
-        data-section={link.section}
       >
         <span class="material-symbols-outlined text-lg">{link.icon}</span>
         {link.label}
@@ -50,7 +69,6 @@ const navLinks = [
       data-share-url={shareUrl}
       data-share-title={shareTitle}
       data-share-text={shareText}
-      data-home-page={currentPage === 'home' ? 'true' : 'false'}
       aria-label="Compartir Decide Perú"
     >
       <span class="material-symbols-outlined text-xl">share</span>
@@ -83,54 +101,20 @@ const navLinks = [
 
       if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(absoluteUrl);
-        window.alert('Enlace copiado para compartir el test.');
+        window.alert('Enlace copiado para compartir Decide Perú.');
         return;
       }
 
-      window.prompt('Copia este enlace para compartir el test:', absoluteUrl);
+      window.prompt('Copia este enlace para compartir Decide Perú:', absoluteUrl);
     } catch (error) {
       if (error instanceof DOMException && error.name === 'AbortError') {
         return;
       }
 
       console.error('No se pudo compartir el enlace del test.', error);
-      window.prompt('Copia este enlace para compartir el test:', absoluteUrl);
+      window.prompt('Copia este enlace para compartir Decide Perú:', absoluteUrl);
     }
   }
 
   navShareBtn?.addEventListener('click', handleShare);
-
-  const isHomePage = navShareBtn?.getAttribute('data-home-page') === 'true';
-
-  if (isHomePage) {
-    const navLinks = document.querySelectorAll('.nav-link');
-    const sections = document.querySelectorAll('section[id], header[id]');
-
-    function updateActiveNav() {
-      let current = '';
-      sections.forEach((section) => {
-        if (section.offsetParent === null && !section.closest('body')) return;
-        if (section.classList.contains('hidden')) return;
-        const rect = section.getBoundingClientRect();
-        if (rect.top <= 120) {
-          current = section.id;
-        }
-      });
-
-      navLinks.forEach((link) => {
-        const section = link.getAttribute('data-section');
-        if (section === 'candidatos') return;
-        if (section === current) {
-          link.classList.add('text-primary', 'bg-primary/5', 'font-bold');
-          link.classList.remove('text-on-surface-variant');
-        } else {
-          link.classList.remove('text-primary', 'bg-primary/5', 'font-bold');
-          link.classList.add('text-on-surface-variant');
-        }
-      });
-    }
-
-    window.addEventListener('scroll', updateActiveNav, { passive: true });
-    updateActiveNav();
-  }
 </script>

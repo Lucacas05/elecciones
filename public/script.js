@@ -1126,23 +1126,25 @@ function updateResults() {
 
 // ── Event Handlers ────────────────────────────────────────────────────────────
 
-form.addEventListener('change', (event) => {
-  if (!(event.target instanceof HTMLInputElement)) return;
-  currentAnswers[event.target.name] = clampAnswer(event.target.value);
-  persistAnswers();
-  renderQuestions();
-  showResultsSections();
-  updateResults();
-});
+if (form) {
+  form.addEventListener('change', (event) => {
+    if (!(event.target instanceof HTMLInputElement)) return;
+    currentAnswers[event.target.name] = clampAnswer(event.target.value);
+    persistAnswers();
+    renderQuestions();
+    showResultsSections();
+    updateResults();
+  });
 
-form.addEventListener('submit', (event) => {
-  event.preventDefault();
-  showResultsSections();
-  updateResults();
-  document.getElementById('tu-resultado')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-});
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    showResultsSections();
+    updateResults();
+    document.getElementById('tu-resultado')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
 
-resetButton.addEventListener('click', () => {
+resetButton?.addEventListener('click', () => {
   currentAnswers = getDefaultAnswers();
   persistAnswers();
   renderQuestions();
@@ -1154,11 +1156,13 @@ resetButton.addEventListener('click', () => {
 
 const hasSavedAnswers = localStorage.getItem(QUESTION_KEY) !== null;
 
-renderQuestions();
+if (form) {
+  renderQuestions();
 
-if (hasSavedAnswers) {
-  showResultsSections();
-  updateResults();
+  if (hasSavedAnswers) {
+    showResultsSections();
+    updateResults();
+  }
 }
 
 window.addEventListener('beforeunload', () => {
