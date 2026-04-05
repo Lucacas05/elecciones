@@ -169,22 +169,19 @@ function renderPolymarketBoard() {
 
   const podiumMarkup = podium
     .map((candidate, index) => `
-      <article class="rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low px-5 py-5">
+      <article class="rounded-xl border border-outline-variant/10 bg-surface-container-low px-4 py-4">
         <div class="flex items-center justify-between gap-4">
-          <div class="flex items-center gap-3">
-            <span class="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-white px-3 text-sm font-extrabold text-primary">
+          <div class="flex min-w-0 items-center gap-3">
+            <span class="inline-flex h-8 min-w-8 items-center justify-center rounded-full bg-surface px-2.5 text-sm font-bold text-primary">
               ${index + 1}
             </span>
-            <div>
-              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/55">
-                ${index === 0 ? 'Favorito' : `Puesto ${index + 1}`}
-              </p>
-              <h3 class="mt-1 font-headline text-lg font-extrabold leading-tight text-primary">
+            <div class="min-w-0">
+              <h3 class="truncate text-base font-semibold leading-tight text-primary md:text-lg">
                 ${escapeHtml(candidate.name)}
               </h3>
             </div>
           </div>
-          <span class="text-2xl font-extrabold tabular-nums text-primary">
+          <span class="text-xl font-semibold tabular-nums text-primary md:text-2xl">
             ${formatProbability(candidate.probability)}
           </span>
         </div>
@@ -202,52 +199,24 @@ function renderPolymarketBoard() {
     : '';
 
   polymarketBoard.innerHTML = `
-    <article class="rounded-[1.75rem] border border-outline-variant/10 bg-surface p-6 md:p-8">
-      <div class="flex flex-col gap-6">
+    <article class="rounded-[1.5rem] border border-outline-variant/10 bg-surface px-5 py-6 md:px-6">
+      <div class="flex flex-col gap-5">
         ${fallbackNotice}
-        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
-          <div class="space-y-3">
-            <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary/55">Top 3 de Polymarket</p>
-            <h3 class="font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
-              ${escapeHtml(leader.name)} lidera ahora mismo
+        <div class="border-b border-outline-variant/10 pb-4">
+          <div class="space-y-1">
+            <p class="text-xs font-bold uppercase tracking-[0.18em] text-primary/55">Top 3</p>
+            <h3 class="text-lg font-semibold text-primary">
+              ${escapeHtml(leader.name)} lidera
             </h3>
-            <p class="max-w-2xl text-sm leading-6 text-on-surface-variant">
-              Solo te mostramos los tres primeros puestos con su porcentaje actual.
-              Si quieres ver el mercado completo, abre Polymarket.
-            </p>
-          </div>
-          <div class="rounded-[1.5rem] bg-primary px-6 py-5 text-white shadow-[0_18px_40px_rgba(0,27,68,0.18)]">
-            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70">1.er lugar</p>
-            <p class="mt-2 font-headline text-4xl font-extrabold tabular-nums">${formatProbability(leader.probability)}</p>
-            <p class="mt-2 text-sm text-white/72">${escapeHtml(leader.name)}</p>
           </div>
         </div>
 
-        <div class="grid gap-3 md:grid-cols-3">
+        <div class="space-y-3">
           ${podiumMarkup}
-        </div>
-        <div class="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low px-5 py-4">
-          <p class="text-sm text-on-surface-variant">
-            Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)}
-          </p>
-          <span class="rounded-full bg-primary/5 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
-            ${polymarketSnapshot.active && !polymarketSnapshot.closed ? 'Mercado abierto' : 'Mercado cerrado'}
-          </span>
         </div>
       </div>
     </article>
   `;
-
-  if (polymarketMeta) {
-    const eventState = polymarketSnapshot.active && !polymarketSnapshot.closed ? 'mercado abierto' : 'mercado cerrado';
-    if (polymarketSnapshot.servedFrom === 'cache') {
-      polymarketMeta.textContent = `Mostrando último dato válido guardado · actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
-    } else if (polymarketSnapshot.servedFrom === 'seed') {
-      polymarketMeta.textContent = `Mostrando respaldo temporal · actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
-    } else {
-      polymarketMeta.textContent = `Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
-    }
-  }
 }
 
 function parseMarketPrice(value) {
