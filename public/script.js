@@ -114,7 +114,7 @@ const answersCount = document.getElementById('answers-count');
 const resetButton = document.getElementById('reset-button');
 
 function getDefaultAnswers() {
-  return Object.fromEntries(QUESTIONS.map((question) => [question.id, 3]));
+  return Object.fromEntries(QUESTIONS.map((question) => [question.id, null]));
 }
 
 function clampAnswer(value) {
@@ -132,7 +132,8 @@ function loadAnswers() {
   try {
     const parsed = JSON.parse(saved);
     return QUESTIONS.reduce((acc, question) => {
-      acc[question.id] = clampAnswer(parsed[question.id] ?? defaults[question.id]);
+      const val = parsed[question.id];
+      acc[question.id] = val != null ? clampAnswer(val) : null;
       return acc;
     }, {});
   } catch (_) {
@@ -147,12 +148,14 @@ function persistAnswers() {
 }
 
 function answerTone(value) {
+  if (value === null) return 'Sin responder';
   if (value <= 2) return 'Más cerca del primer enfoque';
   if (value === 3) return 'Punto medio';
   return 'Más cerca del segundo enfoque';
 }
 
 function answerLabel(question, value) {
+  if (value === null) return 'Sin responder';
   if (value === 1) return question.leftLabel;
   if (value === 2) return `Más cerca de: ${question.leftLabel}`;
   if (value === 3) return 'Punto medio';
@@ -164,13 +167,13 @@ function buildQuestionMarkup(question, value) {
   const options = [1, 2, 3, 4, 5]
     .map(
       (option) => `
-        <label class="option-pill ${value === option ? 'is-selected' : ''}">
+        <label class="option-pill ${value !== null && value === option ? 'is-selected' : ''}">
           <input
             class="sr-only"
             type="radio"
             name="${question.id}"
             value="${option}"
-            ${value === option ? 'checked' : ''}
+            ${value !== null && value === option ? 'checked' : ''}
           />
           <span class="text-sm font-semibold">${option}</span>
         </label>
@@ -199,14 +202,18 @@ function buildQuestionMarkup(question, value) {
   `;
 }
 
+function countAnswered() {
+  return QUESTIONS.filter((q) => currentAnswers[q.id] !== null).length;
+}
+
 function renderQuestions() {
   form.innerHTML = QUESTIONS.map((question) => buildQuestionMarkup(question, currentAnswers[question.id])).join('');
-  answersCount.textContent = `${QUESTIONS.length}/${QUESTIONS.length}`;
+  answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
 }
 
 function calculateCandidateScore(candidate) {
   const issueScores = QUESTIONS.map((question) => {
-    const userValue = currentAnswers[question.id];
+    const userValue = currentAnswers[question.id] ?? 3;
     const candidateValue = clampAnswer(candidate.positions[question.id]);
     const distance = Math.abs(userValue - candidateValue);
     const affinity = Math.round((1 - distance / 4) * 100);
@@ -367,6 +374,15 @@ function renderIssueBreakdown(ranking) {
   }).join('');
 }
 
+let resultsRevealed = false;
+const resultsSections = document.querySelectorAll('[data-results-section]');
+
+function showResultsSections() {
+  if (resultsRevealed) return;
+  resultsRevealed = true;
+  resultsSections.forEach((section) => section.classList.remove('hidden'));
+}
+
 function updateResults() {
   const ranking = CANDIDATES.map(calculateCandidateScore).sort((a, b) => b.score - a.score);
   renderTopMatch(ranking);
@@ -379,11 +395,13 @@ form.addEventListener('change', (event) => {
   currentAnswers[event.target.name] = clampAnswer(event.target.value);
   persistAnswers();
   renderQuestions();
+  showResultsSections();
   updateResults();
 });
 
 form.addEventListener('submit', (event) => {
   event.preventDefault();
+  showResultsSections();
   updateResults();
   document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
@@ -392,8 +410,15 @@ resetButton.addEventListener('click', () => {
   currentAnswers = getDefaultAnswers();
   persistAnswers();
   renderQuestions();
+  showResultsSections();
   updateResults();
 });
 
+const hasSavedAnswers = localStorage.getItem(QUESTION_KEY) !== null;
+
 renderQuestions();
-updateResults();
+
+if (hasSavedAnswers) {
+  showResultsSections();
+  updateResults();
+}

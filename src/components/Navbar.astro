@@ -52,6 +52,8 @@ const navLinks = [
   function updateActiveNav() {
     let current = '';
     sections.forEach((section) => {
+      if (section.offsetParent === null && !section.closest('body')) return;
+      if (section.classList.contains('hidden')) return;
       const rect = section.getBoundingClientRect();
       if (rect.top <= 120) {
         current = section.id;
