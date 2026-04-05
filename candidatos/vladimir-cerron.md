@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "consulta_previa"
   descentralizacion: "mas_poder_regiones"
   politica_social: "bonos_directos"
+  instituciones: "reforma_estado"
+  empleo_formalizacion: "empleo_publico"
 ---

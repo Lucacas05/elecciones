@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "regulacion_estricta"
   descentralizacion: "gradual"
   politica_social: "educacion_tecnica"
+  instituciones: "reforma_estado"
+  empleo_formalizacion: "capacitacion_formalizacion"
 ---

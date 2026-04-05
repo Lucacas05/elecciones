@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "pro_mineria"
   descentralizacion: "gobierno_central"
   politica_social: "bonos_directos"
+  instituciones: "autoridad_ejecutiva"
+  empleo_formalizacion: "empleo_publico"
 ---

@@ -141,6 +141,8 @@ quiz_posiciones:
   mineria: consulta_previa
   descentralizacion: gradual
   politica_social: educacion_tecnica
+  instituciones: reforma_estado
+  empleo_formalizacion: capacitacion_formalizacion
 ---
 ```
 
@@ -156,6 +158,8 @@ Cada eje usa valores cerrados:
 - `mineria`: `pro_mineria` | `regulacion_estricta` | `consulta_previa`
 - `descentralizacion`: `mas_poder_regiones` | `gobierno_central` | `gradual`
 - `politica_social`: `bonos_directos` | `programas_empleo` | `educacion_tecnica`
+- `instituciones`: `autoridad_ejecutiva` | `reforma_estado` | `transparencia_control`
+- `empleo_formalizacion`: `inversion_privada` | `empleo_publico` | `capacitacion_formalizacion`
 
 ### 3) Imágenes y logos
 
@@ -183,26 +187,32 @@ La página de planes está pensada para ser estable en deploy, así que lista to
 
 ## Cómo funciona el test
 
-La lógica del cuestionario vive en `public/script.js`.
+La lógica del cuestionario vive en:
+
+- `public/quiz-core.js` → motor puro del quiz, scoring y mapeos
+- `public/script.js` → wrapper de DOM del cuestionario + Polymarket
 
 ### Flujo actual
 
 1. Astro inyecta los candidatos cargados desde `astro:content`.
 2. El cliente arma la colección `CANDIDATES`.
-3. El usuario responde 8 preguntas de 3 opciones cada una.
+3. El usuario responde 10 preguntas de 3 opciones cada una.
 4. Las respuestas se guardan en `localStorage`.
-5. Se calcula una afinidad por candidatura y un ranking final.
+5. El resultado se muestra solo cuando el usuario completa 10/10 respuestas.
+6. Se calcula una afinidad por candidatura y un ranking final.
 
 ### Algoritmo de afinidad
 
-El score no usa solo `quiz_posiciones`.
+El score principal usa **posiciones estructuradas curadas** (`quiz_posiciones`) y una
+**matriz categórica de compatibilidad** por tema.
 
-También combina:
+- cada eje compara la respuesta del usuario con la posición editorial del candidato
+- la afinidad por tema se convierte a porcentaje
+- el score final es el promedio de los 10 temas
+- las respuestas incompletas no generan ranking
 
-- la **posición estructurada** del candidato por eje
-- una **lectura contextual de texto** sobre propuestas y dato clave mediante diccionarios de palabras clave
-
-Ese refuerzo semántico está implementado en `public/script.js` y ajusta parcialmente la similitud final por tema.
+La lectura contextual de texto vía palabras clave se mantiene solo como
+**evidencia secundaria / desempate** y ya no modifica el score principal.
 
 ## Polymarket
 
@@ -243,6 +253,7 @@ npm run build
 ## Notas de mantenimiento
 
 - Hay tests automatizados con Vitest para:
+  - motor del cuestionario y scoring de afinidad
   - normalización de payloads de Polymarket
   - fallback de store/cache/seed
   - respuesta del endpoint JSON
@@ -255,6 +266,5 @@ npm run build
 
 ## Próximas mejoras razonables
 
-- mover la lógica cliente grande de `public/script.js` a módulos separados
 - añadir validaciones/editorial tooling para candidatos y assets faltantes
 - incorporar tests para la normalización de PDFs

@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "consulta_previa"
   descentralizacion: "gradual"
   politica_social: "programas_empleo"
+  instituciones: "reforma_estado"
+  empleo_formalizacion: "capacitacion_formalizacion"
 ---

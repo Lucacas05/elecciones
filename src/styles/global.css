@@ -101,6 +101,13 @@ body {
   background: #002f6c;
 }
 
+.quiz-btn-primary:disabled {
+  background: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
 .quiz-btn-primary:active {
   transform: scale(0.98);
 }
@@ -120,6 +127,14 @@ body {
 .quiz-btn-secondary:hover {
   background: #f1f5f9;
   border-color: #cbd5e1;
+}
+
+#quiz-status[data-state="complete"] {
+  color: #166534;
+}
+
+#quiz-status[data-state="incomplete"] {
+  color: #475569;
 }
 
 /* ─── Question Card ─── */

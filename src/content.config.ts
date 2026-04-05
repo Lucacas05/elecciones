@@ -26,6 +26,8 @@ const candidatos = defineCollection({
       mineria: z.string(),
       descentralizacion: z.string(),
       politica_social: z.string(),
+      instituciones: z.string(),
+      empleo_formalizacion: z.string(),
     }),
   }),
 });

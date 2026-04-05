@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "pro_mineria"
   descentralizacion: "gradual"
   politica_social: "educacion_tecnica"
+  instituciones: "autoridad_ejecutiva"
+  empleo_formalizacion: "capacitacion_formalizacion"
 ---

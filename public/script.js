@@ -1,415 +1,6 @@
+import { QUESTIONS, buildCandidates, calculateCandidateScore, isQuestionnaireComplete } from './quiz-core.js';
+
 const QUESTION_KEY = 'elecciones:questionnaireAnswers';
-
-const QUESTIONS = [
-  {
-    id: 'security',
-    title: 'Seguridad',
-    prompt: '¿Cómo combatirías la inseguridad ciudadana?',
-    options: [
-      { value: 1, label: 'Mano dura: penas más severas, incluida la pena de muerte' },
-      { value: 2, label: 'Reformar la policía, fiscalía y el poder judicial' },
-      { value: 3, label: 'Más inversión en educación y prevención social' },
-    ],
-  },
-  {
-    id: 'economy',
-    title: 'Economía',
-    prompt: '¿Cómo debería manejarse la economía del país?',
-    options: [
-      { value: 1, label: 'Libre mercado: menos impuestos, menos regulación' },
-      { value: 2, label: 'El Estado debe intervenir más y controlar precios' },
-      { value: 3, label: 'Un equilibrio entre mercado libre y regulación estatal' },
-    ],
-  },
-  {
-    id: 'education',
-    title: 'Educación',
-    prompt: '¿Qué priorizarías en educación?',
-    options: [
-      { value: 1, label: 'Invertir fuerte en educación pública y gratuita' },
-      { value: 2, label: 'Dar incentivos para que crezca la educación privada' },
-      { value: 3, label: 'Mejorar ambas: pública de calidad y privada accesible' },
-    ],
-  },
-  {
-    id: 'health',
-    title: 'Salud',
-    prompt: '¿Cómo mejorarías el sistema de salud?',
-    options: [
-      { value: 1, label: 'Un sistema de salud universal gratuito para todos' },
-      { value: 2, label: 'Fortalecer el sector privado como complemento del público' },
-      { value: 3, label: 'Integrar SIS, EsSalud y clínicas en un solo sistema' },
-    ],
-  },
-  {
-    id: 'corruption',
-    title: 'Corrupción',
-    prompt: '¿Cómo combatirías la corrupción?',
-    options: [
-      { value: 1, label: 'Pena de muerte o cadena perpetua para corruptos' },
-      { value: 2, label: 'Cadena perpetua e inhabilitación de por vida' },
-      { value: 3, label: 'Reformar el sistema judicial y fortalecer la fiscalía' },
-    ],
-  },
-  {
-    id: 'mining',
-    title: 'Minería',
-    prompt: '¿Qué posición debería tener el país sobre la minería?',
-    options: [
-      { value: 1, label: 'Promover la inversión minera, genera empleo y riqueza' },
-      { value: 2, label: 'Regularla fuertemente para proteger el medio ambiente' },
-      { value: 3, label: 'Solo con consulta previa a las comunidades afectadas' },
-    ],
-  },
-  {
-    id: 'decentralization',
-    title: 'Descentralización',
-    prompt: '¿Cómo debería gobernarse el interior del país?',
-    options: [
-      { value: 1, label: 'Dar más poder y presupuesto a los gobiernos regionales' },
-      { value: 2, label: 'Un gobierno central fuerte que dirija desde Lima' },
-      { value: 3, label: 'Descentralizar gradualmente con capacitación técnica' },
-    ],
-  },
-  {
-    id: 'social_policy',
-    title: 'Política Social',
-    prompt: '¿Cómo ayudarías a los que menos tienen?',
-    options: [
-      { value: 1, label: 'Bonos y transferencias directas de dinero' },
-      { value: 2, label: 'Crear programas de empleo temporal del Estado' },
-      { value: 3, label: 'Invertir en educación técnica y capacitación laboral' },
-    ],
-  },
-];
-
-// ── Data Mapping ──────────────────────────────────────────────────────────────
-
-const FIELD_MAP = {
-  security: 'seguridad',
-  economy: 'economia',
-  education: 'educacion',
-  health: 'salud',
-  corruption: 'corrupcion',
-  mining: 'mineria',
-  decentralization: 'descentralizacion',
-  social_policy: 'politica_social',
-};
-
-const POSITION_MAP = {
-  security: { mano_dura: 1, reforma_institucional: 2, prevencion: 3 },
-  economy: { libre_mercado: 1, intervencion_estatal: 2, mixta: 3 },
-  education: { publica_prioridad: 1, privada_incentivo: 2, mixta: 3 },
-  health: { sistema_universal: 1, privado_complementario: 2, mixto: 3 },
-  corruption: { pena_muerte: 1, cadena_perpetua: 2, reforma_judicial: 3 },
-  mining: { pro_mineria: 1, regulacion_estricta: 2, consulta_previa: 3 },
-  decentralization: { mas_poder_regiones: 1, gobierno_central: 2, gradual: 3 },
-  social_policy: { bonos_directos: 1, programas_empleo: 2, educacion_tecnica: 3 },
-};
-
-// ── NLP Keyword Dictionaries ──────────────────────────────────────────────────
-// Cada dimensión tiene 3 posiciones; cada posición tiene palabras clave con peso.
-// Se usan para analizar el texto de propuestas como proxy del plan de gobierno.
-
-const NLP_KEYWORDS = {
-  security: {
-    mano_dura: [
-      { keyword: 'mano dura', weight: 3.0 },
-      { keyword: 'mano de hierro', weight: 3.0 },
-      { keyword: 'orden interno', weight: 2.0 },
-      { keyword: 'extorsion', weight: 1.8 },
-      { keyword: 'pena de muerte', weight: 2.5 },
-      { keyword: 'tolerancia cero', weight: 2.2 },
-      { keyword: 'estado de emergencia', weight: 2.0 },
-      { keyword: 'castigo severo', weight: 1.8 },
-      { keyword: 'sicarios', weight: 1.8 },
-    ],
-    reforma_institucional: [
-      { keyword: 'reforma institucional', weight: 2.4 },
-      { keyword: 'fortalecimiento institucional', weight: 2.2 },
-      { keyword: 'estado de derecho', weight: 1.8 },
-      { keyword: 'reforma policial', weight: 2.3 },
-      { keyword: 'reforma judicial', weight: 2.0 },
-      { keyword: 'coordinacion policial', weight: 2.0 },
-      { keyword: 'fiscalia', weight: 1.8 },
-      { keyword: 'serenazgo', weight: 1.6 },
-    ],
-    prevencion: [
-      { keyword: 'prevencion de violencia', weight: 2.3 },
-      { keyword: 'prevencion social', weight: 2.3 },
-      { keyword: 'enfoque comunitario', weight: 2.2 },
-      { keyword: 'derechos humanos', weight: 1.8 },
-      { keyword: 'reinsercion', weight: 2.0 },
-      { keyword: 'educacion y prevencion', weight: 2.2 },
-      { keyword: 'politicas preventivas', weight: 2.0 },
-    ],
-  },
-  economy: {
-    libre_mercado: [
-      { keyword: 'libre mercado', weight: 3.0 },
-      { keyword: 'inversion privada', weight: 2.5 },
-      { keyword: 'reduccion de impuestos', weight: 2.3 },
-      { keyword: 'desregulacion', weight: 2.2 },
-      { keyword: 'competitividad', weight: 1.8 },
-      { keyword: 'menos regulacion', weight: 2.0 },
-      { keyword: 'apertura comercial', weight: 1.8 },
-      { keyword: 'emprendimiento', weight: 1.5 },
-      { keyword: 'igv', weight: 1.5 },
-    ],
-    intervencion_estatal: [
-      { keyword: 'intervencion estatal', weight: 3.0 },
-      { keyword: 'control de precios', weight: 2.5 },
-      { keyword: 'nacionalizacion', weight: 2.5 },
-      { keyword: 'empresa publica', weight: 2.3 },
-      { keyword: 'rol del estado', weight: 2.2 },
-      { keyword: 'planificacion economica', weight: 2.0 },
-      { keyword: 'sectores estrategicos', weight: 2.0 },
-      { keyword: 'mayor rol del estado', weight: 2.5 },
-    ],
-    mixta: [
-      { keyword: 'economia social de mercado', weight: 2.5 },
-      { keyword: 'equilibrio', weight: 2.0 },
-      { keyword: 'regulacion inteligente', weight: 2.2 },
-      { keyword: 'alianzas publico-privadas', weight: 2.2 },
-      { keyword: 'inversion publica', weight: 1.8 },
-      { keyword: 'reactivacion', weight: 1.8 },
-      { keyword: 'formalizacion', weight: 1.6 },
-    ],
-  },
-  education: {
-    publica_prioridad: [
-      { keyword: 'educacion publica', weight: 3.0 },
-      { keyword: 'gratuidad', weight: 2.5 },
-      { keyword: 'presupuesto educativo', weight: 2.3 },
-      { keyword: 'universidades publicas', weight: 2.0 },
-      { keyword: 'inversion en educacion', weight: 2.0 },
-      { keyword: 'infraestructura educativa', weight: 1.8 },
-    ],
-    privada_incentivo: [
-      { keyword: 'educacion privada', weight: 3.0 },
-      { keyword: 'vouchers educativos', weight: 2.5 },
-      { keyword: 'libertad de ensenanza', weight: 2.2 },
-      { keyword: 'becas privadas', weight: 2.0 },
-      { keyword: 'competencia educativa', weight: 1.8 },
-    ],
-    mixta: [
-      { keyword: 'calidad educativa', weight: 2.5 },
-      { keyword: 'mejora educativa', weight: 2.2 },
-      { keyword: 'modernizacion educativa', weight: 2.0 },
-      { keyword: 'evaluacion docente', weight: 2.0 },
-      { keyword: 'acreditacion', weight: 1.8 },
-      { keyword: 'ciencia y tecnologia', weight: 1.8 },
-      { keyword: 'mantenimiento escolar', weight: 1.6 },
-    ],
-  },
-  health: {
-    sistema_universal: [
-      { keyword: 'salud universal', weight: 3.0 },
-      { keyword: 'cobertura universal', weight: 2.8 },
-      { keyword: 'sistema unico de salud', weight: 2.5 },
-      { keyword: 'salud gratuita', weight: 2.3 },
-      { keyword: 'derecho a la salud', weight: 2.0 },
-      { keyword: 'servicios publicos universales', weight: 2.2 },
-    ],
-    privado_complementario: [
-      { keyword: 'salud privada', weight: 3.0 },
-      { keyword: 'clinicas', weight: 2.0 },
-      { keyword: 'seguro privado', weight: 2.5 },
-      { keyword: 'sector privado', weight: 1.8 },
-      { keyword: 'eficiencia sanitaria', weight: 1.8 },
-    ],
-    mixto: [
-      { keyword: 'sistema integrado', weight: 2.5 },
-      { keyword: 'sis', weight: 2.0 },
-      { keyword: 'essalud', weight: 2.0 },
-      { keyword: 'integracion de salud', weight: 2.3 },
-      { keyword: 'articulacion sanitaria', weight: 2.2 },
-      { keyword: 'sistema de salud integrado', weight: 2.8 },
-    ],
-  },
-  corruption: {
-    pena_muerte: [
-      { keyword: 'pena de muerte', weight: 3.0 },
-      { keyword: 'maxima sancion', weight: 2.5 },
-      { keyword: 'castigo ejemplar', weight: 2.0 },
-      { keyword: 'fusilamiento', weight: 2.5 },
-    ],
-    cadena_perpetua: [
-      { keyword: 'cadena perpetua', weight: 3.0 },
-      { keyword: 'inhabilitacion', weight: 2.5 },
-      { keyword: 'carcel', weight: 2.0 },
-      { keyword: 'sancion severa', weight: 2.2 },
-      { keyword: 'prision', weight: 1.8 },
-      { keyword: 'inhabilitacion de por vida', weight: 2.5 },
-    ],
-    reforma_judicial: [
-      { keyword: 'reforma judicial', weight: 3.0 },
-      { keyword: 'fiscalia', weight: 2.5 },
-      { keyword: 'fortalecimiento institucional', weight: 2.3 },
-      { keyword: 'transparencia', weight: 2.2 },
-      { keyword: 'control ciudadano', weight: 2.0 },
-      { keyword: 'rendicion de cuentas', weight: 1.8 },
-      { keyword: 'anticorrupcion', weight: 2.5 },
-      { keyword: 'lucha anticorrupcion', weight: 2.8 },
-      { keyword: 'fiscalias especializadas', weight: 2.5 },
-    ],
-  },
-  mining: {
-    pro_mineria: [
-      { keyword: 'inversion minera', weight: 3.0 },
-      { keyword: 'empleo minero', weight: 2.5 },
-      { keyword: 'exportaciones mineras', weight: 2.3 },
-      { keyword: 'desarrollo minero', weight: 2.2 },
-      { keyword: 'riqueza mineral', weight: 2.0 },
-      { keyword: 'promover la mineria', weight: 2.5 },
-    ],
-    regulacion_estricta: [
-      { keyword: 'regulacion ambiental', weight: 3.0 },
-      { keyword: 'medio ambiente', weight: 2.5 },
-      { keyword: 'impacto ambiental', weight: 2.3 },
-      { keyword: 'proteccion ambiental', weight: 2.2 },
-      { keyword: 'sostenibilidad', weight: 2.0 },
-      { keyword: 'regulacion estricta', weight: 2.5 },
-    ],
-    consulta_previa: [
-      { keyword: 'consulta previa', weight: 3.0 },
-      { keyword: 'comunidades', weight: 2.0 },
-      { keyword: 'pueblos indigenas', weight: 2.3 },
-      { keyword: 'participacion comunal', weight: 2.2 },
-      { keyword: 'licencia social', weight: 2.5 },
-    ],
-  },
-  decentralization: {
-    mas_poder_regiones: [
-      { keyword: 'poder regional', weight: 3.0 },
-      { keyword: 'gobiernos regionales', weight: 2.5 },
-      { keyword: 'autonomia regional', weight: 2.3 },
-      { keyword: 'presupuesto regional', weight: 2.2 },
-      { keyword: 'transferencias regionales', weight: 2.5 },
-      { keyword: 'mas poder', weight: 2.0 },
-    ],
-    gobierno_central: [
-      { keyword: 'gobierno central', weight: 3.0 },
-      { keyword: 'centralizacion', weight: 2.5 },
-      { keyword: 'direccion nacional', weight: 2.0 },
-      { keyword: 'eficiencia centralizada', weight: 2.2 },
-      { keyword: 'desde lima', weight: 1.8 },
-    ],
-    gradual: [
-      { keyword: 'descentralizacion gradual', weight: 3.0 },
-      { keyword: 'capacitacion tecnica', weight: 2.5 },
-      { keyword: 'fortalecimiento de capacidades', weight: 2.3 },
-      { keyword: 'gobernanza', weight: 2.0 },
-      { keyword: 'transferencia progresiva', weight: 2.2 },
-      { keyword: 'desarrollo territorial', weight: 2.0 },
-    ],
-  },
-  social_policy: {
-    bonos_directos: [
-      { keyword: 'bonos', weight: 3.0 },
-      { keyword: 'transferencias directas', weight: 2.8 },
-      { keyword: 'subsidios', weight: 2.5 },
-      { keyword: 'apoyo economico directo', weight: 2.3 },
-      { keyword: 'programa social', weight: 2.0 },
-      { keyword: 'viviendas sociales', weight: 1.8 },
-    ],
-    programas_empleo: [
-      { keyword: 'empleo temporal', weight: 3.0 },
-      { keyword: 'programas de empleo', weight: 2.8 },
-      { keyword: 'trabajo garantizado', weight: 2.5 },
-      { keyword: 'obras publicas', weight: 2.2 },
-      { keyword: 'empleo estatal', weight: 2.0 },
-      { keyword: 'simplificacion de tramites', weight: 1.8 },
-    ],
-    educacion_tecnica: [
-      { keyword: 'educacion tecnica', weight: 3.0 },
-      { keyword: 'capacitacion laboral', weight: 2.8 },
-      { keyword: 'formacion profesional', weight: 2.5 },
-      { keyword: 'habilidades laborales', weight: 2.3 },
-      { keyword: 'emprendimiento', weight: 2.0 },
-      { keyword: 'formalizacion laboral', weight: 2.0 },
-    ],
-  },
-};
-
-// ── Text Normalization ────────────────────────────────────────────────────────
-
-function normalizeText(text) {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
-}
-
-// ── NLP Party Context Analysis ────────────────────────────────────────────────
-// Analiza el texto de propuestas buscando coincidencias con palabras clave.
-// Retorna la posición dominante y su nivel de confianza, o null si no hay data.
-
-function analyzePartyContext(text, questionId) {
-  const keywords = NLP_KEYWORDS[questionId];
-  if (!keywords || !text) return null;
-
-  const normalized = normalizeText(text);
-  const scores = {};
-  let totalScore = 0;
-
-  for (const [position, words] of Object.entries(keywords)) {
-    let posScore = 0;
-    for (const { keyword, weight } of words) {
-      if (normalized.includes(normalizeText(keyword))) {
-        posScore += weight;
-      }
-    }
-    scores[position] = posScore;
-    totalScore += posScore;
-  }
-
-  if (totalScore === 0) return null;
-
-  const sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-  const [dominantPosition, dominantScore] = sorted[0];
-
-  if (dominantScore === 0) return null;
-
-  return {
-    position: dominantPosition,
-    numericValue: POSITION_MAP[questionId][dominantPosition],
-    confidence: dominantScore / totalScore,
-  };
-}
-
-// ── Build Candidates from Injected Data ───────────────────────────────────────
-
-function buildCandidates(rawData) {
-  return rawData.map((c) => {
-    const positions = {};
-    for (const q of QUESTIONS) {
-      const yamlKey = FIELD_MAP[q.id];
-      const stringValue = c.quiz_posiciones[yamlKey];
-      positions[q.id] = POSITION_MAP[q.id][stringValue] ?? 2;
-    }
-
-    const proposalText = [...c.propuestas, c.dato_clave].join(' ');
-
-    return {
-      name: c.nombre,
-      party: c.partido,
-      logo: c.logo_partido,
-      photo: c.foto,
-      age: c.edad,
-      profession: c.profesion,
-      experience: c.experiencia_politica,
-      proposals: c.propuestas,
-      keyFact: c.dato_clave,
-      ideology: c.partido_ideologia,
-      planUrl: c.plan_gobierno_url,
-      cvUrl: c.hoja_vida_url,
-      positions,
-      proposalText,
-    };
-  });
-}
-
 const CANDIDATES = buildCandidates(window.__CANDIDATOS_DATA__ || []);
 
 // ── DOM References ────────────────────────────────────────────────────────────
@@ -419,7 +10,9 @@ const topMatch = document.getElementById('top-match');
 const resultsList = document.getElementById('results-list');
 const issueBreakdown = document.getElementById('issue-breakdown');
 const answersCount = document.getElementById('answers-count');
+const submitButton = document.getElementById('submit-button');
 const resetButton = document.getElementById('reset-button');
+const quizStatus = document.getElementById('quiz-status');
 const polymarketBoard = document.getElementById('polymarket-board');
 const polymarketMeta = document.getElementById('polymarket-meta');
 const polymarketStatus = document.getElementById('polymarket-status');
@@ -936,8 +529,9 @@ function getDefaultAnswers() {
 }
 
 function clampAnswer(value) {
+  if (value === null || value === undefined || value === '') return null;
   const parsed = Number(value);
-  if (Number.isNaN(parsed)) return 2;
+  if (Number.isNaN(parsed)) return null;
   return Math.max(1, Math.min(3, parsed));
 }
 
@@ -1010,63 +604,37 @@ function countAnswered() {
   return QUESTIONS.filter((q) => currentAnswers[q.id] !== null).length;
 }
 
+function updateQuizStatus() {
+  const complete = isQuestionnaireComplete(currentAnswers);
+
+  if (answersCount) {
+    answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
+  }
+
+  if (submitButton) {
+    submitButton.disabled = !complete;
+    submitButton.setAttribute('aria-disabled', String(!complete));
+  }
+
+  if (quizStatus) {
+    quizStatus.textContent = complete
+      ? 'Listo: ya puedes ver tus resultados.'
+      : 'Responde las 10 preguntas para obtener un resultado confiable.';
+    quizStatus.dataset.state = complete ? 'complete' : 'incomplete';
+  }
+}
+
 function renderQuestions() {
+  if (!form) return;
   form.innerHTML = QUESTIONS.map((q, i) => buildQuestionMarkup(q, currentAnswers[q.id], i)).join('');
-  answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
-}
-
-// ── Core Affinity Algorithm ───────────────────────────────────────────────────
-
-function calculateSimilarity(userValue, candidateValue) {
-  const distance = Math.abs(userValue - candidateValue);
-  return 1 - distance / 2;
-}
-
-function calculateCandidateScore(candidate) {
-  const issueScores = QUESTIONS.map((question) => {
-    const userValue = currentAnswers[question.id] ?? 2;
-    const candidateValue = clampAnswer(candidate.positions[question.id]);
-
-    const baseSimilarity = calculateSimilarity(userValue, candidateValue);
-
-    const partyContext = analyzePartyContext(candidate.proposalText, question.id);
-
-    let finalSimilarity;
-    if (partyContext) {
-      const partySimilarity = calculateSimilarity(userValue, partyContext.numericValue);
-      const partyWeight = 0.28 * partyContext.confidence;
-      finalSimilarity =
-        (baseSimilarity * 0.72 + partySimilarity * partyWeight) / (0.72 + partyWeight);
-    } else {
-      finalSimilarity = baseSimilarity;
-    }
-
-    const affinity = Math.round(finalSimilarity * 100);
-
-    return { question, userValue, candidateValue, affinity };
-  });
-
-  const score = Math.round(
-    issueScores.reduce((sum, issue) => sum + issue.affinity, 0) / issueScores.length,
-  );
-
-  const exactMatches = issueScores.filter((issue) => issue.affinity === 100).length;
-
-  return {
-    ...candidate,
-    score,
-    exactMatches,
-    issueScores,
-    strongestMatches: issueScores
-      .slice()
-      .sort((a, b) => b.affinity - a.affinity)
-      .slice(0, 3),
-  };
+  updateQuizStatus();
 }
 
 // ── Results Rendering ─────────────────────────────────────────────────────────
 
 function renderTopMatch(ranking) {
+  if (!topMatch || !ranking.length) return;
+
   const best = ranking[0];
   const next = ranking[1];
   const gap = next ? best.score - next.score : 0;
@@ -1122,7 +690,7 @@ function renderTopMatch(ranking) {
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-2">Lectura rápida</p>
           <p class="font-headline text-xl font-extrabold mb-2">${gap > 0 ? `${gap} puntos por encima del segundo lugar` : 'Empate técnico entre primeros puestos'}</p>
           <p class="text-sm text-on-surface-variant leading-6">
-            Tu perfil actual se acerca más a esta candidatura según los ocho ejes analizados.
+            Tu perfil actual se acerca más a esta candidatura según los diez ejes analizados.
           </p>
           <p class="text-xs text-on-surface-variant mt-3">${best.keyFact}</p>
         </div>
@@ -1132,6 +700,8 @@ function renderTopMatch(ranking) {
 }
 
 function renderResultsList(ranking) {
+  if (!resultsList) return;
+
   const INITIAL_VISIBLE = 10;
   const hasMore = ranking.length > INITIAL_VISIBLE;
 
@@ -1220,13 +790,15 @@ function renderResultsList(ranking) {
 }
 
 function renderIssueBreakdown(ranking) {
+  if (!issueBreakdown) return;
+
   const topThree = ranking.slice(0, 3);
 
   issueBreakdown.innerHTML = QUESTIONS.map((question) => {
     const answer = currentAnswers[question.id];
     const comparisons = topThree
       .map((candidate) => {
-        const issue = candidate.issueScores.find((e) => e.question.id === question.id);
+        const issue = candidate.issueScores.find((entry) => entry.question.id === question.id);
         return `
           <div class="bg-surface-container-low rounded-xl p-4 border border-outline-variant/10">
             <div class="flex items-center justify-between gap-3 mb-2">
@@ -1249,7 +821,7 @@ function renderIssueBreakdown(ranking) {
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-1">${question.title}</p>
             <p class="text-sm text-on-surface-variant">Tu respuesta: ${answerLabel(question, answer)}</p>
           </div>
-          <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-surface-container-low px-3 py-2 rounded-full">${answer !== null ? '✓ Respondida' : 'Sin responder'}</span>
+          <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-surface-container-low px-3 py-2 rounded-full">✓ Respondida</span>
         </div>
         <div class="grid gap-3 md:grid-cols-3">${comparisons}</div>
       </section>
@@ -1262,21 +834,41 @@ function renderIssueBreakdown(ranking) {
 let resultsRevealed = false;
 const resultsSections = document.querySelectorAll('[data-results-section]');
 
+function clearRenderedResults() {
+  if (topMatch) topMatch.innerHTML = '';
+  if (resultsList) resultsList.innerHTML = '';
+  if (issueBreakdown) issueBreakdown.innerHTML = '';
+}
+
 function showResultsSections() {
   if (resultsRevealed) return;
   resultsRevealed = true;
-  resultsSections.forEach((s) => s.classList.remove('hidden'));
+  resultsSections.forEach((section) => section.classList.remove('hidden'));
+}
+
+function hideResultsSections() {
+  if (!resultsRevealed) return;
+  resultsRevealed = false;
+  resultsSections.forEach((section) => section.classList.add('hidden'));
 }
 
 // ── Update & Sort with Tiebreaking ────────────────────────────────────────────
 
 function updateResults() {
-  const ranking = CANDIDATES.map((c) => calculateCandidateScore(c)).sort((a, b) => {
+  if (!isQuestionnaireComplete(currentAnswers)) {
+    hideResultsSections();
+    clearRenderedResults();
+    return;
+  }
+
+  const ranking = CANDIDATES.map((candidate) => calculateCandidateScore(candidate, currentAnswers)).sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.exactMatches !== a.exactMatches) return b.exactMatches - a.exactMatches;
-    return a.name.localeCompare(b.name);
+    if (b.evidenceAlignment !== a.evidenceAlignment) return b.evidenceAlignment - a.evidenceAlignment;
+    return a.name.localeCompare(b.name, 'es');
   });
 
+  showResultsSections();
   renderTopMatch(ranking);
   renderResultsList(ranking);
   renderIssueBreakdown(ranking);
@@ -1290,13 +882,12 @@ if (form) {
     currentAnswers[event.target.name] = clampAnswer(event.target.value);
     persistAnswers();
     renderQuestions();
-    showResultsSections();
     updateResults();
   });
 
   form.addEventListener('submit', (event) => {
     event.preventDefault();
-    showResultsSections();
+    if (!isQuestionnaireComplete(currentAnswers)) return;
     updateResults();
     document.getElementById('tu-resultado')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
@@ -1306,20 +897,20 @@ resetButton?.addEventListener('click', () => {
   currentAnswers = getDefaultAnswers();
   persistAnswers();
   renderQuestions();
-  showResultsSections();
-  updateResults();
+  hideResultsSections();
+  clearRenderedResults();
 });
 
 // ── Init ──────────────────────────────────────────────────────────────────────
 
-const hasSavedAnswers = localStorage.getItem(QUESTION_KEY) !== null;
-
 if (form) {
   renderQuestions();
 
-  if (hasSavedAnswers) {
-    showResultsSections();
+  if (isQuestionnaireComplete(currentAnswers)) {
     updateResults();
+  } else {
+    hideResultsSections();
+    clearRenderedResults();
   }
 }
 

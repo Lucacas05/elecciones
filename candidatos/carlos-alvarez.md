@@ -23,4 +23,6 @@ quiz_posiciones:
   mineria: "regulacion_estricta"
   descentralizacion: "gradual"
   politica_social: "programas_empleo"
+  instituciones: "transparencia_control"
+  empleo_formalizacion: "empleo_publico"
 ---
