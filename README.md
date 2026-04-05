@@ -226,18 +226,6 @@ Para verificar la salida de producción, usa:
 npm run build
 ```
 
-## Archivos legacy
-
-En la raíz todavía existen archivos como:
-
-- `index.html`
-- `candidatos.html`
-- `data.js`
-- `script.js`
-- `styles.css`
-
-Corresponden a una versión anterior del proyecto. **La implementación actual a mantener es la de Astro**, es decir, `src/` + `public/`.
-
 ## Notas de mantenimiento
 
 - No hay suite de tests automatizada definida en `package.json`.
@@ -250,6 +238,5 @@ Corresponden a una versión anterior del proyecto. **La implementación actual a
 ## Próximas mejoras razonables
 
 - mover la lógica cliente grande de `public/script.js` a módulos separados
-- eliminar o archivar los archivos legacy de la raíz
 - añadir validaciones/editorial tooling para candidatos y assets faltantes
 - incorporar tests para la normalización de PDFs y Polymarket
