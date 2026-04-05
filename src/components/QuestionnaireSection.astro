@@ -1,0 +1,53 @@
+---
+---
+
+<section id="cuestionario" class="py-16 md:py-24">
+  <div class="max-w-3xl mx-auto px-6 lg:px-12">
+    <div class="text-center mb-12">
+      <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary mb-3">Tus prioridades</p>
+      <h2 class="font-headline text-3xl md:text-4xl font-extrabold text-primary mb-4">
+        Cuestionario ciudadano
+      </h2>
+      <p class="text-on-surface-variant max-w-xl mx-auto leading-relaxed">
+        Elige la opción que mejor represente tu postura actual. Si no lo tienes
+        claro, puedes dejarte en el punto medio y volver luego.
+      </p>
+    </div>
+
+    <div class="bg-surface-container-lowest rounded-2xl p-6 md:p-10 shadow-[0_4px_40px_rgba(0,27,68,0.04)]">
+      <div class="flex items-center justify-between gap-4 mb-8">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center">
+            <span class="material-symbols-outlined text-primary">quiz</span>
+          </div>
+          <span class="font-headline font-bold text-primary">6 temas clave</span>
+        </div>
+        <div class="text-right">
+          <p class="text-xs uppercase tracking-[0.22em] text-on-surface-variant">Respuestas</p>
+          <p id="answers-count" class="font-headline text-2xl font-extrabold text-primary">6/6</p>
+        </div>
+      </div>
+
+      <form id="questionnaire-form" class="space-y-5"></form>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-3">
+        <button
+          id="submit-button"
+          type="submit"
+          form="questionnaire-form"
+          class="flex-1 flex items-center justify-center gap-2 px-6 py-4 bg-primary text-on-primary rounded-xl font-headline font-bold text-sm tracking-wide hover:bg-primary-container transition-all active:scale-[0.98] shadow-xl shadow-primary/10"
+        >
+          <span class="material-symbols-outlined text-lg">analytics</span>
+          Actualizar resultados
+        </button>
+        <button
+          id="reset-button"
+          type="button"
+          class="px-6 py-4 rounded-xl bg-surface-container text-primary font-bold hover:bg-surface-container-high transition-colors"
+        >
+          Reiniciar respuestas
+        </button>
+      </div>
+    </div>
+  </div>
+</section>

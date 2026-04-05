@@ -1,0 +1,30 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import MobileNav from '../components/MobileNav.astro';
+import HeroSection from '../components/HeroSection.astro';
+import StepsSection from '../components/StepsSection.astro';
+import QuestionnaireSection from '../components/QuestionnaireSection.astro';
+import ResultsSection from '../components/ResultsSection.astro';
+import RankingSection from '../components/RankingSection.astro';
+import BreakdownSection from '../components/BreakdownSection.astro';
+import MethodologySection from '../components/MethodologySection.astro';
+---
+
+<Layout>
+  <Navbar />
+
+  <main class="min-h-screen pb-24 md:pb-0">
+    <HeroSection />
+    <StepsSection />
+    <QuestionnaireSection />
+    <ResultsSection />
+    <RankingSection />
+    <BreakdownSection />
+    <MethodologySection />
+  </main>
+
+  <MobileNav />
+
+  <script src="/script.js" is:inline></script>
+</Layout>
