@@ -1,6 +1,6 @@
 import { get, put } from '@vercel/blob';
 import { readFile } from 'node:fs/promises';
-import defaultSeedSnapshot from '../../data/polymarket/peru-election-winner.seed.json';
+import { peruElectionWinnerSeed as defaultSeedSnapshot } from '../../data/polymarket/peru-election-winner.seed';
 import { assertValidSnapshot } from './normalize';
 import {
   POLYMARKET_BLOB_PATHNAME,

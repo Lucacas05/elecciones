@@ -3,6 +3,6 @@ import tailwind from '@astrojs/tailwind';
 import vercel from '@astrojs/vercel';
 
 export default defineConfig({
-  adapter: vercel(),
+  adapter: vercel({ maxDuration: 15 }),
   integrations: [tailwind()],
 });
