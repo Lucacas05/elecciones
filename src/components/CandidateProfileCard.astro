@@ -162,7 +162,7 @@ const topicEntries = topicDefinitions.map((topic) => ({
         </div>
 
         <div class="flex flex-wrap items-center gap-4">
-          <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/10">
+          <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white">
             {hasLogo ? (
               <img
                 src={logoPath}
@@ -171,7 +171,7 @@ const topicEntries = topicDefinitions.map((topic) => ({
                 loading="lazy"
               />
             ) : (
-              <span class="font-headline text-lg font-extrabold tracking-[0.18em] text-white/80">
+              <span class="font-headline text-lg font-extrabold tracking-[0.18em] text-primary/70">
                 {partyInitials}
               </span>
             )}
@@ -181,13 +181,13 @@ const topicEntries = topicDefinitions.map((topic) => ({
             <h2 class="font-headline text-3xl font-extrabold tracking-tight text-white md:text-4xl">
               {candidate.nombre}
             </h2>
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-white/68">
+            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-white/80">
               {candidate.partido}
             </p>
           </div>
         </div>
 
-        <p class="max-w-3xl text-sm leading-7 text-white/84 md:text-base">
+        <p class="max-w-3xl text-sm leading-7 text-white/90 md:text-base">
           {candidate.profesion} · {candidate.experiencia_politica}
         </p>
 
@@ -216,10 +216,10 @@ const topicEntries = topicDefinitions.map((topic) => ({
           </div>
 
           <div class="space-y-2">
-            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/60">
+            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/70">
               Dato clave
             </p>
-            <p class="text-sm leading-6 text-white/84">
+            <p class="text-sm leading-6 text-white/90">
               {candidate.dato_clave}
             </p>
           </div>
@@ -227,11 +227,11 @@ const topicEntries = topicDefinitions.map((topic) => ({
 
         <div class="mt-5 grid gap-3 sm:grid-cols-2">
           <div class="rounded-2xl bg-white/10 px-4 py-3">
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/58">Profesión</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Profesión</p>
             <p class="mt-1 text-sm font-semibold text-white">{candidate.profesion}</p>
           </div>
           <div class="rounded-2xl bg-white/10 px-4 py-3">
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/58">Partido</p>
+            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Partido</p>
             <p class="mt-1 text-sm font-semibold text-white">{candidate.partido}</p>
           </div>
         </div>
