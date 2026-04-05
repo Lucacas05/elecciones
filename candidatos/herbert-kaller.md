@@ -25,4 +25,10 @@ quiz_posiciones:
   politica_social: "educacion_tecnica"
   instituciones: "reforma_estado"
   empleo_formalizacion: "capacitacion_formalizacion"
+  constitucion: "reformas_puntuales"
+  derechos: "gradual"
+  impuestos: "equilibrio_fiscal"
+  energia_ambiente: "aceleracion_extractiva"
+  politica_exterior: "pragmatica"
+  protesta_social: "equilibrio_dialogo"
 ---

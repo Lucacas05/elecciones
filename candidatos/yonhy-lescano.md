@@ -25,4 +25,10 @@ quiz_posiciones:
   politica_social: "bonos_directos"
   instituciones: "reforma_estado"
   empleo_formalizacion: "empleo_publico"
+  constitucion: "reformas_puntuales"
+  derechos: "gradual"
+  impuestos: "progresividad_tributaria"
+  energia_ambiente: "transicion_verde"
+  politica_exterior: "pragmatica"
+  protesta_social: "derechos_protesta"
 ---

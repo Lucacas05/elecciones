@@ -5,6 +5,7 @@ import {
   POSITION_MAP,
   QUESTION_COMPATIBILITY,
   buildCandidates,
+  buildQuestionWeights,
   calculateCandidateScore,
   isQuestionnaireComplete,
 } from '../public/quiz-core.js';
@@ -40,15 +41,17 @@ function compareRanking(a, b) {
 }
 
 describe('quiz-core', () => {
-  it('expone 10 preguntas y mapeos de 10 ejes', () => {
-    expect(QUESTIONS).toHaveLength(10);
-    expect(Object.keys(FIELD_MAP)).toHaveLength(10);
-    expect(Object.keys(POSITION_MAP)).toHaveLength(10);
+  it('expone 16 preguntas y mapeos de 16 ejes', () => {
+    expect(QUESTIONS).toHaveLength(16);
+    expect(Object.keys(FIELD_MAP)).toHaveLength(16);
+    expect(Object.keys(POSITION_MAP)).toHaveLength(16);
     expect(FIELD_MAP.institutions).toBe('instituciones');
     expect(FIELD_MAP.employment).toBe('empleo_formalizacion');
+    expect(FIELD_MAP.constitution).toBe('constitucion');
+    expect(FIELD_MAP.social_conflict).toBe('protesta_social');
   });
 
-  it('detecta completitud solo con 10/10 respuestas', () => {
+  it('detecta completitud solo con el cuestionario completo', () => {
     const completeAnswers = makeAnswers(1);
     const partialAnswers = { ...completeAnswers, employment: null };
 
@@ -72,6 +75,60 @@ describe('quiz-core', () => {
     expect(QUESTION_COMPATIBILITY.corruption[1][2]).toBeGreaterThan(QUESTION_COMPATIBILITY.corruption[2][3]);
     expect(QUESTION_COMPATIBILITY.corruption[2][3]).toBeGreaterThan(QUESTION_COMPATIBILITY.corruption[1][3]);
     expect(QUESTION_COMPATIBILITY.institutions[2][3]).toBeGreaterThan(QUESTION_COMPATIBILITY.institutions[1][3]);
+    expect(QUESTION_COMPATIBILITY.constitution[1][2]).toBeGreaterThan(QUESTION_COMPATIBILITY.constitution[1][3]);
+  });
+
+  it('pondera más los ejes con mayor poder discriminante', () => {
+    const consensusCandidates = Array.from({ length: 4 }, (_, index) =>
+      makeCandidate({
+        name: `Consenso ${index}`,
+        positions: Object.fromEntries(QUESTIONS.map((question) => [question.id, 1])),
+      }),
+    );
+
+    const splitCandidates = [1, 2, 3, 1].map((value, index) =>
+      makeCandidate({
+        name: `Split ${index}`,
+        positions: Object.fromEntries(
+          QUESTIONS.map((question) => [question.id, question.id === 'constitution' ? value : 1]),
+        ),
+      }),
+    );
+
+    const weights = buildQuestionWeights([...consensusCandidates, ...splitCandidates]);
+
+    expect(weights.constitution).toBeGreaterThan(weights.security);
+  });
+
+  it('usa promedio ponderado por información en lugar de promedio plano', () => {
+    const answers = makeAnswers(1);
+    const weights = Object.fromEntries(QUESTIONS.map((question) => [question.id, 1]));
+    weights.constitution = 2;
+    weights.security = 0.75;
+
+    const mismatchOnImportantAxis = makeCandidate({
+      name: 'Falla en constitución',
+      positions: {
+        ...makeAnswers(1),
+        constitution: 3,
+      },
+    });
+
+    const mismatchOnLightAxis = makeCandidate({
+      name: 'Falla en seguridad',
+      positions: {
+        ...makeAnswers(1),
+        security: 3,
+      },
+    });
+
+    const importantResult = calculateCandidateScore(mismatchOnImportantAxis, answers, weights);
+    const lightResult = calculateCandidateScore(mismatchOnLightAxis, answers, weights);
+
+    expect(importantResult.score).toBeLessThan(lightResult.score);
+    expect(
+      importantResult.strongestMatches.some((issue) => issue.question.id === 'constitution' && issue.informationWeight === 2),
+    ).toBe(false);
   });
 
   it('mantiene el score principal aunque el NLP contradiga la posición curada', () => {
@@ -180,11 +237,20 @@ describe('quiz-core', () => {
           politica_social: 'educacion_tecnica',
           instituciones: 'transparencia_control',
           empleo_formalizacion: 'capacitacion_formalizacion',
+          constitucion: 'reformas_puntuales',
+          derechos: 'progresista',
+          impuestos: 'progresividad_tributaria',
+          energia_ambiente: 'transicion_verde',
+          politica_exterior: 'pragmatica',
+          protesta_social: 'derechos_protesta',
         },
       },
     ]);
 
     expect(candidate.positions.institutions).toBe(3);
     expect(candidate.positions.employment).toBe(3);
+    expect(candidate.positions.constitution).toBe(2);
+    expect(candidate.positions.social_values).toBe(3);
+    expect(candidate.positions.social_conflict).toBe(3);
   });
 });

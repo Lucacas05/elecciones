@@ -1,7 +1,8 @@
-import { QUESTIONS, buildCandidates, calculateCandidateScore, isQuestionnaireComplete } from './quiz-core.js';
+import { QUESTIONS, buildCandidates, buildQuestionWeights, calculateCandidateScore, isQuestionnaireComplete } from './quiz-core.js';
 
 const QUESTION_KEY = 'elecciones:questionnaireAnswers';
 const CANDIDATES = buildCandidates(window.__CANDIDATOS_DATA__ || []);
+const QUESTION_WEIGHTS = buildQuestionWeights(CANDIDATES);
 
 // ── DOM References ────────────────────────────────────────────────────────────
 
@@ -588,7 +589,7 @@ function updateQuizStatus() {
   if (quizStatus) {
     quizStatus.textContent = complete
       ? 'Listo: ya puedes ver tus resultados.'
-      : 'Responde las 10 preguntas para obtener un resultado confiable.';
+      : `Responde las ${QUESTIONS.length} preguntas para obtener un resultado confiable.`;
     quizStatus.dataset.state = complete ? 'complete' : 'incomplete';
   }
 }
@@ -659,7 +660,7 @@ function renderTopMatch(ranking) {
           <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-2">Lectura rápida</p>
           <p class="font-headline text-xl font-extrabold mb-2">${gap > 0 ? `${gap} puntos por encima del segundo lugar` : 'Empate técnico entre primeros puestos'}</p>
           <p class="text-sm text-on-surface-variant leading-6">
-            Tu perfil actual se acerca más a esta candidatura según los diez ejes analizados.
+            Tu perfil actual se acerca más a esta candidatura según los ejes más informativos del cuestionario.
           </p>
           <p class="text-xs text-on-surface-variant mt-3">${best.keyFact}</p>
         </div>
@@ -789,6 +790,7 @@ function renderIssueBreakdown(ranking) {
           <div>
             <p class="text-xs font-bold uppercase tracking-[0.2em] text-primary mb-1">${question.title}</p>
             <p class="text-sm text-on-surface-variant">Tu respuesta: ${answerLabel(question, answer)}</p>
+            <p class="text-xs text-on-surface-variant/80 mt-1">Peso informativo: ×${topThree[0]?.issueScores.find((entry) => entry.question.id === question.id)?.informationWeight?.toFixed(2) ?? '1.00'}</p>
           </div>
           <span class="question-badge text-[11px] font-bold uppercase tracking-[0.18em] text-primary bg-surface-container-low px-3 py-2 rounded-full">✓ Respondida</span>
         </div>
@@ -830,7 +832,7 @@ function updateResults() {
     return;
   }
 
-  const ranking = CANDIDATES.map((candidate) => calculateCandidateScore(candidate, currentAnswers)).sort((a, b) => {
+  const ranking = CANDIDATES.map((candidate) => calculateCandidateScore(candidate, currentAnswers, QUESTION_WEIGHTS)).sort((a, b) => {
     if (b.score !== a.score) return b.score - a.score;
     if (b.exactMatches !== a.exactMatches) return b.exactMatches - a.exactMatches;
     if (b.evidenceAlignment !== a.evidenceAlignment) return b.evidenceAlignment - a.evidenceAlignment;

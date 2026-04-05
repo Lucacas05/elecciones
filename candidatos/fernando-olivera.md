@@ -25,4 +25,10 @@ quiz_posiciones:
   politica_social: "educacion_tecnica"
   instituciones: "transparencia_control"
   empleo_formalizacion: "inversion_privada"
+  constitucion: "reformas_puntuales"
+  derechos: "gradual"
+  impuestos: "equilibrio_fiscal"
+  energia_ambiente: "equilibrio_sostenible"
+  politica_exterior: "pragmatica"
+  protesta_social: "equilibrio_dialogo"
 ---

@@ -99,6 +99,66 @@ export const QUESTIONS = [
       { value: 3, label: 'Capacitación técnica, apoyo a MYPEs y formalización gradual.' },
     ],
   },
+  {
+    id: 'constitution',
+    title: 'Constitución',
+    prompt: '¿Qué cambio institucional debería impulsar el próximo gobierno?',
+    options: [
+      { value: 1, label: 'Mantener la Constitución vigente con ajustes puntuales.' },
+      { value: 2, label: 'Hacer reformas parciales para reequilibrar poderes y reglas.' },
+      { value: 3, label: 'Abrir un proceso integral para una nueva Constitución.' },
+    ],
+  },
+  {
+    id: 'social_values',
+    title: 'Derechos',
+    prompt: 'En temas de familia, género y libertades civiles, ¿qué debería priorizar el Estado?',
+    options: [
+      { value: 1, label: 'Un enfoque conservador y de valores tradicionales.' },
+      { value: 2, label: 'Avances graduales con equilibrio entre derechos y consensos.' },
+      { value: 3, label: 'Ampliar activamente derechos sexuales, reproductivos y de minorías.' },
+    ],
+  },
+  {
+    id: 'taxes',
+    title: 'Impuestos',
+    prompt: '¿Cómo debería financiarse el crecimiento y los servicios públicos?',
+    options: [
+      { value: 1, label: 'Bajar impuestos y simplificar reglas para atraer inversión.' },
+      { value: 2, label: 'Mantener equilibrio fiscal, simplificar y combatir evasión.' },
+      { value: 3, label: 'Cobrar más a rentas altas y sectores estratégicos para expandir servicios.' },
+    ],
+  },
+  {
+    id: 'energy',
+    title: 'Energía y ambiente',
+    prompt: '¿Qué prioridad debería guiar la política energética y ambiental?',
+    options: [
+      { value: 1, label: 'Acelerar proyectos extractivos y energéticos con permisos más ágiles.' },
+      { value: 2, label: 'Compatibilizar inversión con estándares ambientales y transición gradual.' },
+      { value: 3, label: 'Frenar proyectos de alto impacto y acelerar la transición energética.' },
+    ],
+  },
+  {
+    id: 'foreign_policy',
+    title: 'Política exterior',
+    prompt: '¿Cómo debería posicionarse Perú frente a la región y las potencias?',
+    options: [
+      { value: 1, label: 'Priorizar alianzas promercado y de seguridad con socios occidentales.' },
+      { value: 2, label: 'Mantener una política pragmática y abierta según intereses del país.' },
+      { value: 3, label: 'Fortalecer la integración latinoamericana y una mayor autonomía regional.' },
+    ],
+  },
+  {
+    id: 'social_conflict',
+    title: 'Protesta social',
+    prompt: 'Ante bloqueos y protestas prolongadas, ¿qué debería hacer el Estado?',
+    options: [
+      { value: 1, label: 'Restablecer el orden rápido con intervención firme y límites estrictos.' },
+      { value: 2, label: 'Combinar control del orden con diálogo y salidas políticas.' },
+      { value: 3, label: 'Priorizar mediación, derechos de protesta y reformas de fondo.' },
+    ],
+  },
 ];
 
 export const FIELD_MAP = {
@@ -112,6 +172,12 @@ export const FIELD_MAP = {
   social_policy: 'politica_social',
   institutions: 'instituciones',
   employment: 'empleo_formalizacion',
+  constitution: 'constitucion',
+  social_values: 'derechos',
+  taxes: 'impuestos',
+  energy: 'energia_ambiente',
+  foreign_policy: 'politica_exterior',
+  social_conflict: 'protesta_social',
 };
 
 export const POSITION_MAP = {
@@ -125,6 +191,12 @@ export const POSITION_MAP = {
   social_policy: { bonos_directos: 1, programas_empleo: 2, educacion_tecnica: 3 },
   institutions: { autoridad_ejecutiva: 1, reforma_estado: 2, transparencia_control: 3 },
   employment: { inversion_privada: 1, empleo_publico: 2, capacitacion_formalizacion: 3 },
+  constitution: { continuidad_1993: 1, reformas_puntuales: 2, nueva_constitucion: 3 },
+  social_values: { conservador: 1, gradual: 2, progresista: 3 },
+  taxes: { alivio_tributario: 1, equilibrio_fiscal: 2, progresividad_tributaria: 3 },
+  energy: { aceleracion_extractiva: 1, equilibrio_sostenible: 2, transicion_verde: 3 },
+  foreign_policy: { alineamiento_occidente: 1, pragmatica: 2, integracion_latinoamericana: 3 },
+  social_conflict: { orden_publico: 1, equilibrio_dialogo: 2, derechos_protesta: 3 },
 };
 
 export const QUESTION_COMPATIBILITY = {
@@ -177,6 +249,36 @@ export const QUESTION_COMPATIBILITY = {
     1: { 1: 1, 2: 0.15, 3: 0.6 },
     2: { 1: 0.15, 2: 1, 3: 0.5 },
     3: { 1: 0.6, 2: 0.5, 3: 1 },
+  },
+  constitution: {
+    1: { 1: 1, 2: 0.55, 3: 0.1 },
+    2: { 1: 0.55, 2: 1, 3: 0.55 },
+    3: { 1: 0.1, 2: 0.55, 3: 1 },
+  },
+  social_values: {
+    1: { 1: 1, 2: 0.55, 3: 0.1 },
+    2: { 1: 0.55, 2: 1, 3: 0.55 },
+    3: { 1: 0.1, 2: 0.55, 3: 1 },
+  },
+  taxes: {
+    1: { 1: 1, 2: 0.6, 3: 0.1 },
+    2: { 1: 0.6, 2: 1, 3: 0.55 },
+    3: { 1: 0.1, 2: 0.55, 3: 1 },
+  },
+  energy: {
+    1: { 1: 1, 2: 0.6, 3: 0.2 },
+    2: { 1: 0.6, 2: 1, 3: 0.6 },
+    3: { 1: 0.2, 2: 0.6, 3: 1 },
+  },
+  foreign_policy: {
+    1: { 1: 1, 2: 0.55, 3: 0.15 },
+    2: { 1: 0.55, 2: 1, 3: 0.55 },
+    3: { 1: 0.15, 2: 0.55, 3: 1 },
+  },
+  social_conflict: {
+    1: { 1: 1, 2: 0.5, 3: 0.15 },
+    2: { 1: 0.5, 2: 1, 3: 0.6 },
+    3: { 1: 0.15, 2: 0.6, 3: 1 },
   },
 };
 
@@ -453,7 +555,129 @@ const NLP_KEYWORDS = {
       { keyword: 'empleo juvenil', weight: 2.1 },
     ],
   },
+  constitution: {
+    continuidad_1993: [
+      { keyword: 'constitucion vigente', weight: 3.0 },
+      { keyword: 'estabilidad constitucional', weight: 2.6 },
+      { keyword: 'mantener la constitucion', weight: 2.8 },
+      { keyword: 'seguridad juridica', weight: 2.3 },
+    ],
+    reformas_puntuales: [
+      { keyword: 'reforma constitucional', weight: 2.7 },
+      { keyword: 'cambios puntuales', weight: 2.4 },
+      { keyword: 'equilibrio de poderes', weight: 2.5 },
+      { keyword: 'reforma politica', weight: 2.6 },
+    ],
+    nueva_constitucion: [
+      { keyword: 'nueva constitucion', weight: 3.0 },
+      { keyword: 'asamblea constituyente', weight: 3.0 },
+      { keyword: 'cambio constitucional', weight: 2.7 },
+      { keyword: 'proceso constituyente', weight: 2.8 },
+    ],
+  },
+  social_values: {
+    conservador: [
+      { keyword: 'familia tradicional', weight: 2.7 },
+      { keyword: 'defensa de la vida', weight: 2.8 },
+      { keyword: 'valores cristianos', weight: 2.6 },
+      { keyword: 'ideologia de genero', weight: 2.8 },
+    ],
+    gradual: [
+      { keyword: 'consenso social', weight: 2.5 },
+      { keyword: 'respeto de libertades', weight: 2.3 },
+      { keyword: 'dialogo social', weight: 2.2 },
+      { keyword: 'avances graduales', weight: 2.5 },
+    ],
+    progresista: [
+      { keyword: 'igualdad de genero', weight: 2.8 },
+      { keyword: 'derechos sexuales', weight: 2.8 },
+      { keyword: 'derechos reproductivos', weight: 2.8 },
+      { keyword: 'union civil', weight: 2.4 },
+    ],
+  },
+  taxes: {
+    alivio_tributario: [
+      { keyword: 'reduccion de impuestos', weight: 3.0 },
+      { keyword: 'alivio tributario', weight: 2.8 },
+      { keyword: 'simplificacion tributaria', weight: 2.5 },
+      { keyword: 'menos impuestos', weight: 2.8 },
+    ],
+    equilibrio_fiscal: [
+      { keyword: 'equilibrio fiscal', weight: 3.0 },
+      { keyword: 'lucha contra la evasion', weight: 2.6 },
+      { keyword: 'responsabilidad fiscal', weight: 2.7 },
+      { keyword: 'priorizar el gasto', weight: 2.3 },
+    ],
+    progresividad_tributaria: [
+      { keyword: 'impuesto a la riqueza', weight: 3.0 },
+      { keyword: 'mayor recaudacion', weight: 2.6 },
+      { keyword: 'tributacion progresiva', weight: 2.8 },
+      { keyword: 'gravar sobreganancias', weight: 2.6 },
+    ],
+  },
+  energy: {
+    aceleracion_extractiva: [
+      { keyword: 'agilizar permisos', weight: 2.7 },
+      { keyword: 'cartera minera', weight: 2.6 },
+      { keyword: 'mas inversion energetica', weight: 2.7 },
+      { keyword: 'destrabar proyectos', weight: 2.8 },
+    ],
+    equilibrio_sostenible: [
+      { keyword: 'transicion gradual', weight: 2.7 },
+      { keyword: 'sostenibilidad', weight: 2.4 },
+      { keyword: 'estandares ambientales', weight: 2.5 },
+      { keyword: 'equilibrio ambiental', weight: 2.5 },
+    ],
+    transicion_verde: [
+      { keyword: 'transicion energetica', weight: 3.0 },
+      { keyword: 'energias renovables', weight: 2.8 },
+      { keyword: 'alto impacto ambiental', weight: 2.3 },
+      { keyword: 'defensa territorial', weight: 2.5 },
+    ],
+  },
+  foreign_policy: {
+    alineamiento_occidente: [
+      { keyword: 'alianzas estrategicas', weight: 2.6 },
+      { keyword: 'tratados comerciales', weight: 2.4 },
+      { keyword: 'cooperacion en seguridad', weight: 2.5 },
+      { keyword: 'inversion extranjera', weight: 2.3 },
+    ],
+    pragmatica: [
+      { keyword: 'politica exterior pragmatica', weight: 3.0 },
+      { keyword: 'interes nacional', weight: 2.4 },
+      { keyword: 'relaciones abiertas', weight: 2.5 },
+      { keyword: 'diplomacia economica', weight: 2.3 },
+    ],
+    integracion_latinoamericana: [
+      { keyword: 'integracion latinoamericana', weight: 3.0 },
+      { keyword: 'soberania regional', weight: 2.7 },
+      { keyword: 'autonomia regional', weight: 2.4 },
+      { keyword: 'unidad latinoamericana', weight: 2.8 },
+    ],
+  },
+  social_conflict: {
+    orden_publico: [
+      { keyword: 'restablecer el orden', weight: 2.9 },
+      { keyword: 'control territorial', weight: 2.3 },
+      { keyword: 'desbloqueo inmediato', weight: 2.8 },
+      { keyword: 'principio de autoridad', weight: 2.7 },
+    ],
+    equilibrio_dialogo: [
+      { keyword: 'mesa de dialogo', weight: 2.7 },
+      { keyword: 'salidas politicas', weight: 2.5 },
+      { keyword: 'dialogo con orden', weight: 2.8 },
+      { keyword: 'gestion de conflictos', weight: 2.6 },
+    ],
+    derechos_protesta: [
+      { keyword: 'derecho a la protesta', weight: 3.0 },
+      { keyword: 'mediacion', weight: 2.4 },
+      { keyword: 'conflictos sociales', weight: 2.5 },
+      { keyword: 'reformas de fondo', weight: 2.5 },
+    ],
+  },
 };
+
+export const DEFAULT_QUESTION_WEIGHTS = Object.fromEntries(QUESTIONS.map((question) => [question.id, 1]));
 
 function normalizeText(text) {
   return String(text ?? '')
@@ -544,18 +768,48 @@ export function isQuestionnaireComplete(answers = {}) {
   return QUESTIONS.every((question) => normalizeAnswer(answers[question.id]) !== null);
 }
 
-export function calculateCandidateScore(candidate, answers = {}) {
+export function buildQuestionWeights(candidates = []) {
+  const candidateCount = Math.max(candidates.length, 1);
+
+  return Object.fromEntries(
+    QUESTIONS.map((question) => {
+      const counts = [1, 2, 3].map(
+        (value) => candidates.filter((candidate) => normalizeAnswer(candidate.positions?.[question.id]) === value).length,
+      );
+      const answered = counts.reduce((sum, count) => sum + count, 0);
+      const coverage = answered / candidateCount;
+
+      let entropy = 0;
+      for (const count of counts) {
+        if (!count) continue;
+        const probability = count / answered;
+        entropy -= probability * Math.log(probability);
+      }
+
+      const normalizedEntropy = answered > 0 ? entropy / Math.log(3) : 0;
+      const weight = Number((0.75 + coverage * normalizedEntropy).toFixed(3));
+
+      return [question.id, weight];
+    }),
+  );
+}
+
+export function calculateCandidateScore(candidate, answers = {}, questionWeights = DEFAULT_QUESTION_WEIGHTS) {
   const issueScores = QUESTIONS.map((question) => {
     const userValue = normalizeAnswer(answers[question.id]);
     const candidateValue = normalizeAnswer(candidate.positions?.[question.id]);
     const similarity = getCompatibility(question.id, userValue, candidateValue);
     const affinity = similarity === null ? null : Math.round(similarity * 100);
+    const informationWeight = Number(questionWeights[question.id] ?? 1);
+    const weightedContribution = affinity === null ? null : affinity * informationWeight;
 
     return {
       question,
       userValue,
       candidateValue,
       affinity,
+      informationWeight,
+      weightedContribution,
     };
   });
 
@@ -571,9 +825,10 @@ export function calculateCandidateScore(candidate, answers = {}) {
 
   const complete = isQuestionnaireComplete(answers);
   const answeredScores = issueScores.filter((issue) => issue.affinity !== null);
+  const totalWeight = answeredScores.reduce((sum, issue) => sum + issue.informationWeight, 0);
 
   const score = complete
-    ? Math.round(answeredScores.reduce((sum, issue) => sum + issue.affinity, 0) / QUESTIONS.length)
+    ? Math.round(answeredScores.reduce((sum, issue) => sum + issue.weightedContribution, 0) / totalWeight)
     : null;
 
   const exactMatches = complete ? answeredScores.filter((issue) => issue.affinity === 100).length : 0;
@@ -584,11 +839,16 @@ export function calculateCandidateScore(candidate, answers = {}) {
     exactMatches,
     evidenceAlignment: Number(evidenceAlignment.toFixed(3)),
     issueScores,
-    strongestMatches: complete
-      ? issueScores
-          .slice()
-          .sort((a, b) => (b.affinity ?? -1) - (a.affinity ?? -1))
-          .slice(0, 3)
-      : [],
+      strongestMatches: complete
+        ? issueScores
+            .slice()
+            .sort((a, b) => {
+              if ((b.weightedContribution ?? -1) !== (a.weightedContribution ?? -1)) {
+                return (b.weightedContribution ?? -1) - (a.weightedContribution ?? -1);
+              }
+              return (b.affinity ?? -1) - (a.affinity ?? -1);
+            })
+            .slice(0, 3)
+        : [],
   };
 }
