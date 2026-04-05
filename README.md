@@ -19,10 +19,10 @@ Aplicación web hecha con Astro para explorar candidaturas presidenciales peruan
 
 - **Astro 5**
 - **Tailwind CSS**
-- **@astrojs/node**
+- **@astrojs/vercel**
 - Contenido estructurado con **`astro:content`**
 
-La app está configurada como **salida server** (`output: 'server'`) con adapter de Node en modo **standalone**.
+La app está configurada como **salida server** (`output: 'server'`) con el adapter oficial de **Vercel Serverless** para servir páginas SSR y rutas `/api/*` en Vercel.
 
 ## Rutas principales
 
@@ -93,6 +93,16 @@ Preview local del build:
 ```bash
 npm run preview
 ```
+
+## Deploy en Vercel
+
+Configuración recomendada en el panel de Vercel:
+
+- **Framework Preset:** Astro
+- **Build Command:** `npm run build` (o automático)
+- **Output Directory:** dejar vacío / automático
+
+No fuerces `dist` ni `dist/client` como carpeta de salida cuando Astro usa el adapter de Vercel, porque el adaptador genera la estructura que Vercel necesita para SSR y funciones.
 
 ## Cómo se edita el contenido
 
@@ -202,7 +212,7 @@ La integración se reparte así:
 
 ### Importante
 
-La página de predicciones **requiere runtime de Astro/Node**.
+La página de predicciones **requiere runtime SSR en Vercel**.
 
 Si abres el proyecto como sitio estático puro, la ruta `/api/polymarket/...` no existirá y esa sección fallará. Para probarla correctamente, usa:
 
