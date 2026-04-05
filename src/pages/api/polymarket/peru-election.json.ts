@@ -11,7 +11,9 @@ export const GET: APIRoute = async () => {
       status: 200,
       headers: {
         'content-type': 'application/json; charset=utf-8',
-        'cache-control': 'public, max-age=30, s-maxage=30',
+        'cache-control': payload.servedFrom === 'live' ? 'public, max-age=30, s-maxage=30' : 'no-store',
+        'x-polymarket-source': payload.servedFrom,
+        'x-polymarket-stale': payload.stale ? '1' : '0',
       },
     });
   } catch (error) {
@@ -19,13 +21,18 @@ export const GET: APIRoute = async () => {
 
     return new Response(
       JSON.stringify({
-        message: 'No se pudo cargar Polymarket en este momento.',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'No pudimos cargar Polymarket ni un respaldo disponible.',
       }),
       {
-        status: 502,
+        status: 503,
         headers: {
           'content-type': 'application/json; charset=utf-8',
           'cache-control': 'no-store',
+          'x-polymarket-source': 'unavailable',
+          'x-polymarket-stale': '1',
         },
       },
     );

@@ -492,6 +492,32 @@ function formatSnapshotDate(value) {
   return dateTimeFormatter.format(date);
 }
 
+function getPolymarketSourceState(snapshot = polymarketSnapshot) {
+  switch (snapshot?.servedFrom) {
+    case 'cache':
+      return {
+        label: 'Último dato válido',
+        tone: 'sync',
+        bannerTitle: 'Mostrando último dato válido guardado',
+        bannerBody: 'Polymarket no respondió en este intento. Conservamos el snapshot persistido más reciente para que el Top 3 siga visible.',
+      };
+    case 'seed':
+      return {
+        label: 'Respaldo',
+        tone: 'error',
+        bannerTitle: 'Mostrando respaldo temporal',
+        bannerBody: 'Estamos usando un respaldo local mientras vuelve la conexión con Polymarket. Los valores pueden no reflejar el mercado actual.',
+      };
+    default:
+      return {
+        label: 'En vivo',
+        tone: 'live',
+        bannerTitle: '',
+        bannerBody: '',
+      };
+  }
+}
+
 function setPolymarketStatus(label, tone = 'idle') {
   if (!polymarketStatus) return;
 
@@ -506,6 +532,11 @@ function setPolymarketStatus(label, tone = 'idle') {
     <span class="h-2 w-2 rounded-full ${toneClass}"></span>
     ${escapeHtml(label)}
   `;
+}
+
+function setPolymarketStatusFromSnapshot(snapshot = polymarketSnapshot) {
+  const sourceState = getPolymarketSourceState(snapshot);
+  setPolymarketStatus(sourceState.label, sourceState.tone);
 }
 
 function sortPolymarketCandidates() {
@@ -532,6 +563,7 @@ function renderPolymarketBoard() {
   sortPolymarketCandidates();
   const podium = polymarketSnapshot.candidates.slice(0, 3);
   const leader = podium[0];
+  const sourceState = getPolymarketSourceState();
 
   if (!leader) {
     polymarketBoard.innerHTML = `
@@ -567,9 +599,19 @@ function renderPolymarketBoard() {
     `)
     .join('');
 
+  const fallbackNotice = polymarketSnapshot.stale
+    ? `
+      <div class="rounded-[1.5rem] border ${polymarketSnapshot.servedFrom === 'seed' ? 'border-amber-200 bg-amber-50' : 'border-sky-200 bg-sky-50'} px-5 py-4">
+        <p class="text-sm font-bold text-primary">${escapeHtml(sourceState.bannerTitle)}</p>
+        <p class="mt-1 text-sm leading-6 text-on-surface-variant">${escapeHtml(sourceState.bannerBody)}</p>
+      </div>
+    `
+    : '';
+
   polymarketBoard.innerHTML = `
     <article class="rounded-[1.75rem] border border-outline-variant/10 bg-surface p-6 md:p-8">
       <div class="flex flex-col gap-6">
+        ${fallbackNotice}
         <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
           <div class="space-y-3">
             <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary/55">Top 3 de Polymarket</p>
@@ -605,7 +647,13 @@ function renderPolymarketBoard() {
 
   if (polymarketMeta) {
     const eventState = polymarketSnapshot.active && !polymarketSnapshot.closed ? 'mercado abierto' : 'mercado cerrado';
-    polymarketMeta.textContent = `Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
+    if (polymarketSnapshot.servedFrom === 'cache') {
+      polymarketMeta.textContent = `Mostrando último dato válido guardado · actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
+    } else if (polymarketSnapshot.servedFrom === 'seed') {
+      polymarketMeta.textContent = `Mostrando respaldo temporal · actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
+    } else {
+      polymarketMeta.textContent = `Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
+    }
   }
 }
 
@@ -676,6 +724,14 @@ function updatePolymarketCandidate(assetId, nextValues = {}) {
   }
 
   if (!didChange) return;
+
+  if (polymarketSnapshot.servedFrom !== 'live') {
+    polymarketSnapshot.servedFrom = 'live';
+    polymarketSnapshot.stale = false;
+    polymarketSnapshot.staleReason = 'none';
+    polymarketSnapshot.fetchedAt = new Date().toISOString();
+    setPolymarketStatus('En vivo', 'live');
+  }
 
   polymarketSnapshot.updatedAt = new Date().toISOString();
   schedulePolymarketRender();
@@ -760,7 +816,7 @@ function connectPolymarketSocket() {
   polymarketSocket = new WebSocket(POLYMARKET_WS_URL);
 
   polymarketSocket.addEventListener('open', () => {
-    setPolymarketStatus('En vivo', 'live');
+    setPolymarketStatusFromSnapshot();
     polymarketSocket?.send(
       JSON.stringify({
         assets_ids: assetIds,
@@ -792,13 +848,19 @@ function connectPolymarketSocket() {
   });
 
   polymarketSocket.addEventListener('error', () => {
-    setPolymarketStatus('Reconectando', 'sync');
+    if (polymarketSnapshot?.servedFrom === 'live') {
+      setPolymarketStatus('Reconectando', 'sync');
+    }
   });
 
   polymarketSocket.addEventListener('close', () => {
     polymarketSocket = null;
     clearPolymarketSocketState();
-    setPolymarketStatus('Reconectando', 'sync');
+    if (polymarketSnapshot?.servedFrom === 'live') {
+      setPolymarketStatus('Reconectando', 'sync');
+    } else {
+      setPolymarketStatusFromSnapshot();
+    }
 
     window.clearTimeout(polymarketReconnectTimer);
     polymarketReconnectTimer = window.setTimeout(() => {
@@ -820,7 +882,7 @@ async function loadPolymarketData({ silent = false } = {}) {
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error('La ruta /api/polymarket no existe en este entorno. Ejecuta la app con Astro/Node (npm run dev o npm run preview), no como sitio estático.');
+        throw new Error('La ruta /api/polymarket no existe en este entorno. Ejecuta la app con Astro/Node (npm run dev) o despliega en Vercel, no como sitio estático.');
       }
       throw new Error(payload?.message || 'No se pudo cargar Polymarket.');
     }
@@ -832,8 +894,16 @@ async function loadPolymarketData({ silent = false } = {}) {
     polymarketSnapshot = payload;
     renderPolymarketBoard();
     connectPolymarketSocket();
-    setPolymarketStatus('En vivo', 'live');
+    setPolymarketStatusFromSnapshot();
   } catch (error) {
+    if (polymarketSnapshot) {
+      setPolymarketStatusFromSnapshot();
+      if (polymarketMeta) {
+        polymarketMeta.textContent = error?.message || 'No fue posible actualizar el mercado en este momento.';
+      }
+      return;
+    }
+
     setPolymarketStatus('Sin datos', 'error');
 
     if (polymarketBoard) {
@@ -847,7 +917,7 @@ async function loadPolymarketData({ silent = false } = {}) {
     }
 
     if (polymarketMeta) {
-      polymarketMeta.textContent = 'No fue posible actualizar el mercado en este momento.';
+      polymarketMeta.textContent = error?.message || 'No fue posible actualizar el mercado en este momento.';
     }
   }
 }

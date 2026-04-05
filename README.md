@@ -49,7 +49,9 @@ La app está configurada con el adapter oficial de **Vercel** para generar **pá
 │   ├── layouts/
 │   ├── lib/
 │   │   ├── planLinks.ts            # Resolución de PDF por partido/alias
-│   │   └── polymarket.ts           # Fetch y normalización del mercado
+│   │   └── polymarket/             # Fetch live, normalización y fallback del mercado
+│   ├── data/
+│   │   └── polymarket/             # Seed local de emergencia para Polymarket
 │   ├── pages/
 │   │   ├── api/polymarket/         # Endpoint JSON
 │   │   ├── index.astro
@@ -206,13 +208,25 @@ Ese refuerzo semántico está implementado en `public/script.js` y ajusta parcia
 
 La integración se reparte así:
 
-- `src/lib/polymarket.ts` → fetch y normalización del evento
+- `src/lib/polymarket/fetch-live.ts` → fetch live con timeout, retries y logging
+- `src/lib/polymarket/normalize.ts` → normalización y validación del evento
+- `src/lib/polymarket/store.ts` → persistencia en Vercel Blob + lectura del seed local
+- `src/lib/polymarket/index.ts` → orquestación `live -> cache -> seed`
+- `src/data/polymarket/peru-election-winner.seed.json` → respaldo local mínimo
 - `src/pages/api/polymarket/peru-election.json.ts` → endpoint de Astro
 - `public/script.js` → render cliente, polling y WebSocket
 
 ### Importante
 
 La página `/predicciones` es estática, pero **depende del endpoint server-side** `/api/polymarket/peru-election.json`.
+
+El endpoint ahora intenta servir datos en este orden:
+
+1. **Live** desde Polymarket
+2. **Cache persistente** en Vercel Blob
+3. **Seed local** versionado en el repo
+
+Para que funcione el fallback persistente en Vercel Blob, el proyecto necesita un store conectado y `BLOB_READ_WRITE_TOKEN` disponible en runtime.
 
 Para probar la integración correctamente en local, usa:
 
@@ -228,15 +242,19 @@ npm run build
 
 ## Notas de mantenimiento
 
-- No hay suite de tests automatizada definida en `package.json`.
-- Los comandos disponibles hoy son solo:
+- Hay tests automatizados con Vitest para:
+  - normalización de payloads de Polymarket
+  - fallback de store/cache/seed
+  - respuesta del endpoint JSON
+- Los comandos disponibles hoy son:
   - `npm run dev`
   - `npm run build`
   - `npm run preview`
+  - `npm run test`
 - Si cambias nombres de partidos o PDFs, revisa también los alias de `src/lib/planLinks.ts`.
 
 ## Próximas mejoras razonables
 
 - mover la lógica cliente grande de `public/script.js` a módulos separados
 - añadir validaciones/editorial tooling para candidatos y assets faltantes
-- incorporar tests para la normalización de PDFs y Polymarket
+- incorporar tests para la normalización de PDFs

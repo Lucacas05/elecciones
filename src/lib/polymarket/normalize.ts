@@ -1,38 +1,10 @@
-const POLYMARKET_EVENT_SLUG = 'peru-presidential-election-winner';
-const POLYMARKET_EVENT_URL = `https://gamma-api.polymarket.com/events/slug/${POLYMARKET_EVENT_SLUG}`;
-const POLYMARKET_PAGE_URL = `https://polymarket.com/es/event/${POLYMARKET_EVENT_SLUG}`;
-
-interface GammaMarket {
-  question?: string;
-  slug?: string;
-  active?: boolean;
-  closed?: boolean;
-  outcomes?: string[] | string | null;
-  outcomePrices?: string[] | string | null;
-  clobTokenIds?: string[] | string | null;
-  oneHourPriceChange?: number | string | null;
-  oneDayPriceChange?: number | string | null;
-  volume24hr?: number | string | null;
-  volume?: number | string | null;
-  liquidity?: number | string | null;
-  bestBid?: number | string | null;
-  bestAsk?: number | string | null;
-  lastTradePrice?: number | string | null;
-}
-
-interface GammaEvent {
-  title?: string;
-  slug?: string;
-  active?: boolean;
-  closed?: boolean;
-  endDate?: string;
-  updatedAt?: string;
-  volume24hr?: number | string | null;
-  volume?: number | string | null;
-  liquidity?: number | string | null;
-  openInterest?: number | string | null;
-  markets?: GammaMarket[];
-}
+import {
+  POLYMARKET_EVENT_SLUG,
+  POLYMARKET_PAGE_URL,
+  type GammaEvent,
+  type PolymarketCandidate,
+  type PolymarketEventSnapshot,
+} from './types';
 
 function parseStringArray(value: string[] | string | null | undefined) {
   if (Array.isArray(value)) return value.map((item) => String(item));
@@ -67,50 +39,53 @@ function isPlaceholderCandidate(name: string) {
   return /^candidate\s+[a-z]$/i.test(name) || /^another candidate$/i.test(name);
 }
 
-export interface PolymarketCandidate {
-  name: string;
-  slug: string;
-  probability: number;
-  bestBid: number;
-  bestAsk: number;
-  lastTradePrice: number;
-  hourChange: number;
-  dayChange: number;
-  volume24h: number;
-  volume: number;
-  liquidity: number;
-  yesTokenId: string;
+function isValidCandidate(candidate: Partial<PolymarketCandidate> | null | undefined): candidate is PolymarketCandidate {
+  return Boolean(
+    candidate &&
+      candidate.name &&
+      typeof candidate.name === 'string' &&
+      candidate.yesTokenId &&
+      typeof candidate.yesTokenId === 'string' &&
+      typeof candidate.probability === 'number' &&
+      Number.isFinite(candidate.probability),
+  );
 }
 
-export interface PolymarketEventSnapshot {
-  title: string;
-  slug: string;
-  active: boolean;
-  closed: boolean;
-  endDate: string | null;
-  updatedAt: string;
-  sourceUrl: string;
-  volume24h: number;
-  volume: number;
-  liquidity: number;
-  openInterest: number;
-  candidates: PolymarketCandidate[];
+export function sortPolymarketCandidates(candidates: PolymarketCandidate[]) {
+  return [...candidates].sort(
+    (a, b) =>
+      b.probability - a.probability ||
+      b.volume24h - a.volume24h ||
+      a.name.localeCompare(b.name, 'es'),
+  );
 }
 
-export async function fetchPeruElectionMarket(): Promise<PolymarketEventSnapshot> {
-  const response = await fetch(POLYMARKET_EVENT_URL, {
-    headers: {
-      'user-agent': 'DecidePeru/1.0 (+https://decideperu.local)',
-      accept: 'application/json',
-    },
-  });
-
-  if (!response.ok) {
-    throw new Error(`Polymarket respondió ${response.status}`);
+export function assertValidSnapshot(snapshot: PolymarketEventSnapshot) {
+  if (!snapshot || typeof snapshot !== 'object') {
+    throw new Error('Snapshot inválido: se esperaba un objeto.');
   }
 
-  const raw = (await response.json()) as GammaEvent;
-  const candidates = (raw.markets ?? [])
+  const candidates = Array.isArray(snapshot.candidates) ? snapshot.candidates.filter(isValidCandidate) : [];
+  if (candidates.length < 3) {
+    throw new Error(`Snapshot inválido: se esperaban al menos 3 candidatos válidos y llegaron ${candidates.length}.`);
+  }
+
+  return {
+    ...snapshot,
+    candidates: sortPolymarketCandidates(candidates),
+  } satisfies PolymarketEventSnapshot;
+}
+
+export function normalizeGammaEvent(raw: GammaEvent): PolymarketEventSnapshot {
+  if (!raw || typeof raw !== 'object') {
+    throw new Error('Polymarket devolvió un payload vacío o inválido.');
+  }
+
+  if (!Array.isArray(raw.markets)) {
+    throw new Error('Polymarket no devolvió mercados en el payload.');
+  }
+
+  const candidates = raw.markets
     .map((market) => {
       const question = market.question?.trim() ?? '';
       const name = extractCandidateName(question);
@@ -140,10 +115,9 @@ export async function fetchPeruElectionMarket(): Promise<PolymarketEventSnapshot
         yesTokenId,
       } satisfies PolymarketCandidate;
     })
-    .filter((candidate): candidate is PolymarketCandidate => Boolean(candidate))
-    .sort((a, b) => b.probability - a.probability || b.volume24h - a.volume24h || a.name.localeCompare(b.name, 'es'));
+    .filter((candidate): candidate is PolymarketCandidate => Boolean(candidate));
 
-  return {
+  return assertValidSnapshot({
     title: raw.title ?? 'Peru Presidential Election Winner',
     slug: raw.slug ?? POLYMARKET_EVENT_SLUG,
     active: Boolean(raw.active),
@@ -156,5 +130,5 @@ export async function fetchPeruElectionMarket(): Promise<PolymarketEventSnapshot
     liquidity: toNumber(raw.liquidity),
     openInterest: toNumber(raw.openInterest),
     candidates,
-  };
+  });
 }
