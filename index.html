@@ -1,87 +1,434 @@
-<!doctype html>
-<html lang="es">
+<!DOCTYPE html>
+<html class="light" lang="es">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Elecciones Perú 2026 · Resumen Ejecutivo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Decide Perú · Resumen Ejecutivo</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "inverse-on-surface": "#e6f3fb",
+              "on-secondary-fixed-variant": "#2e4b57",
+              "tertiary-container": "#6b0008",
+              "surface-tint": "#3c5d9c",
+              "on-error-container": "#93000a",
+              "on-secondary-container": "#4a6774",
+              error: "#ba1a1a",
+              "surface-container-highest": "#d7e4ec",
+              "outline-variant": "#c4c6d2",
+              "on-surface": "#111d23",
+              "on-background": "#111d23",
+              "surface-bright": "#f4faff",
+              "primary-fixed": "#d8e2ff",
+              secondary: "#466270",
+              "surface-dim": "#cfdce4",
+              "primary-fixed-dim": "#aec6ff",
+              "on-primary-fixed-variant": "#224583",
+              "surface-container-high": "#ddeaf2",
+              "inverse-primary": "#aec6ff",
+              "on-tertiary-fixed": "#410003",
+              "secondary-fixed-dim": "#adcbda",
+              "on-tertiary-fixed-variant": "#930010",
+              "inverse-surface": "#263238",
+              "error-container": "#ffdad6",
+              "on-surface-variant": "#434750",
+              "on-primary-fixed": "#001a42",
+              surface: "#f4faff",
+              "secondary-fixed": "#c9e7f7",
+              "on-secondary": "#ffffff",
+              primary: "#001b44",
+              "on-primary-container": "#7999dc",
+              "tertiary-fixed": "#ffdad6",
+              "surface-container-low": "#e9f6fd",
+              "surface-variant": "#d7e4ec",
+              "on-secondary-fixed": "#001f2a",
+              tertiary: "#430003",
+              "primary-container": "#002f6c",
+              "on-primary": "#ffffff",
+              "on-error": "#ffffff",
+              background: "#f4faff",
+              "secondary-container": "#c6e4f4",
+              "surface-container-lowest": "#ffffff",
+              "on-tertiary-container": "#ff6960",
+              "surface-container": "#e3f0f8",
+              outline: "#747781",
+              "on-tertiary": "#ffffff",
+              "tertiary-fixed-dim": "#ffb3ac",
+            },
+            borderRadius: {
+              DEFAULT: "0.125rem",
+              lg: "0.25rem",
+              xl: "0.5rem",
+              full: "0.75rem",
+            },
+            fontFamily: {
+              headline: ["Manrope"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+          },
+        },
+      };
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
-    <nav class="topnav">
-      <div class="topnav-inner">
-        <div class="topnav-brand">
-          <span class="brand-dot"></span>
-          <span class="brand-title">Elecciones Perú 2026</span>
-        </div>
-        <span class="brand-subtitle">Resumen ejecutivo · Plan de gobierno</span>
+
+  <body
+    class="bg-background font-body text-on-surface antialiased selection:bg-primary-fixed selection:text-on-primary-fixed"
+  >
+    <!-- ── Top Navigation ──────────────────────────────────── -->
+    <nav
+      class="flex justify-between items-center w-full px-8 py-4 max-w-full bg-[#f4faff] border-b border-[#e9f6fd]/50 fixed top-0 z-[60] font-['Manrope'] tracking-tight"
+    >
+      <div
+        class="text-xl font-bold text-primary uppercase tracking-wider"
+      >
+        Decide Perú
+      </div>
+      <div class="hidden md:flex items-center gap-8">
+        <a
+          class="text-on-surface/60 hover:text-primary-container transition-colors"
+          href="#"
+          >Instrucciones</a
+        >
+        <a
+          class="text-primary font-bold border-b-2 border-primary-container transition-colors"
+          href="#"
+          >Candidatos</a
+        >
+        <a
+          class="text-on-surface/60 hover:text-primary-container transition-colors"
+          href="#"
+          >Metodología</a
+        >
+      </div>
+      <div class="flex items-center gap-4">
+        <button
+          class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/5 text-primary hover:bg-primary/10 transition-colors font-semibold"
+        >
+          <span class="material-symbols-outlined text-xl">share</span>
+          <span class="text-sm hidden sm:inline">Compartir</span>
+        </button>
       </div>
     </nav>
 
-    <main class="layout">
-      <!-- FORM PANEL -->
-      <aside class="panel form-panel">
-        <div class="panel-header">
-          <h2>Cargar candidato</h2>
-          <p class="muted">Sube foto, PDF y agrega el resumen ejecutivo.</p>
-        </div>
-        <form id="candidate-form">
-          <div class="field-group">
-            <label for="name">Nombre del candidato</label>
-            <input id="name" type="text" required placeholder="Ej: Keiko Fujimori" />
-          </div>
-          <div class="field-group">
-            <label for="party">Partido</label>
-            <input id="party" type="text" required placeholder="Ej: Fuerza Popular" />
-          </div>
-          <div class="field-group">
-            <label for="photo">Foto del candidato</label>
-            <div class="file-input-wrapper">
-              <input id="photo" type="file" accept="image/*" required />
-              <div class="file-input-ui">
-                <span class="material-icons-round">add_photo_alternate</span>
-                <span class="file-label" id="photo-label">Seleccionar imagen</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-group">
-            <label for="plan">Plan de gobierno (PDF)</label>
-            <div class="file-input-wrapper">
-              <input id="plan" type="file" accept="application/pdf" required />
-              <div class="file-input-ui">
-                <span class="material-icons-round">picture_as_pdf</span>
-                <span class="file-label" id="plan-label">Seleccionar PDF</span>
-              </div>
-            </div>
-          </div>
-          <div class="field-group">
-            <label for="summary">Resumen ejecutivo</label>
-            <textarea id="summary" rows="8" required placeholder="Resume en puntos clave el plan de gobierno..."></textarea>
-          </div>
-          <button type="submit" class="btn-primary">
-            <span class="material-icons-round">auto_awesome</span>
-            Generar resumen visual
-          </button>
-        </form>
-      </aside>
+    <!-- ── Side Navigation (Desktop) ───────────────────────── -->
+    <aside
+      class="hidden lg:flex flex-col h-screen fixed left-0 top-0 p-6 w-64 bg-surface-container-low border-r border-surface-container-low z-50 font-['Manrope'] font-medium pt-24"
+    >
+      <nav class="space-y-2">
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-on-surface/70 hover:bg-white/80 transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">home</span>
+          Inicio
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-on-surface/70 hover:bg-white/80 transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">quiz</span>
+          Cuestionario
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 bg-white text-primary rounded-lg font-bold shadow-sm translate-x-1 transition-transform"
+          href="#"
+        >
+          <span class="material-symbols-outlined">person_add</span>
+          Candidatos
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-on-surface/70 hover:bg-white/80 transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">compare_arrows</span>
+          Comparativa
+        </a>
+        <a
+          class="flex items-center gap-3 px-4 py-3 text-on-surface/70 hover:bg-white/80 transition-all rounded-lg"
+          href="#"
+        >
+          <span class="material-symbols-outlined">analytics</span>
+          Resultados
+        </a>
+      </nav>
+    </aside>
 
-      <!-- PREVIEW PANEL -->
-      <section class="panel preview-panel">
-        <div class="panel-header">
-          <h2>Vista del candidato</h2>
-          <p class="muted">Así se verá el resumen ejecutivo.</p>
-        </div>
-        <article id="candidate-card" class="candidate-card empty">
-          <div class="empty-state">
-            <span class="material-icons-round empty-icon">how_to_vote</span>
-            <p>Completa el formulario para ver el resumen.</p>
+    <!-- ── Main Content ────────────────────────────────────── -->
+    <main class="lg:pl-64 pt-20 min-h-screen pb-24 md:pb-12">
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-12">
+        <!-- Page Header -->
+        <header class="mb-12">
+          <div
+            class="inline-flex items-center gap-2 px-4 py-1.5 rounded-[2rem] bg-secondary-container text-on-secondary-container font-label text-sm font-semibold tracking-wide mb-4"
+          >
+            <span class="material-symbols-outlined text-sm"
+              >edit_document</span
+            >
+            GESTIÓN DE CANDIDATOS
           </div>
-        </article>
-      </section>
+          <h1
+            class="font-headline text-4xl md:text-5xl font-extrabold text-primary tracking-tight mb-3"
+          >
+            Cargar Candidato
+          </h1>
+          <p
+            class="font-body text-on-surface-variant max-w-2xl text-lg leading-relaxed"
+          >
+            Sube foto, plan de gobierno (PDF) y agrega el resumen ejecutivo para
+            generar la ficha visual del candidato.
+          </p>
+        </header>
+
+        <!-- Two-Column Grid: Form + Preview -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+          <!-- ── Form Panel ──────────────────────────────── -->
+          <div
+            class="lg:col-span-5 bg-surface-container-lowest rounded-2xl p-8 shadow-[0_4px_40px_rgba(0,27,68,0.04)] border border-outline-variant/10 lg:sticky lg:top-24 form-panel"
+          >
+            <div class="flex items-center gap-3 mb-6">
+              <div
+                class="w-10 h-10 rounded-xl bg-secondary-container flex items-center justify-center text-on-secondary-container"
+              >
+                <span class="material-symbols-outlined text-xl"
+                  >how_to_reg</span
+                >
+              </div>
+              <div>
+                <h2 class="font-headline text-lg font-bold text-primary">
+                  Datos del candidato
+                </h2>
+                <p class="text-xs text-on-surface-variant">
+                  Complete los campos requeridos.
+                </p>
+              </div>
+            </div>
+
+            <form id="candidate-form" class="space-y-5">
+              <!-- Name -->
+              <div class="field-group">
+                <label
+                  for="name"
+                  class="block text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-1.5"
+                  >Nombre del candidato</label
+                >
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  placeholder="Ej: Keiko Fujimori"
+                  class="w-full font-body text-sm px-4 py-3 border-[1.5px] border-outline-variant/30 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
+                />
+              </div>
+
+              <!-- Party -->
+              <div class="field-group">
+                <label
+                  for="party"
+                  class="block text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-1.5"
+                  >Partido</label
+                >
+                <input
+                  id="party"
+                  type="text"
+                  required
+                  placeholder="Ej: Fuerza Popular"
+                  class="w-full font-body text-sm px-4 py-3 border-[1.5px] border-outline-variant/30 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
+                />
+              </div>
+
+              <!-- Photo -->
+              <div class="field-group">
+                <label
+                  class="block text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-1.5"
+                  >Foto del candidato</label
+                >
+                <div class="file-input-wrapper">
+                  <input id="photo" type="file" accept="image/*" required />
+                  <div
+                    class="file-input-ui flex items-center gap-3 px-4 py-3 border-[1.5px] border-dashed border-outline-variant/40 rounded-xl bg-surface-container text-on-surface-variant text-sm font-medium transition-all cursor-pointer hover:border-primary hover:bg-primary-fixed/20 hover:text-primary"
+                  >
+                    <span
+                      class="material-symbols-outlined text-lg text-primary/60"
+                      >add_photo_alternate</span
+                    >
+                    <span id="photo-label">Seleccionar imagen</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Plan PDF -->
+              <div class="field-group">
+                <label
+                  class="block text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-1.5"
+                  >Plan de gobierno (PDF)</label
+                >
+                <div class="file-input-wrapper">
+                  <input
+                    id="plan"
+                    type="file"
+                    accept="application/pdf"
+                    required
+                  />
+                  <div
+                    class="file-input-ui flex items-center gap-3 px-4 py-3 border-[1.5px] border-dashed border-outline-variant/40 rounded-xl bg-surface-container text-on-surface-variant text-sm font-medium transition-all cursor-pointer hover:border-primary hover:bg-primary-fixed/20 hover:text-primary"
+                  >
+                    <span
+                      class="material-symbols-outlined text-lg text-primary/60"
+                      >picture_as_pdf</span
+                    >
+                    <span id="plan-label">Seleccionar PDF</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Summary -->
+              <div class="field-group">
+                <label
+                  for="summary"
+                  class="block text-[0.7rem] font-bold uppercase tracking-widest text-primary mb-1.5"
+                  >Resumen ejecutivo</label
+                >
+                <textarea
+                  id="summary"
+                  rows="8"
+                  required
+                  placeholder="Resume en puntos clave el plan de gobierno..."
+                  class="w-full font-body text-sm px-4 py-3 border-[1.5px] border-outline-variant/30 rounded-xl bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/40 focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all resize-vertical"
+                ></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button
+                type="submit"
+                class="w-full flex items-center justify-center gap-2 px-6 py-4 bg-primary text-on-primary rounded-xl font-headline font-bold text-sm tracking-wide hover:bg-primary-container transition-all active:scale-[0.98] shadow-xl shadow-primary/10 mt-2"
+              >
+                <span class="material-symbols-outlined text-lg"
+                  >auto_awesome</span
+                >
+                Generar resumen visual
+              </button>
+            </form>
+          </div>
+
+          <!-- ── Preview Panel ───────────────────────────── -->
+          <div class="lg:col-span-7">
+            <div class="flex items-center justify-between mb-6">
+              <div>
+                <h2 class="font-headline text-lg font-bold text-primary">
+                  Vista del candidato
+                </h2>
+                <p class="text-sm text-on-surface-variant">
+                  Así se verá el resumen ejecutivo.
+                </p>
+              </div>
+              <div
+                class="hidden sm:flex items-center gap-2 text-[10px] text-on-tertiary-container font-bold uppercase tracking-widest"
+              >
+                <span
+                  class="relative flex h-2 w-2"
+                >
+                  <span
+                    class="animate-ping absolute inline-flex h-full w-full rounded-[9999px] bg-on-tertiary-container opacity-75"
+                  ></span>
+                  <span
+                    class="relative inline-flex rounded-[9999px] h-2 w-2 bg-on-tertiary-container"
+                  ></span>
+                </span>
+                Vista en tiempo real
+              </div>
+            </div>
+
+            <article
+              id="candidate-card"
+              class="candidate-card empty bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_4px_40px_rgba(0,27,68,0.04)] border border-outline-variant/10"
+            >
+              <div class="empty-state flex flex-col items-center justify-center py-24 px-8 text-center">
+                <span
+                  class="material-symbols-outlined text-5xl text-outline-variant/40 mb-4"
+                  >how_to_vote</span
+                >
+                <p class="text-on-surface-variant text-sm font-medium">
+                  Completa el formulario para ver el resumen.
+                </p>
+              </div>
+            </article>
+
+            <!-- Contextual Info Banner -->
+            <div
+              class="mt-6 p-6 institutional-gradient rounded-2xl text-white flex flex-col sm:flex-row items-center justify-between gap-6"
+            >
+              <div class="flex items-center gap-4">
+                <div
+                  class="w-12 h-12 rounded-xl bg-primary-container flex items-center justify-center text-on-primary-container flex-shrink-0"
+                >
+                  <span class="material-symbols-outlined text-2xl"
+                    >lightbulb</span
+                  >
+                </div>
+                <div>
+                  <h4 class="font-headline text-sm font-bold mb-0.5">
+                    Fuente Oficial
+                  </h4>
+                  <p class="text-white/70 text-xs max-w-md">
+                    Los planes de gobierno fueron extraídos del portal del
+                    <b>Jurado Nacional de Elecciones</b> y procesados para
+                    generar resúmenes ejecutivos verificables.
+                  </p>
+                </div>
+              </div>
+              <a
+                class="text-white font-bold underline decoration-on-tertiary-container underline-offset-4 decoration-2 hover:text-on-tertiary-container transition-colors whitespace-nowrap text-sm"
+                href="https://portal.jne.gob.pe"
+                target="_blank"
+                rel="noopener"
+                >Ir al portal JNE</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
+
+    <!-- ── Bottom Navigation (Mobile Only) ─────────────────── -->
+    <nav
+      class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-white/80 backdrop-blur-xl border-t border-surface-container-low/20 shadow-[0_-4px_40px_rgba(0,27,68,0.04)] font-['Manrope'] text-[10px] font-bold uppercase tracking-widest"
+    >
+      <a
+        href="#"
+        class="flex flex-col items-center justify-center text-primary/40"
+      >
+        <span class="material-symbols-outlined mb-0.5">home</span>
+        Inicio
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center justify-center bg-primary text-white rounded-lg px-5 py-2"
+      >
+        <span class="material-symbols-outlined mb-0.5">person_add</span>
+        Candidato
+      </a>
+      <a
+        href="#"
+        class="flex flex-col items-center justify-center text-primary/40"
+      >
+        <span class="material-symbols-outlined mb-0.5">analytics</span>
+        Resultados
+      </a>
+    </nav>
 
     <script src="script.js"></script>
   </body>

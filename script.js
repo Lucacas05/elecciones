@@ -51,35 +51,68 @@ function render(data) {
 
   card.classList.remove('empty');
   card.innerHTML = `
+    <!-- Card Hero -->
     <div class="card-hero">
-      <div class="card-hero-content">
-        <img class="card-photo" src="${safePhoto}" alt="Foto de ${escHtml(data.name)}" />
-        <div class="card-hero-text">
-          <h3 class="card-name">${escHtml(data.name)}</h3>
-          <span class="card-badge">
-            <span class="material-icons-round">account_balance</span>
+      <div class="relative flex items-start gap-5 z-10">
+        <img
+          class="w-20 h-20 object-cover rounded-xl border-[3px] border-white/25 shadow-[0_4px_20px_rgba(0,0,0,0.3)] flex-shrink-0"
+          src="${safePhoto}"
+          alt="Foto de ${escHtml(data.name)}"
+        />
+        <div class="pt-1">
+          <h3 class="font-headline font-extrabold text-xl text-white tracking-tight leading-tight mb-3">
+            ${escHtml(data.name)}
+          </h3>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white/[0.12] border border-white/20 rounded-[2rem] text-white/90 text-xs font-semibold backdrop-blur-sm">
+            <span class="material-symbols-outlined text-sm">account_balance</span>
             ${escHtml(data.party)}
           </span>
         </div>
       </div>
     </div>
-    <div class="card-body">
-      <div class="card-cta">
-        <div class="card-cta-text">
-          <h4>Plan de Gobierno</h4>
-          <p>Documento completo en PDF</p>
+
+    <!-- Card Body -->
+    <div class="p-6 -mt-4 relative z-10 space-y-4">
+      <!-- PDF CTA -->
+      <div class="flex items-center justify-between p-5 bg-gradient-to-r from-surface-container-low to-surface-container rounded-2xl border border-outline-variant/10 shadow-[0_2px_12px_rgba(0,27,68,0.06)]">
+        <div>
+          <h4 class="font-headline font-bold text-sm text-primary mb-0.5">Plan de Gobierno</h4>
+          <p class="text-xs text-on-surface-variant">Documento completo en PDF</p>
         </div>
-        <a class="btn-pdf" href="${safePdf}" target="_blank" rel="noopener">
-          <span class="material-icons-round">picture_as_pdf</span>
-          Ver / Descargar
+        <a
+          class="inline-flex items-center gap-1.5 px-5 py-2.5 bg-primary text-on-primary rounded-xl text-xs font-bold hover:bg-primary-container transition-all active:scale-[0.98] shadow-sm"
+          href="${safePdf}"
+          target="_blank"
+          rel="noopener"
+        >
+          <span class="material-symbols-outlined text-sm">description</span>
+          Ver PDF
         </a>
       </div>
-      <div class="card-section">
-        <div class="section-label">
-          <span class="material-icons-round">summarize</span>
-          Resumen ejecutivo
+
+      <!-- Summary Section -->
+      <div class="bg-surface-container-lowest rounded-2xl p-6 border border-outline-variant/10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-sm text-primary">summarize</span>
+          <span class="text-[0.7rem] font-bold uppercase tracking-widest text-primary">Resumen ejecutivo</span>
         </div>
-        <div class="summary-text">${escHtml(data.summary)}</div>
+        <div class="summary-text text-sm text-on-surface-variant font-body">${escHtml(data.summary)}</div>
+      </div>
+
+      <!-- Key Metrics Row -->
+      <div class="grid grid-cols-3 gap-3">
+        <div class="p-4 bg-surface-container rounded-xl text-center">
+          <span class="material-symbols-outlined text-primary mb-1 text-xl">shield</span>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-1">Seguridad</p>
+        </div>
+        <div class="p-4 bg-surface-container rounded-xl text-center">
+          <span class="material-symbols-outlined text-primary mb-1 text-xl">payments</span>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-1">Economía</p>
+        </div>
+        <div class="p-4 bg-surface-container rounded-xl text-center">
+          <span class="material-symbols-outlined text-primary mb-1 text-xl">groups</span>
+          <p class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant mt-1">Social</p>
+        </div>
       </div>
     </div>
   `;
@@ -88,11 +121,19 @@ function render(data) {
 // Update file input labels on selection
 document.getElementById('photo').addEventListener('change', (e) => {
   const label = document.getElementById('photo-label');
-  if (e.target.files[0]) label.textContent = e.target.files[0].name;
+  if (e.target.files[0]) {
+    label.textContent = e.target.files[0].name;
+    label.closest('.file-input-ui').classList.add('border-primary', 'text-primary', 'bg-primary-fixed/20');
+    label.closest('.file-input-ui').classList.remove('border-outline-variant/40');
+  }
 });
 document.getElementById('plan').addEventListener('change', (e) => {
   const label = document.getElementById('plan-label');
-  if (e.target.files[0]) label.textContent = e.target.files[0].name;
+  if (e.target.files[0]) {
+    label.textContent = e.target.files[0].name;
+    label.closest('.file-input-ui').classList.add('border-primary', 'text-primary', 'bg-primary-fixed/20');
+    label.closest('.file-input-ui').classList.remove('border-outline-variant/40');
+  }
 });
 
 form.addEventListener('submit', async (event) => {
