@@ -420,6 +420,356 @@ const resultsList = document.getElementById('results-list');
 const issueBreakdown = document.getElementById('issue-breakdown');
 const answersCount = document.getElementById('answers-count');
 const resetButton = document.getElementById('reset-button');
+const polymarketBoard = document.getElementById('polymarket-board');
+const polymarketMeta = document.getElementById('polymarket-meta');
+const polymarketStatus = document.getElementById('polymarket-status');
+const polymarketRefreshButton = document.getElementById('polymarket-refresh');
+
+// ── Polymarket Live Market ───────────────────────────────────────────────────
+
+const POLYMARKET_API_URL = '/api/polymarket/peru-election.json';
+const POLYMARKET_WS_URL = 'wss://ws-subscriptions-clob.polymarket.com/ws/market';
+const POLYMARKET_POLL_INTERVAL_MS = 120000;
+const compactUsdFormatter = new Intl.NumberFormat('es-PE', {
+  style: 'currency',
+  currency: 'USD',
+  notation: 'compact',
+  maximumFractionDigits: 1,
+});
+const usdFormatter = new Intl.NumberFormat('es-PE', {
+  style: 'currency',
+  currency: 'USD',
+  maximumFractionDigits: 0,
+});
+const percentFormatter = new Intl.NumberFormat('es-PE', {
+  style: 'percent',
+  maximumFractionDigits: 1,
+});
+const numberFormatter = new Intl.NumberFormat('es-PE', {
+  maximumFractionDigits: 1,
+});
+const dateTimeFormatter = new Intl.DateTimeFormat('es-PE', {
+  dateStyle: 'medium',
+  timeStyle: 'short',
+});
+
+let polymarketSnapshot = null;
+let polymarketSocket = null;
+let polymarketReconnectTimer = null;
+let polymarketPollTimer = null;
+let polymarketRenderTimer = null;
+let polymarketHeartbeatTimer = null;
+
+function escapeHtml(value) {
+  return String(value ?? '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('\"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function formatUsd(value, compact = false) {
+  const amount = Number(value ?? 0);
+  return compact ? compactUsdFormatter.format(amount) : usdFormatter.format(amount);
+}
+
+function formatProbability(value) {
+  return percentFormatter.format((Number(value ?? 0)) / 100);
+}
+
+function formatChange(value) {
+  const amount = Number(value ?? 0);
+  const sign = amount > 0 ? '+' : '';
+  return `${sign}${numberFormatter.format(amount)} pp`;
+}
+
+function formatSnapshotDate(value) {
+  if (!value) return 'sin hora disponible';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return 'sin hora disponible';
+  return dateTimeFormatter.format(date);
+}
+
+function setPolymarketStatus(label, tone = 'idle') {
+  if (!polymarketStatus) return;
+
+  const toneClass =
+    tone === 'live'
+      ? 'bg-emerald-500'
+      : tone === 'error'
+        ? 'bg-rose-500'
+        : 'bg-amber-500';
+
+  polymarketStatus.innerHTML = `
+    <span class="h-2 w-2 rounded-full ${toneClass}"></span>
+    ${escapeHtml(label)}
+  `;
+}
+
+function sortPolymarketCandidates() {
+  if (!polymarketSnapshot) return;
+  polymarketSnapshot.candidates.sort((a, b) => {
+    if (b.probability !== a.probability) return b.probability - a.probability;
+    if (b.volume24h !== a.volume24h) return b.volume24h - a.volume24h;
+    return a.name.localeCompare(b.name, 'es');
+  });
+}
+
+function schedulePolymarketRender() {
+  if (polymarketRenderTimer || !polymarketSnapshot) return;
+
+  polymarketRenderTimer = window.setTimeout(() => {
+    polymarketRenderTimer = null;
+    renderPolymarketBoard();
+  }, 120);
+}
+
+function renderPolymarketBoard() {
+  if (!polymarketBoard || !polymarketSnapshot) return;
+
+  sortPolymarketCandidates();
+  const podium = polymarketSnapshot.candidates.slice(0, 3);
+  const leader = podium[0];
+
+  if (!leader) {
+    polymarketBoard.innerHTML = `
+      <article class="rounded-[1.75rem] border border-outline-variant/10 bg-surface p-6 md:p-7">
+        <p class="text-lg font-bold text-primary">No hay datos activos de Polymarket para este mercado.</p>
+      </article>
+    `;
+    return;
+  }
+
+  const podiumMarkup = podium
+    .map((candidate, index) => `
+      <article class="rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low px-5 py-5">
+        <div class="flex items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex h-9 min-w-9 items-center justify-center rounded-full bg-white px-3 text-sm font-extrabold text-primary">
+              ${index + 1}
+            </span>
+            <div>
+              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/55">
+                ${index === 0 ? 'Favorito' : `Puesto ${index + 1}`}
+              </p>
+              <h3 class="mt-1 font-headline text-lg font-extrabold leading-tight text-primary">
+                ${escapeHtml(candidate.name)}
+              </h3>
+            </div>
+          </div>
+          <span class="text-2xl font-extrabold tabular-nums text-primary">
+            ${formatProbability(candidate.probability)}
+          </span>
+        </div>
+      </article>
+    `)
+    .join('');
+
+  polymarketBoard.innerHTML = `
+    <article class="rounded-[1.75rem] border border-outline-variant/10 bg-surface p-6 md:p-8">
+      <div class="flex flex-col gap-6">
+        <div class="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+          <div class="space-y-3">
+            <p class="text-xs font-bold uppercase tracking-[0.22em] text-primary/55">Top 3 de Polymarket</p>
+            <h3 class="font-headline text-3xl font-extrabold tracking-tight text-primary md:text-4xl">
+              ${escapeHtml(leader.name)} lidera ahora mismo
+            </h3>
+            <p class="max-w-2xl text-sm leading-6 text-on-surface-variant">
+              Solo te mostramos los tres primeros puestos con su porcentaje actual.
+              Si quieres ver el mercado completo, abre Polymarket.
+            </p>
+          </div>
+          <div class="rounded-[1.5rem] bg-primary px-6 py-5 text-white shadow-[0_18px_40px_rgba(0,27,68,0.18)]">
+            <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70">1.er lugar</p>
+            <p class="mt-2 font-headline text-4xl font-extrabold tabular-nums">${formatProbability(leader.probability)}</p>
+            <p class="mt-2 text-sm text-white/72">${escapeHtml(leader.name)}</p>
+          </div>
+        </div>
+
+        <div class="grid gap-3 md:grid-cols-3">
+          ${podiumMarkup}
+        </div>
+        <div class="flex flex-wrap items-center justify-between gap-3 rounded-[1.5rem] border border-outline-variant/10 bg-surface-container-low px-5 py-4">
+          <p class="text-sm text-on-surface-variant">
+            Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)}
+          </p>
+          <span class="rounded-full bg-primary/5 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.18em] text-primary">
+            ${polymarketSnapshot.active && !polymarketSnapshot.closed ? 'Mercado abierto' : 'Mercado cerrado'}
+          </span>
+        </div>
+      </div>
+    </article>
+  `;
+
+  if (polymarketMeta) {
+    const eventState = polymarketSnapshot.active && !polymarketSnapshot.closed ? 'mercado abierto' : 'mercado cerrado';
+    polymarketMeta.textContent = `Actualizado ${formatSnapshotDate(polymarketSnapshot.updatedAt)} · ${eventState} · volumen total ${formatUsd(polymarketSnapshot.volume, true)}.`;
+  }
+}
+
+function computeLiveProbability(priceA, priceB) {
+  const first = Number(priceA ?? 0);
+  const second = Number(priceB ?? 0);
+
+  if (first > 0 && second > 0) return ((first + second) / 2) * 100;
+  if (first > 0) return first * 100;
+  if (second > 0) return second * 100;
+  return null;
+}
+
+function updatePolymarketCandidate(assetId, nextProbability) {
+  if (!polymarketSnapshot) return;
+
+  const candidate = polymarketSnapshot.candidates.find((item) => item.yesTokenId === assetId);
+  if (!candidate || !Number.isFinite(nextProbability)) return;
+
+  candidate.probability = Math.max(0, Math.min(100, nextProbability));
+  polymarketSnapshot.updatedAt = new Date().toISOString();
+  schedulePolymarketRender();
+}
+
+function handlePolymarketMessage(message) {
+  if (!message || typeof message !== 'object') return;
+
+  if (message.event_type === 'best_bid_ask') {
+    const nextProbability = computeLiveProbability(message.best_bid, message.best_ask);
+    if (nextProbability !== null) updatePolymarketCandidate(message.asset_id, nextProbability);
+    return;
+  }
+
+  if (message.event_type === 'last_trade_price') {
+    updatePolymarketCandidate(message.asset_id, Number(message.price) * 100);
+    return;
+  }
+
+  if (message.event_type === 'book') {
+    const bestBid = Array.isArray(message.bids) && message.bids.length ? message.bids[0]?.price : 0;
+    const bestAsk = Array.isArray(message.asks) && message.asks.length ? message.asks[0]?.price : 0;
+    const nextProbability = computeLiveProbability(bestBid, bestAsk);
+    if (nextProbability !== null) updatePolymarketCandidate(message.asset_id, nextProbability);
+    return;
+  }
+
+  if (message.event_type === 'price_change' && Array.isArray(message.price_changes)) {
+    message.price_changes.forEach((change) => {
+      const nextProbability = computeLiveProbability(change.best_bid, change.best_ask) ?? Number(change.price) * 100;
+      updatePolymarketCandidate(change.asset_id, nextProbability);
+    });
+  }
+}
+
+function clearPolymarketSocketState() {
+  window.clearInterval(polymarketHeartbeatTimer);
+  polymarketHeartbeatTimer = null;
+}
+
+function connectPolymarketSocket() {
+  if (!polymarketSnapshot?.candidates?.length || !('WebSocket' in window)) return;
+  if (polymarketSocket && (polymarketSocket.readyState === WebSocket.OPEN || polymarketSocket.readyState === WebSocket.CONNECTING)) return;
+
+  const assetIds = polymarketSnapshot.candidates.map((candidate) => candidate.yesTokenId);
+  polymarketSocket = new WebSocket(POLYMARKET_WS_URL);
+
+  polymarketSocket.addEventListener('open', () => {
+    setPolymarketStatus('En vivo', 'live');
+    polymarketSocket?.send(
+      JSON.stringify({
+        assets_ids: assetIds,
+        type: 'market',
+        custom_feature_enabled: true,
+      }),
+    );
+
+    clearPolymarketSocketState();
+    polymarketHeartbeatTimer = window.setInterval(() => {
+      if (polymarketSocket?.readyState === WebSocket.OPEN) {
+        polymarketSocket.send('PING');
+      }
+    }, 10000);
+  });
+
+  polymarketSocket.addEventListener('message', (event) => {
+    try {
+      const payload = JSON.parse(event.data);
+      if (payload === 'PONG' || payload === 'PING') return;
+      if (Array.isArray(payload)) {
+        payload.forEach(handlePolymarketMessage);
+      } else {
+        handlePolymarketMessage(payload);
+      }
+    } catch (_) {
+      // noop
+    }
+  });
+
+  polymarketSocket.addEventListener('error', () => {
+    setPolymarketStatus('Reconectando', 'sync');
+  });
+
+  polymarketSocket.addEventListener('close', () => {
+    polymarketSocket = null;
+    clearPolymarketSocketState();
+    setPolymarketStatus('Reconectando', 'sync');
+
+    window.clearTimeout(polymarketReconnectTimer);
+    polymarketReconnectTimer = window.setTimeout(() => {
+      connectPolymarketSocket();
+    }, 3000);
+  });
+}
+
+async function loadPolymarketData({ silent = false } = {}) {
+  if (!polymarketBoard) return;
+
+  if (!silent) setPolymarketStatus('Actualizando', 'sync');
+
+  try {
+    const response = await fetch(POLYMARKET_API_URL, { cache: 'no-store' });
+    const contentType = response.headers.get('content-type') || '';
+    const isJson = contentType.includes('application/json');
+    const payload = isJson ? await response.json() : null;
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        throw new Error('La ruta /api/polymarket no existe en este entorno. Ejecuta la app con Astro/Node (npm run dev o npm run preview), no como sitio estático.');
+      }
+      throw new Error(payload?.message || 'No se pudo cargar Polymarket.');
+    }
+
+    if (!payload) {
+      throw new Error('El endpoint de Polymarket no devolvió JSON. Revisa que la app esté corriendo con Astro y no desde un servidor estático.');
+    }
+
+    polymarketSnapshot = payload;
+    renderPolymarketBoard();
+    connectPolymarketSocket();
+    setPolymarketStatus('En vivo', 'live');
+  } catch (error) {
+    setPolymarketStatus('Sin datos', 'error');
+
+    if (polymarketBoard) {
+      polymarketBoard.innerHTML = `
+        <article class="rounded-[1.75rem] border border-rose-200 bg-rose-50 p-6 md:p-7 lg:col-span-2">
+          <p class="font-headline text-2xl font-extrabold text-primary">No pudimos conectar con Polymarket</p>
+          <p class="mt-3 max-w-2xl text-sm leading-6 text-on-surface-variant">${escapeHtml(error?.message || 'Vuelve a intentar en unos segundos.')}</p>
+          <a href="https://polymarket.com/es/event/peru-presidential-election-winner" target="_blank" rel="noopener noreferrer" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary underline decoration-primary/30 underline-offset-4">Abrir el mercado original<span class="material-symbols-outlined text-base">open_in_new</span></a>
+        </article>
+      `;
+    }
+
+    if (polymarketMeta) {
+      polymarketMeta.textContent = 'No fue posible actualizar el mercado en este momento.';
+    }
+  }
+}
+
+polymarketRefreshButton?.addEventListener('click', () => {
+  loadPolymarketData();
+});
+
+loadPolymarketData();
+polymarketPollTimer = window.setInterval(() => loadPolymarketData({ silent: true }), POLYMARKET_POLL_INTERVAL_MS);
 
 // ── Answer State ──────────────────────────────────────────────────────────────
 
@@ -577,7 +927,7 @@ function renderTopMatch(ranking) {
             />
             <div>
               <h2 class="font-headline text-3xl md:text-4xl font-extrabold tracking-tight">${best.name}</h2>
-              <p class="text-white/80 text-sm mt-1">${best.party} · ${best.ideology}</p>
+              <p class="text-white/80 text-sm mt-1">${best.party}</p>
             </div>
           </div>
           <p class="text-sm md:text-base leading-7 text-white/82 max-w-2xl">${best.profession} · ${best.experience}</p>
@@ -647,7 +997,7 @@ function renderResultsList(ranking) {
                   />
                   <div>
                     <h3 class="font-headline text-xl font-extrabold text-primary">${candidate.name}</h3>
-                    <p class="text-sm text-on-surface-variant">${candidate.party} · ${candidate.ideology}</p>
+                    <p class="text-sm text-on-surface-variant">${candidate.party}</p>
                   </div>
                 </div>
                 <p class="text-sm text-on-surface-variant leading-6 max-w-2xl">${candidate.profession} · ${candidate.experience}</p>
@@ -789,7 +1139,7 @@ form.addEventListener('submit', (event) => {
   event.preventDefault();
   showResultsSections();
   updateResults();
-  document.getElementById('resultados')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  document.getElementById('tu-resultado')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 });
 
 resetButton.addEventListener('click', () => {
@@ -810,3 +1160,9 @@ if (hasSavedAnswers) {
   showResultsSections();
   updateResults();
 }
+
+window.addEventListener('beforeunload', () => {
+  window.clearInterval(polymarketPollTimer);
+  clearPolymarketSocketState();
+  polymarketSocket?.close();
+});

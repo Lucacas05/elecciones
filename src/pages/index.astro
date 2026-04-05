@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar.astro';
 import MobileNav from '../components/MobileNav.astro';
 import HeroSection from '../components/HeroSection.astro';
 import StepsSection from '../components/StepsSection.astro';
+import PolymarketSection from '../components/PolymarketSection.astro';
 import QuestionnaireSection from '../components/QuestionnaireSection.astro';
 import ResultsSection from '../components/ResultsSection.astro';
 import RankingSection from '../components/RankingSection.astro';
@@ -20,6 +21,7 @@ const candidatosData = allCandidatos.map((c) => c.data);
   <main class="min-h-screen pb-24 md:pb-0">
     <HeroSection />
     <StepsSection />
+    <PolymarketSection />
     <QuestionnaireSection />
     <ResultsSection />
     <RankingSection />

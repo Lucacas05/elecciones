@@ -27,7 +27,22 @@ interface Props {
 const { candidate, index } = Astro.props;
 const projectRoot = process.cwd();
 const hasPhoto = existsSync(join(projectRoot, 'public', candidate.foto.replace(/^\//, '')));
-const hasLogo = existsSync(join(projectRoot, 'public', candidate.logo_partido.replace(/^\//, '')));
+
+const logoBase = candidate.logo_partido.replace(/\.\w+$/, '');
+const logoExtensions = ['.webp', '.png', '.jpg', '.jpeg'];
+let logoPath = candidate.logo_partido;
+let hasLogo = existsSync(join(projectRoot, 'public', candidate.logo_partido.replace(/^\//, '')));
+if (!hasLogo) {
+  for (const ext of logoExtensions) {
+    const tryPath = logoBase + ext;
+    if (existsSync(join(projectRoot, 'public', tryPath.replace(/^\//, '')))) {
+      logoPath = tryPath;
+      hasLogo = true;
+      break;
+    }
+  }
+}
+
 const planHref = getPlanPdfHref(candidate.partido);
 const initials = candidate.nombre
   .split(' ')
@@ -150,9 +165,9 @@ const topicEntries = topicDefinitions.map((topic) => ({
           <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/15 bg-white/10">
             {hasLogo ? (
               <img
-                src={candidate.logo_partido}
+                src={logoPath}
                 alt={`Logo de ${candidate.partido}`}
-                class="h-full w-full object-cover"
+                class="h-full w-full object-contain p-1"
                 loading="lazy"
               />
             ) : (
@@ -177,9 +192,6 @@ const topicEntries = topicDefinitions.map((topic) => ({
         </p>
 
         <div class="flex flex-wrap gap-2">
-          <span class="rounded-full bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white">
-            {candidate.partido_ideologia}
-          </span>
           <span class="rounded-full bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white">
             {candidate.edad} años
           </span>
