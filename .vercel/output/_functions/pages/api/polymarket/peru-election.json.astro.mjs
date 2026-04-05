@@ -6,7 +6,6 @@ const POLYMARKET_EVENT_SLUG = "peru-presidential-election-winner";
 const POLYMARKET_EVENT_URL = `https://gamma-api.polymarket.com/events/slug/${POLYMARKET_EVENT_SLUG}`;
 const POLYMARKET_PAGE_URL = `https://polymarket.com/es/event/${POLYMARKET_EVENT_SLUG}`;
 const POLYMARKET_BLOB_PATHNAME = `polymarket/${POLYMARKET_EVENT_SLUG}/latest.json`;
-const POLYMARKET_USER_AGENT = "DecidePeru/1.0 (+https://decideperu.app)";
 
 function parseStringArray(value) {
   if (Array.isArray(value)) return value.map((item) => String(item));
@@ -142,8 +141,7 @@ async function fetchLivePeruElectionMarketSnapshot({
     try {
       const response = await fetchImpl(POLYMARKET_EVENT_URL, {
         headers: {
-          accept: "application/json",
-          "user-agent": POLYMARKET_USER_AGENT
+          accept: "application/json"
         },
         signal: controller.signal
       });
@@ -177,7 +175,33 @@ async function fetchLivePeruElectionMarketSnapshot({
   throw lastError instanceof Error ? lastError : new Error("Polymarket falló sin detalle adicional.");
 }
 
-const DEFAULT_SEED_PATH = new URL("../../data/polymarket/peru-election-winner.seed.json", import.meta.url);
+const title = "Peru Presidential Election Winner";
+const slug = "peru-presidential-election-winner";
+const active = true;
+const closed = false;
+const endDate = "2026-04-12T00:00:00Z";
+const updatedAt = "2026-04-05T14:15:48.458545Z";
+const sourceUrl = "https://polymarket.com/es/event/peru-presidential-election-winner";
+const volume24h = 644927.8912129999;
+const volume = 6335910.402711998;
+const liquidity = 1234998.40449;
+const openInterest = 852618.5345170001;
+const candidates = [{"name":"Carlos Álvarez","slug":"will-carlos-alvarez-win-the-2026-peruvian-presidential-election","probability":30.05,"bestBid":30,"bestAsk":30.1,"lastTradePrice":31.4,"hourChange":0,"dayChange":0,"volume24h":0,"volume":0,"liquidity":0,"yesTokenId":"96778993542273611384637311499081700062825144626170214374801025348770797572532"},{"name":"Keiko Fujimori","slug":"will-keiko-fujimori-win-the-2026-peruvian-presidential-election","probability":25,"bestBid":24.9,"bestAsk":25.1,"lastTradePrice":25,"hourChange":0,"dayChange":0,"volume24h":0,"volume":0,"liquidity":0,"yesTokenId":"seed-keiko-fujimori"},{"name":"Rafael López Aliaga","slug":"will-rafael-lopez-aliaga-win-the-2026-peruvian-presidential-election","probability":15.5,"bestBid":15,"bestAsk":16,"lastTradePrice":15,"hourChange":0,"dayChange":0,"volume24h":0,"volume":0,"liquidity":0,"yesTokenId":"91464516107556165907566387619157396733019262339196802152206657889196699256450"}];
+const defaultSeedSnapshot = {
+  title,
+  slug,
+  active,
+  closed,
+  endDate,
+  updatedAt,
+  sourceUrl,
+  volume24h,
+  volume,
+  liquidity,
+  openInterest,
+  candidates,
+};
+
 function resolveBlobToken(token) {
   return token ?? process.env.BLOB_READ_WRITE_TOKEN ?? "";
 }
@@ -221,9 +245,15 @@ async function persistSnapshot(snapshot, {
   });
   return true;
 }
-async function readSeedSnapshot({ seedPath = DEFAULT_SEED_PATH } = {}) {
-  const text = await readFile(seedPath, "utf8");
-  return parseStoredSnapshot(JSON.parse(text));
+async function readSeedSnapshot({
+  seedPath,
+  seedPayload = defaultSeedSnapshot
+} = {}) {
+  if (seedPath) {
+    const text = await readFile(seedPath, "utf8");
+    return parseStoredSnapshot(JSON.parse(text));
+  }
+  return parseStoredSnapshot(seedPayload);
 }
 
 class PolymarketUnavailableError extends Error {

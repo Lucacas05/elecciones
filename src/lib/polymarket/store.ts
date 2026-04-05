@@ -1,5 +1,6 @@
 import { get, put } from '@vercel/blob';
 import { readFile } from 'node:fs/promises';
+import defaultSeedSnapshot from '../../data/polymarket/peru-election-winner.seed.json';
 import { assertValidSnapshot } from './normalize';
 import {
   POLYMARKET_BLOB_PATHNAME,
@@ -11,9 +12,8 @@ export interface PolymarketSnapshotStoreOptions {
   blobGet?: typeof get;
   blobPut?: typeof put;
   seedPath?: URL;
+  seedPayload?: unknown;
 }
-
-const DEFAULT_SEED_PATH = new URL('../../data/polymarket/peru-election-winner.seed.json', import.meta.url);
 
 function resolveBlobToken(token?: string) {
   return token ?? process.env.BLOB_READ_WRITE_TOKEN ?? '';
@@ -73,7 +73,14 @@ export async function persistSnapshot(
   return true;
 }
 
-export async function readSeedSnapshot({ seedPath = DEFAULT_SEED_PATH }: Pick<PolymarketSnapshotStoreOptions, 'seedPath'> = {}) {
-  const text = await readFile(seedPath, 'utf8');
-  return parseStoredSnapshot(JSON.parse(text));
+export async function readSeedSnapshot({
+  seedPath,
+  seedPayload = defaultSeedSnapshot,
+}: Pick<PolymarketSnapshotStoreOptions, 'seedPath' | 'seedPayload'> = {}) {
+  if (seedPath) {
+    const text = await readFile(seedPath, 'utf8');
+    return parseStoredSnapshot(JSON.parse(text));
+  }
+
+  return parseStoredSnapshot(seedPayload);
 }

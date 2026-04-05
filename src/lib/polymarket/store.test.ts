@@ -69,4 +69,13 @@ describe('polymarket store', () => {
       ]),
     });
   });
+
+  it('usa el seed embebido por defecto cuando no recibe ruta', async () => {
+    await expect(readSeedSnapshot()).resolves.toMatchObject({
+      slug: snapshot.slug,
+      candidates: expect.arrayContaining([
+        expect.objectContaining({ name: 'Carlos Álvarez' }),
+      ]),
+    });
+  });
 });

@@ -1,7 +1,6 @@
 import { normalizeGammaEvent } from './normalize';
 import {
   POLYMARKET_EVENT_URL,
-  POLYMARKET_USER_AGENT,
   type GammaEvent,
   type LoggerLike,
   type PolymarketEventSnapshot,
@@ -57,7 +56,6 @@ export async function fetchLivePeruElectionMarketSnapshot({
       const response = await fetchImpl(POLYMARKET_EVENT_URL, {
         headers: {
           accept: 'application/json',
-          'user-agent': POLYMARKET_USER_AGENT,
         },
         signal: controller.signal,
       });

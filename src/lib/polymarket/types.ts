@@ -2,7 +2,6 @@ export const POLYMARKET_EVENT_SLUG = 'peru-presidential-election-winner';
 export const POLYMARKET_EVENT_URL = `https://gamma-api.polymarket.com/events/slug/${POLYMARKET_EVENT_SLUG}`;
 export const POLYMARKET_PAGE_URL = `https://polymarket.com/es/event/${POLYMARKET_EVENT_SLUG}`;
 export const POLYMARKET_BLOB_PATHNAME = `polymarket/${POLYMARKET_EVENT_SLUG}/latest.json`;
-export const POLYMARKET_USER_AGENT = 'DecidePeru/1.0 (+https://decideperu.app)';
 
 export interface GammaMarket {
   question?: string;
