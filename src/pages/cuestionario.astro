@@ -3,9 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import MobileNav from '../components/MobileNav.astro';
 import QuestionnaireSection from '../components/QuestionnaireSection.astro';
-import ResultsSection from '../components/ResultsSection.astro';
 import RankingSection from '../components/RankingSection.astro';
-import BreakdownSection from '../components/BreakdownSection.astro';
 import { getCollection } from 'astro:content';
 
 const allCandidatos = await getCollection('candidatos');
@@ -65,9 +63,7 @@ const candidatosData = allCandidatos.map((c) => c.data);
       </div>
     </section>
 
-    <ResultsSection />
     <RankingSection />
-    <BreakdownSection />
   </main>
 
   <MobileNav currentPage="cuestionario" />
