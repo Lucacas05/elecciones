@@ -14,10 +14,12 @@ const candidatos = allCandidatos
 <Layout title="Candidatos · Decide Perú">
   <Navbar currentPage="candidatos" />
 
-  <main class="min-h-screen pt-28 pb-20 bg-white">
+  <main class="min-h-screen pt-28 pb-20 bg-background">
     <section>
       <div class="mx-auto max-w-6xl px-6 lg:px-12">
-        {candidatos.map((candidate, index) => <CandidateProfileCard candidate={candidate} index={index} />)}
+        <div class="grid gap-8">
+          {candidatos.map((candidate, index) => <CandidateProfileCard candidate={candidate} index={index} />)}
+        </div>
       </div>
     </section>
   </main>
