@@ -16,67 +16,55 @@ const candidatosData = allCandidatos.map((c) => c.data);
   <Navbar currentPage="cuestionario" />
 
   <main class="min-h-screen pb-24 md:pb-0">
-    <section class="pt-28 pb-6">
-      <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6 lg:px-12">
-        <div class="inline-flex w-fit items-center gap-2 rounded-[2rem] bg-secondary-container px-4 py-1.5 text-sm font-semibold tracking-wide text-on-secondary-container">
-          <span class="material-symbols-outlined text-sm">quiz</span>
-          TEST DE AFINIDAD ELECTORAL
-        </div>
+    <section class="pt-28 md:pt-36 pb-16 md:pb-24">
+      <div class="mx-auto max-w-7xl px-6 lg:px-12">
+        <div class="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
+          <!-- Left column: title + info (sticky on desktop) -->
+          <div class="lg:sticky lg:top-28 lg:self-start space-y-6">
+            <div class="inline-flex w-fit items-center gap-2 rounded-[2rem] bg-secondary-container px-4 py-1.5 text-sm font-semibold tracking-wide text-on-secondary-container">
+              <span class="material-symbols-outlined text-sm">quiz</span>
+              TEST DE AFINIDAD ELECTORAL
+            </div>
 
-        <div class="grid gap-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
-          <div class="space-y-5">
-            <h1 class="max-w-4xl font-headline text-5xl font-extrabold leading-[1.05] tracking-tight text-primary lg:text-7xl">
+            <h1 class="font-headline text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.08] tracking-tight text-primary">
               Haz el test y descubre tu afinidad política
             </h1>
-            <p class="max-w-2xl text-lg leading-8 text-on-surface-variant">
+            <p class="max-w-lg text-lg leading-8 text-on-surface-variant">
               Responde el cuestionario completo y revisa en qué ejes coincides más
               con cada candidatura y cuáles pesan más en el resultado.
             </p>
-          </div>
 
-          <div class="rounded-[1.75rem] border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-[0_4px_40px_rgba(0,27,68,0.04)] md:p-8">
-            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-primary/60">
-              Antes de empezar
-            </p>
-            <div class="mt-6 space-y-5">
-              <div class="flex items-start gap-4">
-                <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary-container text-on-secondary-container">
+            <!-- Quick info bullets -->
+            <div class="space-y-4 pt-2">
+              <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary-container/60 text-on-secondary-container">
                   <span class="material-symbols-outlined text-base">visibility</span>
                 </div>
-                <p class="text-sm leading-6 text-on-surface-variant">
-                  Tus respuestas se guardan solo en tu navegador para que puedas retomar el test.
-                </p>
+                <p class="text-sm text-on-surface-variant">Tus respuestas se guardan solo en tu navegador.</p>
               </div>
-              <div class="flex items-start gap-4">
-                <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary-container text-on-secondary-container">
-                  <span class="material-symbols-outlined text-base">leaderboard</span>
+              <div class="flex items-center gap-3">
+                <div class="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-secondary-container/60 text-on-secondary-container">
+                  <span class="material-symbols-outlined text-base">shield_person</span>
                 </div>
-                <p class="text-sm leading-6 text-on-surface-variant">
-                  Al completar todas las respuestas verás tu coincidencia principal, el ranking completo y el detalle por tema.
-                </p>
-              </div>
-              <div class="flex items-start gap-4">
-                <div class="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl bg-secondary-container text-on-secondary-container">
-                  <span class="material-symbols-outlined text-base">groups</span>
-                </div>
-                <p class="text-sm leading-6 text-on-surface-variant">
-                  Si quieres más contexto antes de responder, revisa primero la página de candidatos.
-                </p>
+                <p class="text-sm text-on-surface-variant">Algoritmo neutral basado en datos oficiales del JNE.</p>
               </div>
             </div>
+
             <a
               href="/candidatos"
-              class="mt-6 inline-flex items-center gap-2 text-sm font-bold text-primary"
+              class="inline-flex items-center gap-2 text-sm font-bold text-primary pt-2"
             >
               <span class="underline decoration-primary/30 underline-offset-4">Ver perfiles de candidatura</span>
               <span class="material-symbols-outlined text-base no-underline">arrow_forward</span>
             </a>
           </div>
+
+          <!-- Right column: quiz -->
+          <QuestionnaireSection />
         </div>
       </div>
     </section>
 
-    <QuestionnaireSection />
     <ResultsSection />
     <RankingSection />
     <BreakdownSection />
