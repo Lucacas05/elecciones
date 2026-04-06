@@ -192,172 +192,101 @@ const topicEntries = topicDefinitions.map((topic) => ({
 }));
 ---
 
-<article class="space-y-6">
-  <div class="institutional-gradient relative overflow-hidden rounded-[2rem] p-7 md:p-10 shadow-[0_20px_60px_rgba(0,27,68,0.16)]">
-    <div class="absolute top-[-64px] right-[-36px] h-56 w-56 rounded-full bg-white/5"></div>
-    <div class="absolute bottom-[-92px] left-[-32px] h-44 w-44 rounded-full bg-white/5"></div>
-
-    <div class="relative z-10 grid gap-8 xl:grid-cols-[1.2fr_0.8fr] xl:items-start">
-      <div class="space-y-5">
-        <div class="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1.5 text-[11px] font-bold uppercase tracking-[0.22em] text-white/80">
-          <span class="material-symbols-outlined text-sm">verified</span>
-          Candidatura {String(index + 1).padStart(2, '0')}
-        </div>
-
-        <div class="flex flex-wrap items-center gap-4">
-          <div class="flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl border border-white/20 bg-white">
-            {hasLogo ? (
-              <img
-                src={logoPath}
-                alt={`Logo de ${candidate.partido}`}
-                class="h-full w-full object-contain p-1"
-                loading="lazy"
-              />
-            ) : (
-              <span class="font-headline text-lg font-extrabold tracking-[0.18em] text-primary/70">
-                {partyInitials}
-              </span>
-            )}
+<article class="py-12 border-b border-outline-variant/10 last:border-b-0">
+  <div class="flex flex-col lg:flex-row gap-8 lg:gap-12">
+    <div class="lg:w-1/3 space-y-6">
+      <div class="flex items-start gap-4">
+        {hasPhoto ? (
+          <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl border-2 border-outline-variant/20 bg-surface-container-low">
+            <img
+              src={photoPath}
+              alt={candidate.nombre}
+              class="h-full w-full object-cover"
+              loading="lazy"
+            />
           </div>
-
-          <div class="space-y-1">
-            <h2 class="font-headline text-3xl font-extrabold tracking-tight text-white md:text-4xl">
-              {candidate.nombre}
-            </h2>
-            <p class="text-sm font-semibold uppercase tracking-[0.16em] text-white/80">
-              {candidate.partido}
-            </p>
+        ) : (
+          <div class="flex h-24 w-24 shrink-0 items-center justify-center rounded-2xl border-2 border-outline-variant/20 bg-primary/5">
+            <span class="font-headline text-2xl font-extrabold tracking-[0.08em] text-primary/70">
+              {initials}
+            </span>
           </div>
-        </div>
-
-        <p class="max-w-3xl text-sm leading-7 text-white/90 md:text-base">
-          {candidate.profesion} · {candidate.experiencia_politica}
-        </p>
-
-        <div class="flex flex-wrap gap-2">
-          <span class="rounded-full bg-white/10 px-3 py-2 text-xs font-bold uppercase tracking-[0.18em] text-white">
-            {candidate.edad} años
-          </span>
+        )}
+        <div class="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-outline-variant/15 bg-white">
+          {hasLogo ? (
+            <img
+              src={logoPath}
+              alt={`Logo de ${candidate.partido}`}
+              class="h-full w-full object-contain p-1.5"
+              loading="lazy"
+            />
+          ) : (
+            <span class="font-headline text-xs font-extrabold tracking-[0.18em] text-primary/70">
+              {partyInitials}
+            </span>
+          )}
         </div>
       </div>
+      <h2 class="font-headline text-2xl font-extrabold tracking-tight text-primary">
+        {candidate.nombre}
+      </h2>
+      <p class="text-sm font-medium text-on-surface-variant">
+        {candidate.partido}
+      </p>
 
-      <div class="rounded-[1.75rem] border border-white/12 bg-white/8 p-5 backdrop-blur-sm md:p-6">
-        <div class="flex items-start gap-4">
-          <div class="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-[1.5rem] border border-white/14 bg-white/10">
-            {hasPhoto ? (
-              <img
-                src={photoPath}
-                alt={candidate.nombre}
-                class="h-full w-full object-cover"
-                loading="lazy"
-              />
-            ) : (
-              <span class="font-headline text-3xl font-extrabold tracking-[0.08em] text-white/82">
-                {initials}
-              </span>
-            )}
-          </div>
+      <div class="flex flex-wrap gap-2">
+        <span class="px-3 py-1.5 rounded-full bg-primary/5 text-primary text-xs font-semibold">
+          {candidate.edad} años
+        </span>
+        <span class="px-3 py-1.5 rounded-full bg-primary/5 text-primary text-xs font-semibold">
+          {candidate.profesion}
+        </span>
+      </div>
 
-          <div class="space-y-2">
-            <p class="text-[11px] font-bold uppercase tracking-[0.22em] text-white/70">
-              Dato clave
-            </p>
-            <p class="text-sm leading-6 text-white/90">
-              {candidate.dato_clave}
-            </p>
-          </div>
-        </div>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        {candidate.dato_clave}
+      </p>
 
-        <div class="mt-5 grid gap-3 sm:grid-cols-2">
-          <div class="rounded-2xl bg-white/10 px-4 py-3">
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Profesión</p>
-            <p class="mt-1 text-sm font-semibold text-white">{candidate.profesion}</p>
-          </div>
-          <div class="rounded-2xl bg-white/10 px-4 py-3">
-            <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/70">Partido</p>
-            <p class="mt-1 text-sm font-semibold text-white">{candidate.partido}</p>
-          </div>
+      <a
+        href={planHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline underline-offset-4"
+      >
+        <span class="material-symbols-outlined text-base">description</span>
+        Ver plan de gobierno
+      </a>
+    </div>
+
+    <div class="lg:flex-1 space-y-8">
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-4">Propuestas clave</h3>
+        <ul class="space-y-3">
+          {candidate.propuestas.map((propuesta) => (
+            <li class="flex gap-3 text-sm leading-relaxed text-on-surface-variant">
+              <span class="text-primary mt-0.5">•</span>
+              <span>{propuesta}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-primary/60 mb-4">Posiciones por tema</h3>
+        <div class="grid gap-3 sm:grid-cols-2">
+          {topicEntries.map((topic) => (
+            <div class="space-y-1">
+              <div class="flex items-center gap-2">
+                <span class="material-symbols-outlined text-sm text-primary/70">{topic.icon}</span>
+                <span class="text-xs font-semibold uppercase tracking-wide text-primary/70">{topic.label}</span>
+              </div>
+              <p class="text-sm text-on-surface-variant leading-relaxed pl-6">
+                {topic.value}
+              </p>
+            </div>
+          ))}
         </div>
       </div>
     </div>
-  </div>
-
-  <div class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-    <section class="rounded-[1.75rem] border border-outline-variant/10 bg-surface-container-lowest p-6 shadow-[0_4px_40px_rgba(0,27,68,0.04)] md:p-8">
-      <div class="mb-6 flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-secondary-container text-on-secondary-container">
-          <span class="material-symbols-outlined">format_list_bulleted</span>
-        </div>
-        <div>
-          <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary/60">Lectura rápida</p>
-          <h3 class="font-headline text-2xl font-extrabold text-primary">Propuestas destacadas</h3>
-        </div>
-      </div>
-
-      <ul class="space-y-4">
-        {candidate.propuestas.map((propuesta) => (
-          <li class="flex gap-3 rounded-2xl bg-surface-container-low px-4 py-4 text-sm leading-6 text-on-surface-variant">
-            <span class="mt-0.5 text-primary">→</span>
-            <span>{propuesta}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a
-          href={planHref}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-3 text-sm font-bold text-on-primary transition-all hover:bg-primary-container"
-        >
-          <span class="material-symbols-outlined text-lg">description</span>
-          Ver plan de gobierno
-        </a>
-      </div>
-    </section>
-
-    <section class="rounded-[1.75rem] border border-outline-variant/10 bg-surface-container-low p-6 shadow-[0_4px_40px_rgba(0,27,68,0.04)] md:p-8">
-      <div class="mb-6 flex items-center gap-3">
-        <div class="flex h-11 w-11 items-center justify-center rounded-2xl bg-white text-primary">
-          <span class="material-symbols-outlined">hub</span>
-        </div>
-        <div>
-          <p class="text-[11px] font-bold uppercase tracking-[0.2em] text-primary/60">Perfil programático</p>
-          <h3 class="font-headline text-2xl font-extrabold text-primary">Posiciones por tema</h3>
-        </div>
-      </div>
-
-      <div class="grid gap-3 md:grid-cols-2">
-        {topicEntries.map((topic) => (
-          <div class="rounded-2xl border border-outline-variant/10 bg-white/70 px-4 py-4">
-            <div class="mb-2 flex items-center gap-2">
-              <span class="material-symbols-outlined text-base text-primary">{topic.icon}</span>
-              <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/70">
-                {topic.label}
-              </p>
-            </div>
-            <p class="text-sm leading-6 text-on-surface-variant">
-              {topic.value}
-            </p>
-          </div>
-        ))}
-      </div>
-
-      <div class="mt-6 rounded-[1.5rem] border border-dashed border-outline-variant/25 bg-white/50 px-4 py-4">
-        <p class="text-[11px] font-bold uppercase tracking-[0.18em] text-primary/60">
-          Siguiente paso
-        </p>
-        <p class="mt-2 text-sm leading-6 text-on-surface-variant">
-          Si quieres ver qué tan cerca estás de este perfil, vuelve al cuestionario y compara tus respuestas.
-        </p>
-        <a
-          href="/cuestionario"
-          class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4"
-        >
-          <span class="material-symbols-outlined text-lg">compare_arrows</span>
-          Comparar con mis respuestas
-        </a>
-      </div>
-    </section>
   </div>
 </article>
