@@ -168,6 +168,7 @@ body {
   transition: background 150ms, border-color 150ms;
 }
 
+<<<<<<< HEAD
 .quiz-btn-secondary:hover {
   background: #f1f5f9;
   border-color: #cbd5e1;
@@ -189,6 +190,19 @@ body {
   padding: 1.25rem;
   transition: border-color 200ms;
   animation: quizCardIn 180ms ease-out;
+}
+=======
+.quiz-btn-secondary:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+#quiz-status[data-state="complete"] {
+  color: #166534;
+}
+
+#quiz-status[data-state="incomplete"] {
+  color: #475569;
 }
 
 .quiz-card:has(.quiz-option.is-selected) {

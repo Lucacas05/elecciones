@@ -28,6 +28,12 @@ const candidatos = defineCollection({
       politica_social: z.string(),
       instituciones: z.string(),
       empleo_formalizacion: z.string(),
+      constitucion: z.string(),
+      derechos: z.string(),
+      impuestos: z.string(),
+      energia_ambiente: z.string(),
+      politica_exterior: z.string(),
+      protesta_social: z.string(),
     }),
   }),
 });

@@ -25,4 +25,10 @@ quiz_posiciones:
   politica_social: "programas_empleo"
   instituciones: "autoridad_ejecutiva"
   empleo_formalizacion: "capacitacion_formalizacion"
+  constitucion: "continuidad_1993"
+  derechos: "conservador"
+  impuestos: "equilibrio_fiscal"
+  energia_ambiente: "aceleracion_extractiva"
+  politica_exterior: "alineamiento_occidente"
+  protesta_social: "orden_publico"
 ---

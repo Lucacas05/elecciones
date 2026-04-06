@@ -25,4 +25,10 @@ quiz_posiciones:
   politica_social: "educacion_tecnica"
   instituciones: "transparencia_control"
   empleo_formalizacion: "empleo_publico"
+  constitucion: "reformas_puntuales"
+  derechos: "progresista"
+  impuestos: "progresividad_tributaria"
+  energia_ambiente: "transicion_verde"
+  politica_exterior: "pragmatica"
+  protesta_social: "derechos_protesta"
 ---
