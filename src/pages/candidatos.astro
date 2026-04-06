@@ -15,14 +15,56 @@ const candidatos = allCandidatos
   <Navbar currentPage="candidatos" />
 
   <main class="min-h-screen pt-28 pb-20 bg-background">
-    <section>
-      <div class="mx-auto max-w-6xl px-6 lg:px-12">
-        <div class="grid gap-8">
-          {candidatos.map((candidate, index) => <CandidateProfileCard candidate={candidate} index={index} />)}
-        </div>
+    <div class="mx-auto max-w-6xl px-6 lg:px-12">
+      <div class="lg:grid lg:grid-cols-[260px_1fr] lg:gap-12">
+        <aside class="hidden lg:block lg:col-start-1 lg:col-end-2 -ml-6 lg:-ml-12">
+          <div class="sticky top-36 max-h-[calc(100vh-10rem)] overflow-y-auto pr-6 lg:pr-12 scrollbar-hide">
+            <h3 class="text-xs font-bold uppercase tracking-[0.2em] text-[#64748b] mb-4">Candidatos</h3>
+            <nav class="space-y-1">
+              {candidatos.map((candidate) => {
+                const id = candidate.nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+                return (
+                  <a
+                    href={`#${id}`}
+                    class="block py-1.5 px-3 text-sm text-[#475569] hover:text-[#001b44] hover:bg-[#f1f5f9] rounded-lg transition-all duration-150 scroll-smooth"
+                    style="scroll-margin-top: 8rem;"
+                  >
+                    {candidate.nombre}
+                  </a>
+                );
+              })}
+            </nav>
+          </div>
+        </aside>
+
+        <section>
+          <div class="grid gap-8">
+            {candidatos.map((candidate, index) => {
+              const id = candidate.nombre.toLowerCase().replace(/\s+/g, '-').replace(/[^\w-]/g, '');
+              return <CandidateProfileCard candidate={candidate} index={index} id={id} />;
+            })}
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   </main>
 
   <MobileNav currentPage="candidatos" />
 </Layout>
+
+<style>
+  @media (max-width: 1024px) {
+    aside nav a {
+      scroll-margin-top: 6rem;
+    }
+  }
+
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+</style>

@@ -20,9 +20,10 @@ interface CandidateData {
 interface Props {
   candidate: CandidateData;
   index: number;
+  id?: string;
 }
 
-const { candidate, index } = Astro.props;
+const { candidate, index, id } = Astro.props;
 const logoPathOverrides: Record<string, string | null> = {
   '/img/partidos/accion-popular.webp': '/img/partidos/accion-popular.png',
   '/img/partidos/ahora-nacion.webp': '/img/partidos/ahora-nacion.jpg',
@@ -204,7 +205,8 @@ const colorScheme = cardColors[index % cardColors.length];
 ---
 
 <article 
-  class="group rounded-2xl border border-[#e2e8f0] bg-white shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden"
+  id={id}
+  class="group rounded-2xl border border-[#e2e8f0] bg-white shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden scroll-mt-36"
   style={`--card-accent: ${colorScheme.accent}; --card-bg: ${colorScheme.bg};`}
 >
   <header class="px-6 py-5 lg:px-8 border-b border-[#f1f5f9]">
