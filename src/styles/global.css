@@ -67,23 +67,59 @@ body {
   gap: 1rem;
 }
 
+.quiz-progress-panel {
+  margin-bottom: 1.25rem;
+}
+
+.quiz-progress-copy {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.quiz-progress-label {
+  font-family: Manrope, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #001b44;
+}
+
+.quiz-progress-helper {
+  max-width: 28rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #64748b;
+  text-align: right;
+}
+
+.progress-track--quiz {
+  height: 0.45rem;
+  background: #e2e8f0;
+}
+
+.progress-track--quiz .progress-track__fill {
+  transition: width 180ms ease;
+}
+
 .quiz-actions {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   gap: 0.625rem;
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid #f1f5f9;
 }
 
-@media (min-width: 640px) {
-  .quiz-actions {
-    flex-direction: row;
-  }
+.quiz-actions > * {
+  min-width: 0;
 }
 
 .quiz-btn-primary {
-  flex: 1;
+  flex: 1 1 14rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -116,6 +152,11 @@ body {
 }
 
 .quiz-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex: 0 1 auto;
   height: 2.75rem;
   padding: 0 1.25rem;
   border-radius: 0.5rem;
@@ -132,12 +173,11 @@ body {
   border-color: #cbd5e1;
 }
 
-#quiz-status[data-state="complete"] {
-  color: #166534;
-}
-
-#quiz-status[data-state="incomplete"] {
-  color: #475569;
+.quiz-btn-secondary:disabled {
+  color: #94a3b8;
+  cursor: not-allowed;
+  background: #f8fafc;
+  border-color: #e2e8f0;
 }
 
 /* ─── Question Card ─── */
@@ -148,6 +188,7 @@ body {
   border-radius: 0.75rem;
   padding: 1.25rem;
   transition: border-color 200ms;
+  animation: quizCardIn 180ms ease-out;
 }
 
 .quiz-card:has(.quiz-option.is-selected) {
@@ -298,6 +339,33 @@ body {
 .quiz-option.is-selected .quiz-option-label {
   color: #0f172a;
   font-weight: 600;
+}
+
+@media (max-width: 639px) {
+  .quiz-progress-copy {
+    flex-direction: column;
+  }
+
+  .quiz-progress-helper {
+    text-align: left;
+  }
+
+  .quiz-btn-primary,
+  .quiz-btn-secondary {
+    width: 100%;
+  }
+}
+
+@keyframes quizCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ─── Results Shell ─── */

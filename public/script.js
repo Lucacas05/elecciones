@@ -10,9 +10,12 @@ const topMatch = document.getElementById('top-match');
 const resultsList = document.getElementById('results-list');
 const issueBreakdown = document.getElementById('issue-breakdown');
 const answersCount = document.getElementById('answers-count');
+const previousButton = document.getElementById('previous-button');
 const submitButton = document.getElementById('submit-button');
 const resetButton = document.getElementById('reset-button');
-const quizStatus = document.getElementById('quiz-status');
+const questionProgressLabel = document.getElementById('question-progress-label');
+const questionProgressHelper = document.getElementById('question-progress-helper');
+const quizProgressBar = document.getElementById('quiz-progress-bar');
 const polymarketBoard = document.getElementById('polymarket-board');
 const polymarketMeta = document.getElementById('polymarket-meta');
 const polymarketStatus = document.getElementById('polymarket-status');
@@ -522,6 +525,7 @@ function loadAnswers() {
 }
 
 let currentAnswers = loadAnswers();
+let currentQuestionIndex = getInitialQuestionIndex();
 
 function persistAnswers() {
   localStorage.setItem(QUESTION_KEY, JSON.stringify(currentAnswers));
@@ -531,6 +535,34 @@ function answerLabel(question, value) {
   if (value === null) return 'Sin responder';
   const option = question.options.find((o) => o.value === value);
   return option ? option.label : 'Sin responder';
+}
+
+function getFirstUnansweredIndex(answers = currentAnswers) {
+  const index = QUESTIONS.findIndex((question) => answers[question.id] === null);
+  return index === -1 ? QUESTIONS.length - 1 : index;
+}
+
+function getInitialQuestionIndex() {
+  return getFirstUnansweredIndex();
+}
+
+function clampQuestionIndex(index) {
+  return Math.min(Math.max(index, 0), QUESTIONS.length - 1);
+}
+
+function setCurrentQuestionIndex(index) {
+  currentQuestionIndex = clampQuestionIndex(index);
+}
+
+function focusCurrentQuestion() {
+  if (!form) return;
+  const input =
+    form.querySelector('input[type="radio"]:checked') ??
+    form.querySelector('input[type="radio"]');
+
+  if (input instanceof HTMLInputElement) {
+    input.focus({ preventScroll: true });
+  }
 }
 
 // ── Quiz Rendering ────────────────────────────────────────────────────────────
@@ -575,27 +607,49 @@ function countAnswered() {
 
 function updateQuizStatus() {
   const complete = isQuestionnaireComplete(currentAnswers);
+  const currentQuestion = QUESTIONS[currentQuestionIndex];
+  const currentAnswer = currentAnswers[currentQuestion.id];
 
   if (answersCount) {
     answersCount.textContent = `${countAnswered()}/${QUESTIONS.length}`;
+  }
+
+  if (questionProgressLabel) {
+    questionProgressLabel.textContent = `Pregunta ${currentQuestionIndex + 1} de ${QUESTIONS.length}`;
+  }
+
+  if (questionProgressHelper) {
+    questionProgressHelper.textContent = complete
+      ? 'Ya terminaste. Puedes revisar respuestas, volver atrás o ver tus resultados.'
+      : currentAnswer === null
+        ? currentQuestionIndex === QUESTIONS.length - 1
+          ? 'Última pregunta: al responderla podrás ver tus resultados.'
+          : 'Elige una opción y pasarás automáticamente a la siguiente.'
+        : currentQuestionIndex === 0
+          ? 'Respuesta guardada. Puedes cambiarla cuando quieras y seguir respondiendo.'
+          : 'Respuesta guardada. Puedes volver a la anterior si quieres ajustar algo.';
+  }
+
+  if (quizProgressBar) {
+    quizProgressBar.style.width = `${((currentQuestionIndex + 1) / QUESTIONS.length) * 100}%`;
+  }
+
+  if (previousButton) {
+    const canGoBack = currentQuestionIndex > 0;
+    previousButton.disabled = !canGoBack;
+    previousButton.setAttribute('aria-disabled', String(!canGoBack));
   }
 
   if (submitButton) {
     submitButton.disabled = !complete;
     submitButton.setAttribute('aria-disabled', String(!complete));
   }
-
-  if (quizStatus) {
-    quizStatus.textContent = complete
-      ? 'Listo: ya puedes ver tus resultados.'
-      : 'Responde las 10 preguntas para obtener un resultado confiable.';
-    quizStatus.dataset.state = complete ? 'complete' : 'incomplete';
-  }
 }
 
 function renderQuestions() {
   if (!form) return;
-  form.innerHTML = QUESTIONS.map((q, i) => buildQuestionMarkup(q, currentAnswers[q.id], i)).join('');
+  const question = QUESTIONS[currentQuestionIndex];
+  form.innerHTML = buildQuestionMarkup(question, currentAnswers[question.id], currentQuestionIndex);
   updateQuizStatus();
 }
 
@@ -848,10 +902,26 @@ function updateResults() {
 if (form) {
   form.addEventListener('change', (event) => {
     if (!(event.target instanceof HTMLInputElement)) return;
+    const questionIndex = QUESTIONS.findIndex((question) => question.id === event.target.name);
     currentAnswers[event.target.name] = clampAnswer(event.target.value);
     persistAnswers();
-    renderQuestions();
     updateResults();
+
+    if (questionIndex === -1) {
+      renderQuestions();
+      return;
+    }
+
+    if (questionIndex < QUESTIONS.length - 1) {
+      setCurrentQuestionIndex(questionIndex + 1);
+      renderQuestions();
+      focusCurrentQuestion();
+      return;
+    }
+
+    setCurrentQuestionIndex(questionIndex);
+    renderQuestions();
+    focusCurrentQuestion();
   });
 
   form.addEventListener('submit', (event) => {
@@ -862,10 +932,18 @@ if (form) {
   });
 }
 
+previousButton?.addEventListener('click', () => {
+  setCurrentQuestionIndex(currentQuestionIndex - 1);
+  renderQuestions();
+  focusCurrentQuestion();
+});
+
 resetButton?.addEventListener('click', () => {
   currentAnswers = getDefaultAnswers();
+  setCurrentQuestionIndex(0);
   persistAnswers();
   renderQuestions();
+  focusCurrentQuestion();
   hideResultsSections();
   clearRenderedResults();
 });

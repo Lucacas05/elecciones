@@ -17,9 +17,31 @@
         </div>
       </div>
 
+      <div class="quiz-progress-panel">
+        <div class="quiz-progress-copy">
+          <p id="question-progress-label" class="quiz-progress-label">Pregunta 1 de 10</p>
+          <p id="question-progress-helper" class="quiz-progress-helper">
+            Elige una opción y pasarás automáticamente a la siguiente.
+          </p>
+        </div>
+        <div class="progress-track progress-track--quiz" aria-hidden="true">
+          <div id="quiz-progress-bar" class="progress-track__fill" style="width:10%"></div>
+        </div>
+      </div>
+
       <form id="questionnaire-form" class="quiz-form"></form>
 
       <div class="quiz-actions">
+        <button
+          id="previous-button"
+          type="button"
+          class="quiz-btn-secondary"
+          disabled
+          aria-disabled="true"
+        >
+          <span class="material-symbols-outlined text-lg">arrow_back</span>
+          Anterior
+        </button>
         <button
           id="submit-button"
           type="submit"
@@ -36,12 +58,10 @@
           type="button"
           class="quiz-btn-secondary"
         >
+          <span class="material-symbols-outlined text-lg">restart_alt</span>
           Reiniciar
         </button>
       </div>
-      <p id="quiz-status" data-state="incomplete" class="mt-4 text-sm font-medium text-on-surface-variant">
-        Responde las 10 preguntas para obtener un resultado confiable.
-      </p>
     </div>
   </div>
 </section>
