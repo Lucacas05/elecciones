@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'cuestionario' | 'predicciones' | 'candidatos';
+  currentPage?: 'home' | 'cuestionario' | 'predicciones' | 'encuestas' | 'candidatos';
 }
 
 const { currentPage = 'home' } = Astro.props;
@@ -20,6 +20,11 @@ const pageMeta = {
     shareTitle: 'Decide Perú · Predicciones',
     shareText: 'Revisa las predicciones en vivo de Decide Perú con datos de Polymarket.',
   },
+  encuestas: {
+    shareUrl: '/encuestas',
+    shareTitle: 'Decide Perú · Encuestas',
+    shareText: 'Sigue la evolución de las encuestas presidenciales con datos de Ipsos Perú.',
+  },
   candidatos: {
     shareUrl: '/candidatos',
     shareTitle: 'Decide Perú · Candidatos',
@@ -32,6 +37,7 @@ const { shareUrl, shareTitle, shareText } = pageMeta[currentPage];
 const navLinks = [
   { href: '/', label: 'Inicio', icon: 'home', page: 'home' },
   { href: '/cuestionario', label: 'Cuestionario', icon: 'quiz', page: 'cuestionario' },
+  { href: '/encuestas', label: 'Encuestas', icon: 'timeline', page: 'encuestas' },
   { href: '/predicciones', label: 'Predicciones', icon: 'analytics', page: 'predicciones' },
   { href: '/candidatos', label: 'Candidatos', icon: 'groups', page: 'candidatos' },
 ];

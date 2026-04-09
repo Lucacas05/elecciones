@@ -2,39 +2,37 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/Navbar.astro';
 import MobileNav from '../components/MobileNav.astro';
-import PolymarketSection from '../components/PolymarketSection.astro';
+import SurveyTimelinesSection from '../components/SurveyTimelinesSection.astro';
 ---
 
-<Layout title="Decide Perú · Predicciones">
-  <Navbar currentPage="predicciones" />
+<Layout title="Decide Perú · Encuestas">
+  <Navbar currentPage="encuestas" />
 
   <main class="min-h-screen pb-24 md:pb-0">
     <section class="pt-28 pb-2">
       <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6 lg:px-12">
-        <div class="inline-flex w-fit items-center gap-2 rounded-[2rem] bg-secondary-container px-4 py-1.5 text-sm font-semibold tracking-wide text-on-secondary-container">
-          <span class="material-symbols-outlined text-sm">query_stats</span>
-          MERCADO PREDICTIVO
+        <div class="inline-flex w-fit items-center gap-2 rounded-[2rem] bg-tertiary-container px-4 py-1.5 text-sm font-semibold tracking-wide text-on-tertiary-container">
+          <span class="material-symbols-outlined text-sm">timeline</span>
+          ENCUESTAS
         </div>
 
         <div>
           <div class="space-y-5">
             <h1 class="max-w-4xl font-headline text-5xl font-extrabold leading-[1.05] tracking-tight text-primary lg:text-7xl">
-              Sigue las predicciones del mercado en tiempo real
+              Evolución de la intención de voto
             </h1>
             <p class="max-w-2xl text-lg leading-8 text-on-surface-variant">
-              Aquí ves la señal del mercado predictivo de Polymarket para la presidencia de Perú,
-              separada del test para que la navegación sea más clara.
+              Gráficos dinámicos con la serie histórica de Ipsos Perú para las elecciones 2026 y el comparativo con 2021.
             </p>
           </div>
-
         </div>
       </div>
     </section>
 
-    <PolymarketSection />
+    <SurveyTimelinesSection />
   </main>
 
-  <MobileNav currentPage="predicciones" />
+  <MobileNav currentPage="encuestas" />
 
   <script type="module" src="/script.js" is:inline></script>
 </Layout>

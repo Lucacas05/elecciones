@@ -1,6 +1,6 @@
 ---
 interface Props {
-  currentPage?: 'home' | 'cuestionario' | 'predicciones' | 'candidatos';
+  currentPage?: 'home' | 'cuestionario' | 'predicciones' | 'encuestas' | 'candidatos';
 }
 
 const { currentPage = 'home' } = Astro.props;
@@ -12,7 +12,7 @@ const { currentPage = 'home' } = Astro.props;
   <a
     href="/"
     class:list={[
-      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      'flex flex-col items-center justify-center rounded-lg px-3 py-2 transition-colors',
       currentPage === 'home'
         ? 'bg-primary text-white'
         : 'text-primary/40 hover:text-primary',
@@ -24,7 +24,7 @@ const { currentPage = 'home' } = Astro.props;
   <a
     href="/cuestionario"
     class:list={[
-      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      'flex flex-col items-center justify-center rounded-lg px-3 py-2 transition-colors',
       currentPage === 'cuestionario'
         ? 'bg-primary text-white'
         : 'text-primary/40 hover:text-primary',
@@ -36,7 +36,7 @@ const { currentPage = 'home' } = Astro.props;
   <a
     href="/candidatos"
     class:list={[
-      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      'flex flex-col items-center justify-center rounded-lg px-3 py-2 transition-colors',
       currentPage === 'candidatos'
         ? 'bg-primary text-white'
         : 'text-primary/40 hover:text-primary',
@@ -46,9 +46,21 @@ const { currentPage = 'home' } = Astro.props;
     Candidatos
   </a>
   <a
+    href="/encuestas"
+    class:list={[
+      'flex flex-col items-center justify-center rounded-lg px-3 py-2 transition-colors',
+      currentPage === 'encuestas'
+        ? 'bg-primary text-white'
+        : 'text-primary/40 hover:text-primary',
+    ]}
+  >
+    <span class="material-symbols-outlined mb-0.5">timeline</span>
+    Encuestas
+  </a>
+  <a
     href="/predicciones"
     class:list={[
-      'flex flex-col items-center justify-center rounded-lg px-5 py-2 transition-colors',
+      'flex flex-col items-center justify-center rounded-lg px-3 py-2 transition-colors',
       currentPage === 'predicciones'
         ? 'bg-primary text-white'
         : 'text-primary/40 hover:text-primary',
