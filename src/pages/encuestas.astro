@@ -8,27 +8,7 @@ import SurveyTimelinesSection from '../components/SurveyTimelinesSection.astro';
 <Layout title="Decide Perú · Encuestas">
   <Navbar currentPage="encuestas" />
 
-  <main class="min-h-screen pb-24 md:pb-0">
-    <section class="pt-28 pb-2">
-      <div class="mx-auto flex max-w-6xl flex-col gap-8 px-6 lg:px-12">
-        <div class="inline-flex w-fit items-center gap-2 rounded-[2rem] bg-tertiary-container px-4 py-1.5 text-sm font-semibold tracking-wide text-on-tertiary-container">
-          <span class="material-symbols-outlined text-sm">timeline</span>
-          ENCUESTAS
-        </div>
-
-        <div>
-          <div class="space-y-5">
-            <h1 class="max-w-4xl font-headline text-5xl font-extrabold leading-[1.05] tracking-tight text-primary lg:text-7xl">
-              Evolución de la intención de voto
-            </h1>
-            <p class="max-w-2xl text-lg leading-8 text-on-surface-variant">
-              Gráficos dinámicos con la serie histórica de Ipsos Perú para las elecciones 2026 y el comparativo con 2021.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
+  <main class="min-h-screen pt-20 pb-24 md:pb-0">
     <SurveyTimelinesSection />
   </main>
 
